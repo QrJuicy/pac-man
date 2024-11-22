@@ -1,0 +1,180 @@
+[gd_scene load_steps=6 format=3 uid="uid://bsm7xcjml3o27"]
+
+[sub_resource type="GDScript" id="GDScript_uknlp"]
+resource_name = "Global.gd"
+script/source = "extends Node2D
+
+var pacman_speed = 100
+var ghost_speed = 80
+var frightened_duration = 10
+var current_level = 1
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta):
+	pass
+"
+
+[sub_resource type="GDScript" id="GDScript_l1lm1"]
+resource_name = "Scarlet.gd"
+script/source = "# Scarlet (Red Ghost) - Greedy Pathfinding (A* style)
+extends NavigationAgent2D
+
+var pacman
+var ghost_speed = 80  # Default speed, will be overridden by Global.gd
+
+func _ready():
+	pacman = get_node(\"Pac Man\")
+	ghost_speed = Global.ghost_speed  # Use the global ghost speed based on level
+
+func _process(delta):
+	if pacman:
+		# Check if the ghost is frightened
+		if Global.is_frightened:
+			# Freeze the ghost's movement if in the frightened state
+			target_position = self.global_position  # Stay in the same position (no movement)
+			return
+		
+		# Directly target Pac-Man using A* pathfinding
+		target_position = pacman.global_position
+"
+
+[sub_resource type="GDScript" id="GDScript_mm2nj"]
+resource_name = "Blush.gd"
+script/source = "# Blush (Pink Ghost) - Prediction-Based Pathfinding
+extends NavigationAgent2D
+
+var pacman
+var ghost_speed = 80  # Default speed, will be overridden by Global.gd
+
+func _ready():
+	pacman = get_node(\"Pac Man\")
+	ghost_speed = Global.ghost_speed  # Use the global ghost speed based on level
+
+func _process(delta):
+	if pacman:
+		# Check if the ghost is frightened
+		if Global.is_frightened:
+			# Freeze the ghost's movement if in the frightened state
+			target_position = self.global_position  # Stay in the same position (no movement)
+			return
+		
+		# Calculate predicted target position (4 tiles ahead of Pac-Man's movement)
+		var direction = pacman.velocity.normalized()  # Assuming Pac-Man has velocity
+		var prediction_offset = direction * 4 * 16  # Move 4 tiles ahead of Pac-Man (16 pixels per tile)
+		target_position = pacman.global_position + prediction_offset
+"
+
+[sub_resource type="GDScript" id="GDScript_ja61d"]
+resource_name = "Azure.gd"
+script/source = "# Azure (Cyan Ghost) - Combined Targeting
+extends NavigationAgent2D
+
+var pacman
+var scarlet
+var ghost_speed = 80  # Default speed, will be overridden by Global.gd
+
+func _ready():
+	pacman = get_node(\"Pac Man\")
+	scarlet = get_node(\"Ghosts/Scarlet\")
+	ghost_speed = Global.ghost_speed  # Use the global ghost speed based on level
+
+func _process(delta):
+	if pacman and scarlet:
+		# Check if the ghost is frightened
+		if Global.is_frightened:
+			# Freeze the ghost's movement if in the frightened state
+			target_position = self.global_position  # Stay in the same position (no movement)
+			return
+		
+		# Calculate the midpoint between Pac-Man and Blinky (Scarlet)
+		var midpoint = (pacman.global_position + scarlet.global_position) / 2
+		var offset = (midpoint - pacman.global_position).normalized() * 4 * 16  # Move 4 tiles towards midpoint
+		target_position = midpoint + offset
+"
+
+[sub_resource type="GDScript" id="GDScript_jnq6f"]
+resource_name = "Amber.gd"
+script/source = "# Amber (Orange Ghost) - Proximity-Based Switching
+extends NavigationAgent2D
+
+var pacman
+var ghost_speed = 80  # Default speed, can be overridden by Global.gd
+var wander_target = Vector2()
+var chasing = true
+var chase_distance = 200  # Distance at which Amber starts chasing Pac-Man
+
+func _ready():
+	pacman = get_node(\"Pac Man\")
+	ghost_speed = Global.ghost_speed  # Use the global ghost speed
+
+func _process(delta):
+	if pacman:
+		# Check if Pac-Man is in the frightened state
+		if Global.is_frightened:
+			# Freeze the ghost's movement if in the frightened state
+			target_position = self.global_position  # Stay in the same position (no movement)
+			return
+		
+		# Calculate the distance to Pac-Man
+		var distance_to_pacman = self.global_position.distance_to(pacman.global_position)  # Use global_position for Pac-Man
+		
+		if distance_to_pacman < chase_distance:
+			# Chase Pac-Man if within chase range
+			chasing = true
+			target_position = pacman.global_position  # Set the target position to Pac-Man's global position
+		else:
+			# Wander randomly when too far from Pac-Man
+			if chasing:
+				wander_target = get_random_position()  # Get a random point in the maze
+			chasing = false
+			target_position = wander_target  # Set the target position to a random point
+
+func get_random_position():
+	# For simplicity, this will generate a random position within the level bounds
+	var level_bounds = get_node(\".\").get_rect()  # Assuming the level node has a rectangle
+	return level_bounds.position + Vector2(randf_range(0, level_bounds.size.x), randf_range(0, level_bounds.size.y))
+"
+
+[node name="Level" type="Node2D"]
+script = SubResource("GDScript_uknlp")
+
+[node name="Navigation" type="NavigationAgent2D" parent="."]
+
+[node name="Pac Man" type="Node2D" parent="."]
+
+[node name="Ghosts" type="Node2D" parent="."]
+
+[node name="Scarlet" type="Node2D" parent="Ghosts"]
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="Ghosts/Scarlet"]
+script = SubResource("GDScript_l1lm1")
+
+[node name="Sprite2D" type="Sprite2D" parent="Ghosts/Scarlet"]
+
+[node name="Blush" type="Node2D" parent="Ghosts"]
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="Ghosts/Blush"]
+script = SubResource("GDScript_mm2nj")
+
+[node name="Sprite2D" type="Sprite2D" parent="Ghosts/Blush"]
+
+[node name="Azure" type="Node2D" parent="Ghosts"]
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="Ghosts/Azure"]
+script = SubResource("GDScript_ja61d")
+
+[node name="Sprite2D" type="Sprite2D" parent="Ghosts/Azure"]
+
+[node name="Amber" type="Node2D" parent="Ghosts"]
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="Ghosts/Amber"]
+script = SubResource("GDScript_jnq6f")
+
+[node name="Sprite2D" type="Sprite2D" parent="Ghosts/Amber"]
+
+[node name="Maze" type="Node2D" parent="."]
