@@ -13,3 +13,7 @@ config_version=5
 config/name="Pac Man"
 config/features=PackedStringArray("4.2", "Forward Plus")
 config/icon="res://icon.svg"
+
+[autoload]
+
+Global="*res://Script/Global.gd"
