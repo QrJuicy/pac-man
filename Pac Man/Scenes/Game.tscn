@@ -1,4 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://bsm7xcjml3o27"]
+[gd_scene load_steps=7 format=3 uid="uid://bsm7xcjml3o27"]
+
+[ext_resource type="Script" path="res://Script/GameOverScreen.gd" id="1_eaivu"]
 
 [sub_resource type="GDScript" id="GDScript_uknlp"]
 resource_name = "Global.gd"
@@ -145,7 +147,7 @@ script = SubResource("GDScript_uknlp")
 
 [node name="Navigation" type="NavigationAgent2D" parent="."]
 
-[node name="Pac Man" type="Node2D" parent="."]
+[node name="PacMan" type="Node2D" parent="."]
 
 [node name="Ghosts" type="Node2D" parent="."]
 
@@ -178,3 +180,46 @@ script = SubResource("GDScript_jnq6f")
 [node name="Sprite2D" type="Sprite2D" parent="Ghosts/Amber"]
 
 [node name="Maze" type="Node2D" parent="."]
+
+[node name="GameOverScreen" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 726.0
+offset_bottom = 404.0
+script = ExtResource("1_eaivu")
+
+[node name="Menu" type="Panel" parent="GameOverScreen"]
+layout_mode = 0
+offset_right = 730.0
+offset_bottom = 407.0
+
+[node name="Game Over" type="Label" parent="GameOverScreen"]
+layout_mode = 0
+offset_left = 251.0
+offset_top = -16.0
+offset_right = 541.0
+offset_bottom = 134.0
+theme_override_colors/font_color = Color(0.584314, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 45
+text = "Game Over"
+vertical_alignment = 1
+
+[node name="Try Again" type="Button" parent="GameOverScreen"]
+layout_mode = 0
+offset_left = 179.0
+offset_top = 282.0
+offset_right = 337.0
+offset_bottom = 335.0
+text = "Try Again"
+
+[node name="Quit" type="Button" parent="GameOverScreen"]
+layout_mode = 0
+offset_left = 427.0
+offset_top = 282.0
+offset_right = 584.0
+offset_bottom = 336.0
+text = "Quit"
+
+[connection signal="pressed" from="GameOverScreen/Try Again" to="GameOverScreen" method="_on_try_again_pressed"]
+[connection signal="pressed" from="GameOverScreen/Quit" to="GameOverScreen" method="_on_quit_pressed"]
