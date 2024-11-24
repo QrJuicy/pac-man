@@ -18,10 +18,10 @@ func _process(delta):
 			if level_time_left <= 0:
 				level_time_left = 0
 				handle_level_end()  # Handle when time's up
-		print("Time left for level: ", level_time_left)
+		print("Time left: ", level_time_left)
 
 func handle_level_end():
-	print("Level Time's Up!")
+	print("Time's Up!")
 	# Transition to the next level
 	Global.next_level()
 	# Reset level time
