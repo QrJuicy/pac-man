@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://oeo4cn8leb72"
+path="res://.godot/imported/pacman_chomp.wav-f74acb650ad4ad4cfe2220d0fca393d4.sample"
+
+[deps]
+
+source_file="res://Main Assets/Sounds/pacman_chomp.wav"
+dest_files=["res://.godot/imported/pacman_chomp.wav-f74acb650ad4ad4cfe2220d0fca393d4.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

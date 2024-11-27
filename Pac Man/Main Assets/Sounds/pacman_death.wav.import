@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://dmpo4vasr1u13"
+path="res://.godot/imported/pacman_death.wav-19383e30e8f2e9b9c449e908bfff8c7f.sample"
+
+[deps]
+
+source_file="res://Main Assets/Sounds/pacman_death.wav"
+dest_files=["res://.godot/imported/pacman_death.wav-19383e30e8f2e9b9c449e908bfff8c7f.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0
