@@ -1,6 +1,7 @@
-[gd_scene load_steps=21 format=3 uid="uid://bsm7xcjml3o27"]
+[gd_scene load_steps=22 format=3 uid="uid://bsm7xcjml3o27"]
 
 [ext_resource type="Texture2D" uid="uid://cukdjdnfjg4x6" path="res://Main Assets/Ghost/Ghost_Body_01.png" id="1_3tcnd"]
+[ext_resource type="PackedScene" uid="uid://betqj7xrmhu4y" path="res://Scenes/pac_man.tscn" id="1_6e285"]
 [ext_resource type="Script" path="res://Script/GameOverScreen.gd" id="1_eaivu"]
 [ext_resource type="Texture2D" uid="uid://bmtlbc44n3vm3" path="res://Main Assets/Walls/wall_atlas.png" id="2_7h60b"]
 
@@ -378,7 +379,7 @@ script = SubResource("GDScript_uknlp")
 
 [node name="Navigation" type="NavigationAgent2D" parent="."]
 
-[node name="PacMan" type="Node2D" parent="."]
+[node name="PacMan" parent="." instance=ExtResource("1_6e285")]
 
 [node name="Ghosts" type="Node2D" parent="."]
 
