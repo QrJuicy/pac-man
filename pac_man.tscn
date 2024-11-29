@@ -1,0 +1,31 @@
+[gd_scene load_steps=4 format=3 uid="uid://betqj7xrmhu4y"]
+
+[ext_resource type="Script" path="res://Script/pac_man.gd" id="1_cixyg"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_56hlh"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_d5cvy"]
+
+[node name="PacMan" type="CharacterBody2D" node_paths=PackedStringArray("powerUpTimer", "sprite", "detector")]
+collision_mask = 3
+script = ExtResource("1_cixyg")
+speed = 100.0
+powerUpTimer = NodePath("PowerUpTimer")
+sprite = NodePath("AnimatedSprite2D")
+detector = NodePath("Detector")
+powerUpGroup = "PowerUp"
+
+[node name="PacMan Collider" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_56hlh")
+
+[node name="Detector" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Detector"]
+shape = SubResource("CircleShape2D_d5cvy")
+debug_color = Color(0.988235, 0, 0.196078, 0.419608)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+
+[node name="PowerUpTimer" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
