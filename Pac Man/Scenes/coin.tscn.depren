@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://bmkld43ht6amp"]
+
+[ext_resource type="Texture2D" uid="uid://c0mcukasqo1li" path="res://Main Assets/Pellet/Pellet_Medium.png" id="1_5ub8v"]
+[ext_resource type="Script" path="res://coin.gd" id="1_fa4bb"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_epnf8"]
+size = Vector2(12, 12)
+
+[node name="Coin" type="Area2D"]
+script = ExtResource("1_fa4bb")
+should_allow_eating_ghosts = null
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("1_5ub8v")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_epnf8")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
