@@ -8,7 +8,6 @@ size = Vector2(12, 12)
 
 [node name="Coin" type="Area2D"]
 script = ExtResource("1_fa4bb")
-should_allow_eating_ghosts = null
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture_filter = 1
