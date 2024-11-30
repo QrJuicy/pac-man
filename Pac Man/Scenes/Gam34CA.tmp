@@ -1,10 +1,10 @@
 [gd_scene load_steps=26 format=3 uid="uid://bsm7xcjml3o27"]
 
+[ext_resource type="Texture2D" uid="uid://cukdjdnfjg4x6" path="res://Main Assets/Ghost/Ghost_Body_01.png" id="1_3tcnd"]
 [ext_resource type="PackedScene" uid="uid://betqj7xrmhu4y" path="res://Scenes/pac_man.tscn" id="1_6e285"]
 [ext_resource type="Script" path="res://Script/GameOverScreen.gd" id="1_eaivu"]
 [ext_resource type="Texture2D" uid="uid://bmtlbc44n3vm3" path="res://Main Assets/Walls/wall_atlas.png" id="2_7h60b"]
 [ext_resource type="PackedScene" uid="uid://b4nrrwhtewxye" path="res://Scenes/ghost.tscn" id="3_cxu34"]
-[ext_resource type="Resource" uid="uid://c8rpqjkwkyg8d" path="res://Resources/red_movement_targets.tres" id="4_myhlx"]
 [ext_resource type="PackedScene" uid="uid://bmkld43ht6amp" path="res://Scenes/coin.tscn" id="5_ii10l"]
 [ext_resource type="FontFile" uid="uid://eegfvh3nrht" path="res://Main Assets/Fonts/upheavtt.ttf" id="5_nuru8"]
 [ext_resource type="Script" path="res://Scenes/coin_interaction.gd" id="5_snsd0"]
@@ -409,12 +409,9 @@ position = Vector2(-181, -323)
 
 [node name="Ghosts" type="Node2D" parent="."]
 
-[node name="Scarlet" parent="Ghosts" node_paths=PackedStringArray("tile_map") instance=ExtResource("3_cxu34")]
+[node name="Ghost" parent="Ghosts" instance=ExtResource("3_cxu34")]
 position = Vector2(0, -84)
 scale = Vector2(2, 2)
-movement_targets = ExtResource("4_myhlx")
-tile_map = NodePath("../../Node/TileMap")
-color = Color(1, 0, 0, 1)
 
 [node name="Ghosts3" type="Node2D" parent="."]
 
@@ -426,6 +423,7 @@ script = SubResource("GDScript_l1lm1")
 [node name="Sprite2D" type="Sprite2D" parent="Ghosts3/Scarlet"]
 position = Vector2(-48.75, -8.8323)
 scale = Vector2(1.71875, 1.73972)
+texture = ExtResource("1_3tcnd")
 
 [node name="Blush" type="Node2D" parent="Ghosts3"]
 

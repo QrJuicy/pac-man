@@ -1,10 +1,9 @@
-[gd_scene load_steps=26 format=3 uid="uid://bsm7xcjml3o27"]
+[gd_scene load_steps=25 format=3 uid="uid://bsm7xcjml3o27"]
 
+[ext_resource type="Texture2D" uid="uid://cukdjdnfjg4x6" path="res://Main Assets/Ghost/Ghost_Body_01.png" id="1_3tcnd"]
 [ext_resource type="PackedScene" uid="uid://betqj7xrmhu4y" path="res://Scenes/pac_man.tscn" id="1_6e285"]
 [ext_resource type="Script" path="res://Script/GameOverScreen.gd" id="1_eaivu"]
 [ext_resource type="Texture2D" uid="uid://bmtlbc44n3vm3" path="res://Main Assets/Walls/wall_atlas.png" id="2_7h60b"]
-[ext_resource type="PackedScene" uid="uid://b4nrrwhtewxye" path="res://Scenes/ghost.tscn" id="3_cxu34"]
-[ext_resource type="Resource" uid="uid://c8rpqjkwkyg8d" path="res://Resources/red_movement_targets.tres" id="4_myhlx"]
 [ext_resource type="PackedScene" uid="uid://bmkld43ht6amp" path="res://Scenes/coin.tscn" id="5_ii10l"]
 [ext_resource type="FontFile" uid="uid://eegfvh3nrht" path="res://Main Assets/Fonts/upheavtt.ttf" id="5_nuru8"]
 [ext_resource type="Script" path="res://Scenes/coin_interaction.gd" id="5_snsd0"]
@@ -28,6 +27,151 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	pass
+"
+
+[sub_resource type="GDScript" id="GDScript_l1lm1"]
+resource_name = "Scarlet.gd"
+script/source = "# Scarlet (Red Ghost) - Greedy Pathfinding (A* style)
+extends NavigationAgent2D
+
+var pacman
+var ghost_speed = 80  # Default speed
+var home_position = Vector2()  # Initial home position
+var scatter_target = Vector2(0, 0)  # Top-left corner for scatter mode
+
+func _ready():
+	pacman = get_node(\"PacMan\")
+	ghost_speed = Global.ghost_speed
+	home_position = self.global_position  # Save initial position as home
+
+func _process(delta):
+	if pacman:
+		if Global.is_frightened:
+			# Move toward home position in frightened state
+			set_target_position(home_position)
+			return
+
+		if Global.is_scatter:
+			# Move toward scatter target in scatter mode
+			set_target_position(scatter_target)
+			return
+
+		# Directly target Pac-Man using A* pathfinding
+		set_target_position(pacman.global_position)
+"
+
+[sub_resource type="GDScript" id="GDScript_mm2nj"]
+resource_name = "Blush.gd"
+script/source = "# Blush (Pink Ghost) - Prediction-Based Pathfinding
+extends NavigationAgent2D
+
+var pacman
+var ghost_speed = 80  # Default speed
+var home_position = Vector2()  # Initial home position
+var scatter_target = Vector2(500, 0)  # Top-right corner for scatter mode
+
+func _ready():
+	pacman = get_node(\"PacMan\")
+	ghost_speed = Global.ghost_speed
+	home_position = self.global_position  # Save initial position as home
+
+func _process(delta):
+	if pacman:
+		if Global.is_frightened:
+			# Move toward home position in frightened state
+			set_target_position(home_position)
+			return
+
+		if Global.is_scatter:
+			# Move toward scatter target in scatter mode
+			set_target_position(scatter_target)
+			return
+
+		# Predict Pac-Man's position (4 tiles ahead)
+		var direction = pacman.velocity.normalized()  # Assuming Pac-Man has velocity
+		var prediction_offset = direction * 4 * 16
+		set_target_position(pacman.global_position + prediction_offset)
+"
+
+[sub_resource type="GDScript" id="GDScript_ja61d"]
+resource_name = "Azure.gd"
+script/source = "# Azure (Cyan Ghost) - Combined Targeting
+extends NavigationAgent2D
+
+var pacman
+var scarlet
+var ghost_speed = 80
+var home_position = Vector2()
+var scatter_target = Vector2(500, 500)  # Bottom-right corner for scatter mode
+
+func _ready():
+	pacman = get_node(\"PacMan\")
+	scarlet = get_node(\"Ghosts/Scarlet\")
+	ghost_speed = Global.ghost_speed
+	home_position = self.global_position
+
+func _process(delta):
+	if pacman and scarlet:
+		if Global.is_frightened:
+			# Move toward home position in frightened state
+			set_target_position(home_position)
+			return
+
+		if Global.is_scatter:
+			# Move toward scatter target in scatter mode
+			set_target_position(scatter_target)
+			return
+
+		# Target the midpoint between Pac-Man and Scarlet
+		var midpoint = (pacman.global_position + scarlet.global_position) / 2
+		var offset = (midpoint - pacman.global_position).normalized() * 4 * 16
+		set_target_position(midpoint + offset)
+"
+
+[sub_resource type="GDScript" id="GDScript_jnq6f"]
+resource_name = "Amber.gd"
+script/source = "# Amber (Orange Ghost) - Proximity-Based Switching
+extends NavigationAgent2D
+
+var pacman
+var ghost_speed = 80
+var home_position = Vector2()
+var scatter_target = Vector2(0, 500)  # Bottom-left corner for scatter mode
+var wander_target = Vector2()
+var chasing = true
+var chase_distance = 200
+
+func _ready():
+	pacman = get_node(\"PacMan\")
+	ghost_speed = Global.ghost_speed
+	home_position = self.global_position
+
+func _process(delta):
+	if pacman:
+		if Global.is_frightened:
+			# Move toward home position in frightened state
+			set_target_position(home_position)
+			return
+
+		if Global.is_scatter:
+			# Move toward scatter target in scatter mode
+			set_target_position(scatter_target)
+			return
+
+		# Switch between chasing and wandering based on distance to Pac-Man
+		var distance_to_pacman = self.position.distance_to(pacman.global_position)
+		if distance_to_pacman < chase_distance:
+			chasing = true
+			set_target_position(pacman.global_position)
+		else:
+			if chasing:
+				wander_target = get_random_position()
+			chasing = false
+			set_target_position(wander_target)
+
+func get_random_position():
+	# Generate a random position within the level bounds
+	return Vector2(randf_range(50, 450), randf_range(50, 450))
 "
 
 [sub_resource type="TileMapPattern" id="TileMapPattern_e6met"]
@@ -223,155 +367,50 @@ pattern_4 = SubResource("TileMapPattern_m5te8")
 pattern_5 = SubResource("TileMapPattern_lmxka")
 pattern_6 = SubResource("TileMapPattern_qi2w4")
 
-[sub_resource type="GDScript" id="GDScript_l1lm1"]
-resource_name = "Scarlet.gd"
-script/source = "# Scarlet (Red Ghost) - Greedy Pathfinding (A* style)
-extends NavigationAgent2D
-
-var pacman
-var ghost_speed = 80  # Default speed
-var home_position = Vector2()  # Initial home position
-var scatter_target = Vector2(0, 0)  # Top-left corner for scatter mode
-
-func _ready():
-	pacman = get_node(\"PacMan\")
-	ghost_speed = Global.ghost_speed
-	home_position = self.global_position  # Save initial position as home
-
-func _process(delta):
-	if pacman:
-		if Global.is_frightened:
-			# Move toward home position in frightened state
-			set_target_position(home_position)
-			return
-
-		if Global.is_scatter:
-			# Move toward scatter target in scatter mode
-			set_target_position(scatter_target)
-			return
-
-		# Directly target Pac-Man using A* pathfinding
-		set_target_position(pacman.global_position)
-"
-
-[sub_resource type="GDScript" id="GDScript_mm2nj"]
-resource_name = "Blush.gd"
-script/source = "# Blush (Pink Ghost) - Prediction-Based Pathfinding
-extends NavigationAgent2D
-
-var pacman
-var ghost_speed = 80  # Default speed
-var home_position = Vector2()  # Initial home position
-var scatter_target = Vector2(500, 0)  # Top-right corner for scatter mode
-
-func _ready():
-	pacman = get_node(\"PacMan\")
-	ghost_speed = Global.ghost_speed
-	home_position = self.global_position  # Save initial position as home
-
-func _process(delta):
-	if pacman:
-		if Global.is_frightened:
-			# Move toward home position in frightened state
-			set_target_position(home_position)
-			return
-
-		if Global.is_scatter:
-			# Move toward scatter target in scatter mode
-			set_target_position(scatter_target)
-			return
-
-		# Predict Pac-Man's position (4 tiles ahead)
-		var direction = pacman.velocity.normalized()  # Assuming Pac-Man has velocity
-		var prediction_offset = direction * 4 * 16
-		set_target_position(pacman.global_position + prediction_offset)
-"
-
-[sub_resource type="GDScript" id="GDScript_ja61d"]
-resource_name = "Azure.gd"
-script/source = "# Azure (Cyan Ghost) - Combined Targeting
-extends NavigationAgent2D
-
-var pacman
-var scarlet
-var ghost_speed = 80
-var home_position = Vector2()
-var scatter_target = Vector2(500, 500)  # Bottom-right corner for scatter mode
-
-func _ready():
-	pacman = get_node(\"PacMan\")
-	scarlet = get_node(\"Ghosts/Scarlet\")
-	ghost_speed = Global.ghost_speed
-	home_position = self.global_position
-
-func _process(delta):
-	if pacman and scarlet:
-		if Global.is_frightened:
-			# Move toward home position in frightened state
-			set_target_position(home_position)
-			return
-
-		if Global.is_scatter:
-			# Move toward scatter target in scatter mode
-			set_target_position(scatter_target)
-			return
-
-		# Target the midpoint between Pac-Man and Scarlet
-		var midpoint = (pacman.global_position + scarlet.global_position) / 2
-		var offset = (midpoint - pacman.global_position).normalized() * 4 * 16
-		set_target_position(midpoint + offset)
-"
-
-[sub_resource type="GDScript" id="GDScript_jnq6f"]
-resource_name = "Amber.gd"
-script/source = "# Amber (Orange Ghost) - Proximity-Based Switching
-extends NavigationAgent2D
-
-var pacman
-var ghost_speed = 80
-var home_position = Vector2()
-var scatter_target = Vector2(0, 500)  # Bottom-left corner for scatter mode
-var wander_target = Vector2()
-var chasing = true
-var chase_distance = 200
-
-func _ready():
-	pacman = get_node(\"PacMan\")
-	ghost_speed = Global.ghost_speed
-	home_position = self.global_position
-
-func _process(delta):
-	if pacman:
-		if Global.is_frightened:
-			# Move toward home position in frightened state
-			set_target_position(home_position)
-			return
-
-		if Global.is_scatter:
-			# Move toward scatter target in scatter mode
-			set_target_position(scatter_target)
-			return
-
-		# Switch between chasing and wandering based on distance to Pac-Man
-		var distance_to_pacman = self.position.distance_to(pacman.global_position)
-		if distance_to_pacman < chase_distance:
-			chasing = true
-			set_target_position(pacman.global_position)
-		else:
-			if chasing:
-				wander_target = get_random_position()
-			chasing = false
-			set_target_position(wander_target)
-
-func get_random_position():
-	# Generate a random position within the level bounds
-	return Vector2(randf_range(50, 450), randf_range(50, 450))
-"
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mimi4"]
 
 [node name="Level" type="Node2D"]
 script = SubResource("GDScript_uknlp")
+
+[node name="Navigation" type="NavigationAgent2D" parent="."]
+
+[node name="PacMan" parent="." instance=ExtResource("1_6e285")]
+
+[node name="Ghosts" type="Node2D" parent="."]
+
+[node name="Scarlet" type="Node2D" parent="Ghosts"]
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="Ghosts/Scarlet"]
+script = SubResource("GDScript_l1lm1")
+
+[node name="Sprite2D" type="Sprite2D" parent="Ghosts/Scarlet"]
+position = Vector2(-48.75, -8.8323)
+scale = Vector2(1.71875, 1.73972)
+texture = ExtResource("1_3tcnd")
+
+[node name="Blush" type="Node2D" parent="Ghosts"]
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="Ghosts/Blush"]
+script = SubResource("GDScript_mm2nj")
+
+[node name="Sprite2D" type="Sprite2D" parent="Ghosts/Blush"]
+
+[node name="Azure" type="Node2D" parent="Ghosts"]
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="Ghosts/Azure"]
+script = SubResource("GDScript_ja61d")
+
+[node name="Sprite2D" type="Sprite2D" parent="Ghosts/Azure"]
+
+[node name="Amber" type="Node2D" parent="Ghosts"]
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="Ghosts/Amber"]
+script = SubResource("GDScript_jnq6f")
+
+[node name="Sprite2D" type="Sprite2D" parent="Ghosts/Amber"]
+
+[node name="Maze" type="Node2D" parent="."]
+visible = false
 
 [node name="Node" type="Node" parent="."]
 
@@ -383,73 +422,6 @@ layer_0/tile_data = PackedInt32Array(-131076, 458752, 1, -65540, 0, 3, -4, 0, 3,
 [node name="Camera2D" type="Camera2D" parent="Node"]
 position = Vector2(-147, -86)
 zoom = Vector2(0.812, 0.812)
-
-[node name="Navigation" type="NavigationAgent2D" parent="."]
-
-[node name="PacMan" parent="." instance=ExtResource("1_6e285")]
-position = Vector2(-302, -323)
-
-[node name="MovementTargets" type="Node" parent="."]
-
-[node name="Scarlet" type="Node" parent="MovementTargets"]
-
-[node name="Scatter" type="Node" parent="MovementTargets/Scarlet"]
-
-[node name="Red1" type="Marker2D" parent="MovementTargets/Scarlet/Scatter"]
-position = Vector2(-182, -227)
-
-[node name="Red2" type="Marker2D" parent="MovementTargets/Scarlet/Scatter"]
-position = Vector2(-302, -227)
-
-[node name="Red3" type="Marker2D" parent="MovementTargets/Scarlet/Scatter"]
-position = Vector2(10, 0)
-
-[node name="Red4" type="Marker2D" parent="MovementTargets/Scarlet/Scatter"]
-position = Vector2(-181, -323)
-
-[node name="Ghosts" type="Node2D" parent="."]
-
-[node name="Scarlet" parent="Ghosts" node_paths=PackedStringArray("tile_map") instance=ExtResource("3_cxu34")]
-position = Vector2(0, -84)
-scale = Vector2(2, 2)
-movement_targets = ExtResource("4_myhlx")
-tile_map = NodePath("../../Node/TileMap")
-color = Color(1, 0, 0, 1)
-
-[node name="Ghosts3" type="Node2D" parent="."]
-
-[node name="Scarlet" type="Node2D" parent="Ghosts3"]
-
-[node name="NavigationAgent2D" type="NavigationAgent2D" parent="Ghosts3/Scarlet"]
-script = SubResource("GDScript_l1lm1")
-
-[node name="Sprite2D" type="Sprite2D" parent="Ghosts3/Scarlet"]
-position = Vector2(-48.75, -8.8323)
-scale = Vector2(1.71875, 1.73972)
-
-[node name="Blush" type="Node2D" parent="Ghosts3"]
-
-[node name="NavigationAgent2D" type="NavigationAgent2D" parent="Ghosts3/Blush"]
-script = SubResource("GDScript_mm2nj")
-
-[node name="Sprite2D" type="Sprite2D" parent="Ghosts3/Blush"]
-
-[node name="Azure" type="Node2D" parent="Ghosts3"]
-
-[node name="NavigationAgent2D" type="NavigationAgent2D" parent="Ghosts3/Azure"]
-script = SubResource("GDScript_ja61d")
-
-[node name="Sprite2D" type="Sprite2D" parent="Ghosts3/Azure"]
-
-[node name="Amber" type="Node2D" parent="Ghosts3"]
-
-[node name="NavigationAgent2D" type="NavigationAgent2D" parent="Ghosts3/Amber"]
-script = SubResource("GDScript_jnq6f")
-
-[node name="Sprite2D" type="Sprite2D" parent="Ghosts3/Amber"]
-
-[node name="Maze" type="Node2D" parent="."]
-visible = false
 
 [node name="GameOverScreen" type="Control" parent="."]
 visible = false

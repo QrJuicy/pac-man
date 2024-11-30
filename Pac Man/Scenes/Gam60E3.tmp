@@ -409,12 +409,11 @@ position = Vector2(-181, -323)
 
 [node name="Ghosts" type="Node2D" parent="."]
 
-[node name="Scarlet" parent="Ghosts" node_paths=PackedStringArray("tile_map") instance=ExtResource("3_cxu34")]
+[node name="Ghost" parent="Ghosts" instance=ExtResource("3_cxu34")]
 position = Vector2(0, -84)
 scale = Vector2(2, 2)
+speed = 120
 movement_targets = ExtResource("4_myhlx")
-tile_map = NodePath("../../Node/TileMap")
-color = Color(1, 0, 0, 1)
 
 [node name="Ghosts3" type="Node2D" parent="."]
 
