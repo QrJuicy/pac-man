@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://bsm7xcjml3o27"]
+[gd_scene load_steps=22 format=3 uid="uid://bsm7xcjml3o27"]
 
 [ext_resource type="PackedScene" uid="uid://betqj7xrmhu4y" path="res://Scenes/pac_man.tscn" id="1_6e285"]
 [ext_resource type="Script" path="res://Script/GameOverScreen.gd" id="1_eaivu"]
@@ -7,7 +7,7 @@
 [ext_resource type="Resource" uid="uid://c8rpqjkwkyg8d" path="res://Resources/red_movement_targets.tres" id="4_myhlx"]
 [ext_resource type="PackedScene" uid="uid://bmkld43ht6amp" path="res://Scenes/coin.tscn" id="5_ii10l"]
 [ext_resource type="FontFile" uid="uid://eegfvh3nrht" path="res://Main Assets/Fonts/upheavtt.ttf" id="5_nuru8"]
-[ext_resource type="Script" path="res://Scenes/coin_interaction.gd" id="5_snsd0"]
+[ext_resource type="Script" path="res://Script/pellets_interaction.gd" id="5_snsd0"]
 [ext_resource type="Texture2D" uid="uid://c0tgqr308pmgl" path="res://Main Assets/Ghost/Ghost_Vulnerable_Blue_02.png" id="6_ytnah"]
 [ext_resource type="PackedScene" uid="uid://b43ph8jib88s8" path="res://Scenes/ui.tscn" id="7_uid1h"]
 
@@ -223,151 +223,6 @@ pattern_4 = SubResource("TileMapPattern_m5te8")
 pattern_5 = SubResource("TileMapPattern_lmxka")
 pattern_6 = SubResource("TileMapPattern_qi2w4")
 
-[sub_resource type="GDScript" id="GDScript_l1lm1"]
-resource_name = "Scarlet.gd"
-script/source = "# Scarlet (Red Ghost) - Greedy Pathfinding (A* style)
-extends NavigationAgent2D
-
-var pacman
-var ghost_speed = 80  # Default speed
-var home_position = Vector2()  # Initial home position
-var scatter_target = Vector2(0, 0)  # Top-left corner for scatter mode
-
-func _ready():
-	pacman = get_node(\"PacMan\")
-	ghost_speed = Global.ghost_speed
-	home_position = self.global_position  # Save initial position as home
-
-func _process(delta):
-	if pacman:
-		if Global.is_frightened:
-			# Move toward home position in frightened state
-			set_target_position(home_position)
-			return
-
-		if Global.is_scatter:
-			# Move toward scatter target in scatter mode
-			set_target_position(scatter_target)
-			return
-
-		# Directly target Pac-Man using A* pathfinding
-		set_target_position(pacman.global_position)
-"
-
-[sub_resource type="GDScript" id="GDScript_mm2nj"]
-resource_name = "Blush.gd"
-script/source = "# Blush (Pink Ghost) - Prediction-Based Pathfinding
-extends NavigationAgent2D
-
-var pacman
-var ghost_speed = 80  # Default speed
-var home_position = Vector2()  # Initial home position
-var scatter_target = Vector2(500, 0)  # Top-right corner for scatter mode
-
-func _ready():
-	pacman = get_node(\"PacMan\")
-	ghost_speed = Global.ghost_speed
-	home_position = self.global_position  # Save initial position as home
-
-func _process(delta):
-	if pacman:
-		if Global.is_frightened:
-			# Move toward home position in frightened state
-			set_target_position(home_position)
-			return
-
-		if Global.is_scatter:
-			# Move toward scatter target in scatter mode
-			set_target_position(scatter_target)
-			return
-
-		# Predict Pac-Man's position (4 tiles ahead)
-		var direction = pacman.velocity.normalized()  # Assuming Pac-Man has velocity
-		var prediction_offset = direction * 4 * 16
-		set_target_position(pacman.global_position + prediction_offset)
-"
-
-[sub_resource type="GDScript" id="GDScript_ja61d"]
-resource_name = "Azure.gd"
-script/source = "# Azure (Cyan Ghost) - Combined Targeting
-extends NavigationAgent2D
-
-var pacman
-var scarlet
-var ghost_speed = 80
-var home_position = Vector2()
-var scatter_target = Vector2(500, 500)  # Bottom-right corner for scatter mode
-
-func _ready():
-	pacman = get_node(\"PacMan\")
-	scarlet = get_node(\"Ghosts/Scarlet\")
-	ghost_speed = Global.ghost_speed
-	home_position = self.global_position
-
-func _process(delta):
-	if pacman and scarlet:
-		if Global.is_frightened:
-			# Move toward home position in frightened state
-			set_target_position(home_position)
-			return
-
-		if Global.is_scatter:
-			# Move toward scatter target in scatter mode
-			set_target_position(scatter_target)
-			return
-
-		# Target the midpoint between Pac-Man and Scarlet
-		var midpoint = (pacman.global_position + scarlet.global_position) / 2
-		var offset = (midpoint - pacman.global_position).normalized() * 4 * 16
-		set_target_position(midpoint + offset)
-"
-
-[sub_resource type="GDScript" id="GDScript_jnq6f"]
-resource_name = "Amber.gd"
-script/source = "# Amber (Orange Ghost) - Proximity-Based Switching
-extends NavigationAgent2D
-
-var pacman
-var ghost_speed = 80
-var home_position = Vector2()
-var scatter_target = Vector2(0, 500)  # Bottom-left corner for scatter mode
-var wander_target = Vector2()
-var chasing = true
-var chase_distance = 200
-
-func _ready():
-	pacman = get_node(\"PacMan\")
-	ghost_speed = Global.ghost_speed
-	home_position = self.global_position
-
-func _process(delta):
-	if pacman:
-		if Global.is_frightened:
-			# Move toward home position in frightened state
-			set_target_position(home_position)
-			return
-
-		if Global.is_scatter:
-			# Move toward scatter target in scatter mode
-			set_target_position(scatter_target)
-			return
-
-		# Switch between chasing and wandering based on distance to Pac-Man
-		var distance_to_pacman = self.position.distance_to(pacman.global_position)
-		if distance_to_pacman < chase_distance:
-			chasing = true
-			set_target_position(pacman.global_position)
-		else:
-			if chasing:
-				wander_target = get_random_position()
-			chasing = false
-			set_target_position(wander_target)
-
-func get_random_position():
-	# Generate a random position within the level bounds
-	return Vector2(randf_range(50, 450), randf_range(50, 450))
-"
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mimi4"]
 
 [node name="Level" type="Node2D"]
@@ -409,48 +264,17 @@ position = Vector2(-181, -323)
 
 [node name="Ghosts" type="Node2D" parent="."]
 
-[node name="Scarlet" parent="Ghosts" node_paths=PackedStringArray("tile_map") instance=ExtResource("3_cxu34")]
+[node name="Scarlet" parent="Ghosts" node_paths=PackedStringArray("tile_map", "chasing_target") instance=ExtResource("3_cxu34")]
 position = Vector2(0, -84)
 scale = Vector2(2, 2)
+speed = null
 movement_targets = ExtResource("4_myhlx")
 tile_map = NodePath("../../Node/TileMap")
 color = Color(1, 0, 0, 1)
-
-[node name="Ghosts3" type="Node2D" parent="."]
-
-[node name="Scarlet" type="Node2D" parent="Ghosts3"]
-
-[node name="NavigationAgent2D" type="NavigationAgent2D" parent="Ghosts3/Scarlet"]
-script = SubResource("GDScript_l1lm1")
-
-[node name="Sprite2D" type="Sprite2D" parent="Ghosts3/Scarlet"]
-position = Vector2(-48.75, -8.8323)
-scale = Vector2(1.71875, 1.73972)
-
-[node name="Blush" type="Node2D" parent="Ghosts3"]
-
-[node name="NavigationAgent2D" type="NavigationAgent2D" parent="Ghosts3/Blush"]
-script = SubResource("GDScript_mm2nj")
-
-[node name="Sprite2D" type="Sprite2D" parent="Ghosts3/Blush"]
-
-[node name="Azure" type="Node2D" parent="Ghosts3"]
-
-[node name="NavigationAgent2D" type="NavigationAgent2D" parent="Ghosts3/Azure"]
-script = SubResource("GDScript_ja61d")
-
-[node name="Sprite2D" type="Sprite2D" parent="Ghosts3/Azure"]
-
-[node name="Amber" type="Node2D" parent="Ghosts3"]
-
-[node name="NavigationAgent2D" type="NavigationAgent2D" parent="Ghosts3/Amber"]
-script = SubResource("GDScript_jnq6f")
-
-[node name="Sprite2D" type="Sprite2D" parent="Ghosts3/Amber"]
-
-[node name="Maze" type="Node2D" parent="."]
+chasing_target = NodePath("../../PacMan")
 
 [node name="GameOverScreen" type="Control" parent="."]
+visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_left = -708.0
@@ -493,7 +317,7 @@ theme_override_fonts/font = ExtResource("5_nuru8")
 theme_override_font_sizes/font_size = 20
 text = "Try Again"
 
-[node name="Quit" type="Button" parent="GameOverScreen"]
+[node name="Main Menu" type="Button" parent="GameOverScreen"]
 layout_mode = 0
 offset_left = 749.0
 offset_top = 465.0
@@ -501,1408 +325,1408 @@ offset_right = 906.0
 offset_bottom = 519.0
 theme_override_fonts/font = ExtResource("5_nuru8")
 theme_override_font_sizes/font_size = 20
-text = "Quit"
+text = "Main Menu"
 
-[node name="Sprite2D" type="Sprite2D" parent="GameOverScreen"]
+[node name="Ghost" type="Sprite2D" parent="GameOverScreen"]
 texture_filter = 1
 position = Vector2(708, 326)
 scale = Vector2(5.28125, 5.28125)
 texture = ExtResource("6_ytnah")
 
-[node name="coin" type="Node" parent="."]
+[node name="Pellets" type="Node" parent="."]
 script = ExtResource("5_snsd0")
 
-[node name="Coin18" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin18" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(180, -131)
 collision_layer = 5
 
-[node name="Coin19" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin19" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(180, -155)
 collision_layer = 5
 
-[node name="Coin20" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin20" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(180, -179)
 collision_layer = 5
 
-[node name="Coin21" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin21" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(180, -203)
 collision_layer = 5
 
-[node name="Coin22" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin22" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(180, -226)
 collision_layer = 5
 
-[node name="Coin23" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin23" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(180, -251)
 collision_layer = 5
 
-[node name="Coin24" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin24" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(180, -275)
 collision_layer = 5
 
-[node name="Coin26" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin26" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(180, -299)
 collision_layer = 5
 
-[node name="Coin27" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin27" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(180, -108)
 collision_layer = 5
 
-[node name="Coin28" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin28" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(180, -108)
 collision_layer = 5
 
-[node name="Coin29" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin29" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(180, 83)
 collision_layer = 5
 
-[node name="Coin30" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin30" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(180, 59)
 collision_layer = 5
 
-[node name="Coin31" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin31" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(180, 35)
 collision_layer = 5
 
-[node name="Coin32" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin32" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(180, 11)
 collision_layer = 5
 
-[node name="Coin33" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin33" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(180, -13)
 collision_layer = 5
 
-[node name="Coin34" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin34" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(180, -37)
 collision_layer = 5
 
-[node name="Coin35" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin35" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(180, -61)
 collision_layer = 5
 
-[node name="Coin36" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin36" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(180, -108)
 collision_layer = 5
 
-[node name="Coin37" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin37" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(180, -85)
 collision_layer = 5
 
-[node name="Coin38" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin38" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(180, 107)
 collision_layer = 5
 
-[node name="Coin39" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin39" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(180, 107)
 collision_layer = 5
 
-[node name="Coin41" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin41" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(303, 348)
 collision_layer = 5
 
-[node name="Coin42" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin42" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(303, 324)
 collision_layer = 5
 
-[node name="Coin43" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin43" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(303, 300)
 collision_layer = 5
 
-[node name="Coin44" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin44" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(303, 276)
 collision_layer = 5
 
-[node name="Coin45" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin45" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(180, 180)
 collision_layer = 5
 
-[node name="Coin46" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin46" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(180, 156)
 collision_layer = 5
 
-[node name="Coin47" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin47" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(180, 107)
 collision_layer = 5
 
-[node name="Coin48" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin48" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(180, 132)
 collision_layer = 5
 
-[node name="Coin40" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin40" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-181, -323)
 collision_layer = 5
 
-[node name="Coin50" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin50" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-181, -131)
 collision_layer = 5
 
-[node name="Coin51" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin51" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-181, -155)
 collision_layer = 5
 
-[node name="Coin52" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin52" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-181, -179)
 collision_layer = 5
 
-[node name="Coin53" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin53" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-181, -203)
 collision_layer = 5
 
-[node name="Coin54" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin54" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-181, -227)
 collision_layer = 5
 
-[node name="Coin55" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin55" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-181, -251)
 collision_layer = 5
 
-[node name="Coin56" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin56" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-181, -275)
 collision_layer = 5
 
-[node name="Coin58" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin58" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-181, -299)
 collision_layer = 5
 
-[node name="Coin59" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin59" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-181, -108)
 collision_layer = 5
 
-[node name="Coin60" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin60" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-181, -108)
 collision_layer = 5
 
-[node name="Coin61" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin61" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-181, 83)
 collision_layer = 5
 
-[node name="Coin62" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin62" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-181, 59)
 collision_layer = 5
 
-[node name="Coin63" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin63" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-181, 35)
 collision_layer = 5
 
-[node name="Coin64" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin64" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-181, 11)
 collision_layer = 5
 
-[node name="Coin65" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin65" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-181, -13)
 collision_layer = 5
 
-[node name="Coin66" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin66" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-181, -37)
 collision_layer = 5
 
-[node name="Coin67" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin67" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-181, -61)
 collision_layer = 5
 
-[node name="Coin68" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin68" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-181, -108)
 collision_layer = 5
 
-[node name="Coin69" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin69" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-181, -85)
 collision_layer = 5
 
-[node name="Coin70" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin70" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-181, 107)
 collision_layer = 5
 
-[node name="Coin71" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin71" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-181, 107)
 collision_layer = 5
 
-[node name="Coin72" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin72" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-181, 276)
 collision_layer = 5
 
-[node name="Coin73" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin73" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-181, 252)
 collision_layer = 5
 
-[node name="Coin74" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin74" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-181, 228)
 collision_layer = 5
 
-[node name="Coin75" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin75" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-181, 204)
 collision_layer = 5
 
-[node name="Coin76" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin76" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-181, 180)
 collision_layer = 5
 
-[node name="Coin77" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin77" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-181, 156)
 collision_layer = 5
 
-[node name="Coin78" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin78" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-181, 107)
 collision_layer = 5
 
-[node name="Coin79" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin79" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-181, 132)
 collision_layer = 5
 
-[node name="Coin82" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin82" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(302, -155)
 collision_layer = 5
 
-[node name="Coin83" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin83" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(302, -179)
 collision_layer = 5
 
-[node name="Coin84" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin84" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(302, -203)
 collision_layer = 5
 
-[node name="Coin85" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin85" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(302, -226)
 collision_layer = 5
 
-[node name="Coin86" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin86" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(302, -251)
 collision_layer = 5
 
-[node name="Coin89" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin89" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(302, -299)
 collision_layer = 5
 
-[node name="Coin90" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin90" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(300, 180)
 collision_layer = 5
 
-[node name="Coin91" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin91" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(300, 156)
 collision_layer = 5
 
-[node name="Coin92" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin92" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(300, 132)
 collision_layer = 5
 
-[node name="Coin87" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin87" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-302, -323)
 collision_layer = 5
 
-[node name="Coin93" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin93" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-302, -323)
 collision_layer = 5
 
-[node name="Coin94" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin94" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-302, -155)
 collision_layer = 5
 
-[node name="Coin95" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin95" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-302, -179)
 collision_layer = 5
 
-[node name="Coin96" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin96" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-302, -203)
 collision_layer = 5
 
-[node name="Coin97" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin97" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-302, -227)
 collision_layer = 5
 
-[node name="Coin98" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin98" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-302, -251)
 collision_layer = 5
 
-[node name="Coin99" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin99" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-302, -323)
 collision_layer = 5
 
-[node name="Coin100" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin100" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-302, -299)
 collision_layer = 5
 
-[node name="Coin101" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin101" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-302, 180)
 collision_layer = 5
 
-[node name="Coin102" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin102" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-302, 156)
 collision_layer = 5
 
-[node name="Coin103" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin103" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-302, 132)
 collision_layer = 5
 
-[node name="Coin104" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin104" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-301, 348)
 collision_layer = 5
 
-[node name="Coin105" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin105" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-301, 324)
 collision_layer = 5
 
-[node name="Coin106" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin106" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-301, 300)
 collision_layer = 5
 
-[node name="Coin107" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin107" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-301, 276)
 collision_layer = 5
 
-[node name="Coin110" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin110" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(37, -226)
 collision_layer = 5
 
-[node name="Coin111" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin111" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(37, -251)
 collision_layer = 5
 
-[node name="Coin112" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin112" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(37, -275)
 collision_layer = 5
 
-[node name="Coin114" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin114" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(37, -299)
 collision_layer = 5
 
-[node name="Coin115" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin115" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-37, -323)
 collision_layer = 5
 
-[node name="Coin116" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin116" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-37, -323)
 collision_layer = 5
 
-[node name="Coin117" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin117" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-37, -226)
 collision_layer = 5
 
-[node name="Coin118" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin118" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-37, -250)
 collision_layer = 5
 
-[node name="Coin119" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin119" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-37, -274)
 collision_layer = 5
 
-[node name="Coin120" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin120" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-37, -323)
 collision_layer = 5
 
-[node name="Coin121" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin121" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-37, -298)
 collision_layer = 5
 
-[node name="Coin122" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin122" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(107, -155)
 collision_layer = 5
 
-[node name="Coin123" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin123" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(107, -179)
 collision_layer = 5
 
-[node name="Coin124" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin124" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(107, -203)
 collision_layer = 5
 
-[node name="Coin126" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin126" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-110, -155)
 collision_layer = 5
 
-[node name="Coin127" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin127" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-110, -179)
 collision_layer = 5
 
-[node name="Coin128" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin128" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-110, -203)
 collision_layer = 5
 
-[node name="Coin130" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin130" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-107, 277)
 collision_layer = 5
 
-[node name="Coin131" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin131" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-107, 253)
 collision_layer = 5
 
-[node name="Coin132" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin132" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-107, 229)
 collision_layer = 5
 
-[node name="Coin134" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin134" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(108, 276)
 collision_layer = 5
 
-[node name="Coin135" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin135" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(109, 252)
 collision_layer = 5
 
-[node name="Coin136" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin136" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(109, 227)
 collision_layer = 5
 
-[node name="Coin138" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin138" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(181, 276)
 collision_layer = 5
 
-[node name="Coin139" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin139" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(181, 252)
 collision_layer = 5
 
-[node name="Coin140" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin140" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(181, 228)
 collision_layer = 5
 
-[node name="Coin141" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin141" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(181, 204)
 collision_layer = 5
 
-[node name="Coin142" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin142" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(252, 276)
 collision_layer = 5
 
-[node name="Coin143" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin143" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(252, 252)
 collision_layer = 5
 
-[node name="Coin144" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin144" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(252, 228)
 collision_layer = 5
 
-[node name="Coin145" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin145" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(252, 204)
 collision_layer = 5
 
-[node name="Coin146" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin146" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-248, 276)
 collision_layer = 5
 
-[node name="Coin147" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin147" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-248, 252)
 collision_layer = 5
 
-[node name="Coin148" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin148" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-248, 228)
 collision_layer = 5
 
-[node name="Coin149" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin149" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-248, 204)
 collision_layer = 5
 
-[node name="Coin150" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin150" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(36, 348)
 collision_layer = 5
 
-[node name="Coin151" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin151" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(36, 324)
 collision_layer = 5
 
-[node name="Coin152" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin152" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(36, 300)
 collision_layer = 5
 
-[node name="Coin153" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin153" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(36, 276)
 collision_layer = 5
 
-[node name="Coin154" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin154" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-39, 348)
 collision_layer = 5
 
-[node name="Coin155" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin155" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-39, 325)
 collision_layer = 5
 
-[node name="Coin156" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin156" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-39, 301)
 collision_layer = 5
 
-[node name="Coin157" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin157" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-39, 277)
 collision_layer = 5
 
-[node name="Coin158" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin158" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(35, 204)
 collision_layer = 5
 
-[node name="Coin159" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin159" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(35, 180)
 collision_layer = 5
 
-[node name="Coin160" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin160" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(35, 156)
 collision_layer = 5
 
-[node name="Coin161" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin161" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(35, 132)
 collision_layer = 5
 
-[node name="Coin162" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin162" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-38, 204)
 collision_layer = 5
 
-[node name="Coin163" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin163" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-38, 180)
 collision_layer = 5
 
-[node name="Coin164" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin164" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-38, 156)
 collision_layer = 5
 
-[node name="Coin165" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin165" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-38, 132)
 collision_layer = 5
 
-[node name="Coin166" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin166" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-278, -323)
 collision_layer = 5
 
-[node name="Coin167" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin167" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-254, -323)
 collision_layer = 5
 
-[node name="Coin168" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin168" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-230, -323)
 collision_layer = 5
 
-[node name="Coin169" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin169" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-206, -323)
 collision_layer = 5
 
-[node name="Coin170" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin170" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-278, -227)
 collision_layer = 5
 
-[node name="Coin171" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin171" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-254, -227)
 collision_layer = 5
 
-[node name="Coin172" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin172" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-230, -227)
 collision_layer = 5
 
-[node name="Coin173" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin173" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-206, -227)
 collision_layer = 5
 
-[node name="Coin174" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin174" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-278, -155)
 collision_layer = 5
 
-[node name="Coin175" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin175" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-254, -155)
 collision_layer = 5
 
-[node name="Coin176" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin176" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-230, -155)
 collision_layer = 5
 
-[node name="Coin177" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin177" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-206, -155)
 collision_layer = 5
 
-[node name="Coin178" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin178" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-277, 132)
 collision_layer = 5
 
-[node name="Coin179" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin179" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-253, 132)
 collision_layer = 5
 
-[node name="Coin180" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin180" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-229, 132)
 collision_layer = 5
 
-[node name="Coin181" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin181" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-205, 132)
 collision_layer = 5
 
-[node name="Coin182" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin182" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(205, 276)
 collision_layer = 5
 
-[node name="Coin183" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin183" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(229, 276)
 collision_layer = 5
 
-[node name="Coin184" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin184" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-156, -323)
 collision_layer = 5
 
-[node name="Coin185" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin185" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-132, -323)
 collision_layer = 5
 
-[node name="Coin186" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin186" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-108, -323)
 collision_layer = 5
 
-[node name="Coin187" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin187" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-84, -323)
 collision_layer = 5
 
-[node name="Coin188" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin188" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-61, -323)
 collision_layer = 5
 
-[node name="Coin49" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin49" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-181, 348)
 collision_layer = 5
 
-[node name="Coin189" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin189" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-278, 348)
 collision_layer = 5
 
-[node name="Coin190" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin190" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-254, 348)
 collision_layer = 5
 
-[node name="Coin191" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin191" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-230, 348)
 collision_layer = 5
 
-[node name="Coin192" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin192" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-206, 348)
 collision_layer = 5
 
-[node name="Coin193" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin193" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-156, 348)
 collision_layer = 5
 
-[node name="Coin194" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin194" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-132, 348)
 collision_layer = 5
 
-[node name="Coin195" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin195" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-108, 348)
 collision_layer = 5
 
-[node name="Coin196" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin196" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-84, 348)
 collision_layer = 5
 
-[node name="Coin197" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin197" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-61, 348)
 collision_layer = 5
 
-[node name="Coin57" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin57" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(158, 348)
 collision_layer = 5
 
-[node name="Coin198" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin198" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(61, 348)
 collision_layer = 5
 
-[node name="Coin199" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin199" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(85, 348)
 collision_layer = 5
 
-[node name="Coin200" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin200" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(109, 348)
 collision_layer = 5
 
-[node name="Coin201" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin201" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(133, 348)
 collision_layer = 5
 
-[node name="Coin202" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin202" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(183, 348)
 collision_layer = 5
 
-[node name="Coin203" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin203" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(207, 348)
 collision_layer = 5
 
-[node name="Coin204" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin204" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(231, 348)
 collision_layer = 5
 
-[node name="Coin205" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin205" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(255, 348)
 collision_layer = 5
 
-[node name="Coin206" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin206" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(278, 348)
 collision_layer = 5
 
-[node name="Coin80" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin80" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-181, -323)
 collision_layer = 5
 
-[node name="Coin207" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin207" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-278, -323)
 collision_layer = 5
 
-[node name="Coin208" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin208" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-254, -323)
 collision_layer = 5
 
-[node name="Coin209" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin209" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-230, -323)
 collision_layer = 5
 
-[node name="Coin210" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin210" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-206, -323)
 collision_layer = 5
 
-[node name="Coin211" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin211" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-156, -323)
 collision_layer = 5
 
-[node name="Coin212" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin212" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-132, -323)
 collision_layer = 5
 
-[node name="Coin213" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin213" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-108, -323)
 collision_layer = 5
 
-[node name="Coin214" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin214" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-84, -323)
 collision_layer = 5
 
-[node name="Coin215" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin215" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-61, -323)
 collision_layer = 5
 
-[node name="Coin81" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin81" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(158, -323)
 collision_layer = 5
 
-[node name="Coin88" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin88" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(37, -323)
 collision_layer = 5
 
-[node name="Coin108" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin108" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(37, -323)
 collision_layer = 5
 
-[node name="Coin109" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin109" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(37, -323)
 collision_layer = 5
 
-[node name="Coin216" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin216" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(302, -323)
 collision_layer = 5
 
-[node name="Coin217" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin217" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(302, -323)
 collision_layer = 5
 
-[node name="Coin218" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin218" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(302, -323)
 collision_layer = 5
 
-[node name="Coin219" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin219" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(61, -323)
 collision_layer = 5
 
-[node name="Coin220" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin220" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(85, -323)
 collision_layer = 5
 
-[node name="Coin221" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin221" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(109, -323)
 collision_layer = 5
 
-[node name="Coin222" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin222" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(133, -323)
 collision_layer = 5
 
-[node name="Coin223" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin223" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(183, -323)
 collision_layer = 5
 
-[node name="Coin224" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin224" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(207, -323)
 collision_layer = 5
 
-[node name="Coin225" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin225" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(231, -323)
 collision_layer = 5
 
-[node name="Coin226" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin226" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(255, -323)
 collision_layer = 5
 
-[node name="Coin227" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin227" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(278, -323)
 collision_layer = 5
 
-[node name="Coin113" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin113" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(158, -323)
 collision_layer = 5
 
-[node name="Coin228" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin228" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(61, -323)
 collision_layer = 5
 
-[node name="Coin229" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin229" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(85, -323)
 collision_layer = 5
 
-[node name="Coin230" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin230" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(109, -323)
 collision_layer = 5
 
-[node name="Coin231" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin231" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(133, -323)
 collision_layer = 5
 
-[node name="Coin232" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin232" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(183, -323)
 collision_layer = 5
 
-[node name="Coin233" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin233" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(207, -323)
 collision_layer = 5
 
-[node name="Coin234" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin234" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(231, -323)
 collision_layer = 5
 
-[node name="Coin235" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin235" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(255, -323)
 collision_layer = 5
 
-[node name="Coin236" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin236" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(278, -323)
 collision_layer = 5
 
-[node name="Coin237" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin237" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(205, -226)
 collision_layer = 5
 
-[node name="Coin238" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin238" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(229, -226)
 collision_layer = 5
 
-[node name="Coin239" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin239" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(253, -226)
 collision_layer = 5
 
-[node name="Coin240" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin240" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(276, -226)
 collision_layer = 5
 
-[node name="Coin241" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin241" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(205, -226)
 collision_layer = 5
 
-[node name="Coin242" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin242" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(229, -226)
 collision_layer = 5
 
-[node name="Coin243" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin243" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(253, -226)
 collision_layer = 5
 
-[node name="Coin244" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin244" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(276, -226)
 collision_layer = 5
 
-[node name="Coin245" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin245" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(206, -155)
 collision_layer = 5
 
-[node name="Coin246" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin246" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(230, -155)
 collision_layer = 5
 
-[node name="Coin247" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin247" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(254, -155)
 collision_layer = 5
 
-[node name="Coin248" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin248" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(277, -155)
 collision_layer = 5
 
-[node name="Coin249" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin249" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(206, -155)
 collision_layer = 5
 
-[node name="Coin250" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin250" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(230, -155)
 collision_layer = 5
 
-[node name="Coin251" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin251" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(254, -155)
 collision_layer = 5
 
-[node name="Coin252" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin252" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(277, -155)
 collision_layer = 5
 
-[node name="Coin125" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin125" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(158, -323)
 collision_layer = 5
 
-[node name="Coin253" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin253" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(61, -323)
 collision_layer = 5
 
-[node name="Coin254" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin254" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(85, -323)
 collision_layer = 5
 
-[node name="Coin255" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin255" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(109, -323)
 collision_layer = 5
 
-[node name="Coin256" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin256" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(133, -323)
 collision_layer = 5
 
-[node name="Coin129" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin129" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(158, -323)
 collision_layer = 5
 
-[node name="Coin257" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin257" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(61, -323)
 collision_layer = 5
 
-[node name="Coin258" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin258" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(85, -323)
 collision_layer = 5
 
-[node name="Coin259" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin259" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(109, -323)
 collision_layer = 5
 
-[node name="Coin260" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin260" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(133, -323)
 collision_layer = 5
 
-[node name="Coin261" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin261" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(156, -226)
 collision_layer = 5
 
-[node name="Coin262" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin262" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(59, -226)
 collision_layer = 5
 
-[node name="Coin263" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin263" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(83, -226)
 collision_layer = 5
 
-[node name="Coin264" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin264" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(107, -226)
 collision_layer = 5
 
-[node name="Coin265" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin265" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(131, -226)
 collision_layer = 5
 
-[node name="Coin266" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin266" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(156, -226)
 collision_layer = 5
 
-[node name="Coin267" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin267" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(59, -226)
 collision_layer = 5
 
-[node name="Coin268" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin268" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(83, -226)
 collision_layer = 5
 
-[node name="Coin269" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin269" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(107, -226)
 collision_layer = 5
 
-[node name="Coin270" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin270" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(131, -226)
 collision_layer = 5
 
-[node name="Coin271" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin271" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-157, -226)
 collision_layer = 5
 
-[node name="Coin272" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin272" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-133, -226)
 collision_layer = 5
 
-[node name="Coin273" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin273" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-109, -226)
 collision_layer = 5
 
-[node name="Coin274" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin274" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-85, -226)
 collision_layer = 5
 
-[node name="Coin275" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin275" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-62, -226)
 collision_layer = 5
 
-[node name="Coin276" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin276" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-157, -226)
 collision_layer = 5
 
-[node name="Coin277" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin277" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-133, -226)
 collision_layer = 5
 
-[node name="Coin278" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin278" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-109, -226)
 collision_layer = 5
 
-[node name="Coin279" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin279" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-85, -226)
 collision_layer = 5
 
-[node name="Coin280" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin280" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-62, -226)
 collision_layer = 5
 
-[node name="Coin281" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin281" parent="Pellets" instance=ExtResource("5_ii10l")]
 visible = false
 position = Vector2(-156, 132)
 collision_layer = 5
 
-[node name="Coin282" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin282" parent="Pellets" instance=ExtResource("5_ii10l")]
 visible = false
 position = Vector2(-132, 132)
 collision_layer = 5
 
-[node name="Coin283" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin283" parent="Pellets" instance=ExtResource("5_ii10l")]
 visible = false
 position = Vector2(-108, 132)
 collision_layer = 5
 
-[node name="Coin284" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin284" parent="Pellets" instance=ExtResource("5_ii10l")]
 visible = false
 position = Vector2(-84, 132)
 collision_layer = 5
 
-[node name="Coin285" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin285" parent="Pellets" instance=ExtResource("5_ii10l")]
 visible = false
 position = Vector2(-61, 132)
 collision_layer = 5
 
-[node name="Coin286" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin286" parent="Pellets" instance=ExtResource("5_ii10l")]
 visible = false
 position = Vector2(-156, 132)
 collision_layer = 5
 
-[node name="Coin287" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin287" parent="Pellets" instance=ExtResource("5_ii10l")]
 visible = false
 position = Vector2(-132, 132)
 collision_layer = 5
 
-[node name="Coin288" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin288" parent="Pellets" instance=ExtResource("5_ii10l")]
 visible = false
 position = Vector2(-108, 132)
 collision_layer = 5
 
-[node name="Coin289" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin289" parent="Pellets" instance=ExtResource("5_ii10l")]
 visible = false
 position = Vector2(-84, 132)
 collision_layer = 5
 
-[node name="Coin290" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin290" parent="Pellets" instance=ExtResource("5_ii10l")]
 visible = false
 position = Vector2(-61, 132)
 collision_layer = 5
 
-[node name="Coin291" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin291" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(61, 132)
 collision_layer = 5
 
-[node name="Coin292" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin292" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(85, 132)
 collision_layer = 5
 
-[node name="Coin293" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin293" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(109, 132)
 collision_layer = 5
 
-[node name="Coin294" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin294" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(133, 132)
 collision_layer = 5
 
-[node name="Coin295" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin295" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(156, 132)
 collision_layer = 5
 
-[node name="Coin296" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin296" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(61, 132)
 collision_layer = 5
 
-[node name="Coin297" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin297" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(85, 132)
 collision_layer = 5
 
-[node name="Coin299" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin299" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(133, 132)
 collision_layer = 5
 
-[node name="Coin300" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin300" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(156, 132)
 collision_layer = 5
 
-[node name="Coin301" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin301" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-158, 204)
 collision_layer = 5
 
-[node name="Coin302" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin302" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-134, 204)
 collision_layer = 5
 
-[node name="Coin303" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin303" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-110, 204)
 collision_layer = 5
 
-[node name="Coin304" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin304" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-86, 204)
 collision_layer = 5
 
-[node name="Coin305" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin305" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-63, 204)
 collision_layer = 5
 
-[node name="Coin306" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin306" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-158, 204)
 collision_layer = 5
 
-[node name="Coin307" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin307" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-134, 204)
 collision_layer = 5
 
-[node name="Coin308" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin308" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-110, 204)
 collision_layer = 5
 
-[node name="Coin309" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin309" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-86, 204)
 collision_layer = 5
 
-[node name="Coin310" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin310" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-63, 204)
 collision_layer = 5
 
-[node name="Coin133" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin133" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-11, -226)
 collision_layer = 5
 
-[node name="Coin311" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin311" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(12, -226)
 collision_layer = 5
 
-[node name="Coin313" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin313" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(205, 132)
 collision_layer = 5
 
-[node name="Coin314" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin314" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(229, 132)
 collision_layer = 5
 
-[node name="Coin315" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin315" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(253, 132)
 collision_layer = 5
 
-[node name="Coin316" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin316" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(276, 132)
 collision_layer = 5
 
-[node name="Coin320" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin320" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(298, 162)
 collision_layer = 5
 
-[node name="Coin321" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin321" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-157, 132)
 collision_layer = 5
 
-[node name="Coin322" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin322" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-133, 132)
 collision_layer = 5
 
-[node name="Coin323" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin323" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-109, 132)
 collision_layer = 5
 
-[node name="Coin324" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin324" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-85, 132)
 collision_layer = 5
 
-[node name="Coin325" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin325" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-62, 132)
 collision_layer = 5
 
-[node name="Coin326" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin326" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-157, 132)
 collision_layer = 5
 
-[node name="Coin327" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin327" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-133, 132)
 collision_layer = 5
 
-[node name="Coin328" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin328" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-109, 132)
 collision_layer = 5
 
-[node name="Coin329" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin329" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-85, 132)
 collision_layer = 5
 
-[node name="Coin330" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin330" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-62, 132)
 collision_layer = 5
 
-[node name="Coin137" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin137" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(37, -155)
 collision_layer = 5
 
-[node name="Coin331" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin331" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(59, -155)
 collision_layer = 5
 
-[node name="Coin332" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin332" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(83, -155)
 collision_layer = 5
 
-[node name="Coin333" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin333" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(59, -155)
 collision_layer = 5
 
-[node name="Coin334" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin334" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(83, -155)
 collision_layer = 5
 
-[node name="Coin335" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin335" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-37, -226)
 collision_layer = 5
 
-[node name="Coin336" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin336" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-85, -226)
 collision_layer = 5
 
-[node name="Coin337" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin337" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-62, -226)
 collision_layer = 5
 
-[node name="Coin338" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin338" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-85, -226)
 collision_layer = 5
 
-[node name="Coin339" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin339" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-62, -226)
 collision_layer = 5
 
-[node name="Coin340" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin340" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-37, -156)
 collision_layer = 5
 
-[node name="Coin341" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin341" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-85, -156)
 collision_layer = 5
 
-[node name="Coin342" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin342" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-62, -156)
 collision_layer = 5
 
-[node name="Coin343" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin343" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-85, -156)
 collision_layer = 5
 
-[node name="Coin344" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin344" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-62, -156)
 collision_layer = 5
 
-[node name="Coin345" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin345" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(61, 204)
 collision_layer = 5
 
-[node name="Coin346" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin346" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(85, 204)
 collision_layer = 5
 
-[node name="Coin347" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin347" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(109, 204)
 collision_layer = 5
 
-[node name="Coin348" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin348" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(133, 204)
 collision_layer = 5
 
-[node name="Coin349" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin349" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(156, 204)
 collision_layer = 5
 
-[node name="Coin350" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin350" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(61, 204)
 collision_layer = 5
 
-[node name="Coin351" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin351" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(85, 204)
 collision_layer = 5
 
-[node name="Coin352" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin352" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(109, 204)
 collision_layer = 5
 
-[node name="Coin353" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin353" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(133, 204)
 collision_layer = 5
 
-[node name="Coin354" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin354" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(156, 204)
 collision_layer = 5
 
-[node name="Coin355" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin355" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-86, 277)
 collision_layer = 5
 
-[node name="Coin356" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin356" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-62, 277)
 collision_layer = 5
 
-[node name="Coin357" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin357" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(277, 204)
 collision_layer = 5
 
-[node name="Coin358" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin358" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(60, 276)
 collision_layer = 5
 
-[node name="Coin359" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin359" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(84, 276)
 collision_layer = 5
 
-[node name="Coin360" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin360" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-86, 277)
 collision_layer = 5
 
-[node name="Coin361" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin361" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-62, 277)
 collision_layer = 5
 
-[node name="Coin362" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin362" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(276, 276)
 collision_layer = 5
 
-[node name="Coin363" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin363" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-275, 276)
 collision_layer = 5
 
-[node name="Coin364" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin364" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-272, 204)
 collision_layer = 5
 
-[node name="Coin365" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin365" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-225, 276)
 collision_layer = 5
 
-[node name="Coin367" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin367" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(12, 348)
 collision_layer = 5
 
-[node name="Coin368" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin368" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-203, 276)
 collision_layer = 5
 
-[node name="Coin369" parent="coin" instance=ExtResource("5_ii10l")]
+[node name="Coin369" parent="Pellets" instance=ExtResource("5_ii10l")]
 position = Vector2(-12, 348)
 collision_layer = 5
 
 [node name="UI" parent="." instance=ExtResource("7_uid1h")]
 
 [connection signal="pressed" from="GameOverScreen/Try Again" to="GameOverScreen" method="_on_try_again_pressed"]
-[connection signal="pressed" from="GameOverScreen/Quit" to="GameOverScreen" method="_on_quit_pressed"]
+[connection signal="pressed" from="GameOverScreen/Main Menu" to="GameOverScreen" method="_on_quit_pressed"]

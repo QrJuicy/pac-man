@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://b43ph8jib88s8"]
 
-[ext_resource type="Script" path="res://Scenes/ui.gd" id="1_5a808"]
+[ext_resource type="Script" path="res://Script/ui.gd" id="1_5a808"]
 [ext_resource type="FontFile" uid="uid://eegfvh3nrht" path="res://Main Assets/Fonts/upheavtt.ttf" id="2_vgdy0"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4ae5u"]

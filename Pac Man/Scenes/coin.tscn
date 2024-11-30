@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://bmkld43ht6amp"]
 
 [ext_resource type="Texture2D" uid="uid://c0mcukasqo1li" path="res://Main Assets/Pellet/Pellet_Medium.png" id="1_5ub8v"]
-[ext_resource type="Script" path="res://Scenes/coin.gd" id="1_fa4bb"]
+[ext_resource type="Script" path="res://Script/pellet.gd" id="1_fa4bb"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_epnf8"]
 size = Vector2(12, 12)

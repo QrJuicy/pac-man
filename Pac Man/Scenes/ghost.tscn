@@ -1,11 +1,11 @@
 [gd_scene load_steps=13 format=3 uid="uid://b4nrrwhtewxye"]
 
 [ext_resource type="Texture2D" uid="uid://cukdjdnfjg4x6" path="res://Main Assets/Ghost/Ghost_Body_01.png" id="1_0by1j"]
-[ext_resource type="Script" path="res://Scenes/ghost.gd" id="1_ie3no"]
+[ext_resource type="Script" path="res://Script/ghost.gd" id="1_ie3no"]
 [ext_resource type="Texture2D" uid="uid://c35pppcvsy15a" path="res://Main Assets/Ghost/Ghost_Eyes_Down.png" id="2_jq6sg"]
-[ext_resource type="Script" path="res://Scenes/ghost_body_sprite.gd" id="3_tlu3i"]
+[ext_resource type="Script" path="res://Script/ghost_body_sprite.gd" id="3_77dim"]
 [ext_resource type="Texture2D" uid="uid://dnh5ob2xsnd14" path="res://Main Assets/Ghost/Ghost_Body_02.png" id="5_2a8q0"]
-[ext_resource type="Script" path="res://Scenes/ghost_eyes_sprite.gd" id="5_meb3m"]
+[ext_resource type="Script" path="res://Script/ghost_eyes_sprite.gd" id="5_6sjl8"]
 [ext_resource type="Texture2D" uid="uid://cos74wq5ewldh" path="res://Main Assets/Ghost/Ghost_Eyes_Up.png" id="6_kvt0a"]
 [ext_resource type="Texture2D" uid="uid://w5ojgmgnmvb1" path="res://Main Assets/Ghost/Ghost_Eyes_Left.png" id="7_e33a8"]
 [ext_resource type="Texture2D" uid="uid://b8hylwrimmoaq" path="res://Main Assets/Ghost/Ghost_Eyes_Right.png" id="8_mn6b2"]
@@ -41,12 +41,12 @@ script = ExtResource("1_ie3no")
 [node name="BodySprite" type="Sprite2D" parent="."]
 texture_filter = 1
 texture = ExtResource("1_0by1j")
-script = ExtResource("3_tlu3i")
+script = ExtResource("3_77dim")
 
 [node name="EyesSprite" type="Sprite2D" parent="."]
 texture_filter = 1
 texture = ExtResource("2_jq6sg")
-script = ExtResource("5_meb3m")
+script = ExtResource("5_6sjl8")
 up = ExtResource("6_kvt0a")
 down = ExtResource("2_jq6sg")
 left = ExtResource("7_e33a8")
@@ -61,3 +61,13 @@ shape = SubResource("CapsuleShape2D_dnt2j")
 libraries = {
 "": SubResource("AnimationLibrary_2y78h")
 }
+
+[node name="ScatterTimer" type="Timer" parent="."]
+wait_time = 8.0
+one_shot = true
+
+[node name="UpdateChasingTargetPositionTime" type="Timer" parent="."]
+wait_time = 0.2
+
+[connection signal="timeout" from="ScatterTimer" to="." method="_on_scatter_timer_timeout"]
+[connection signal="timeout" from="UpdateChasingTargetPositionTime" to="." method="_on_update_chasing_target_position_time_timeout"]

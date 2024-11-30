@@ -16,4 +16,4 @@ func _on_try_again_pressed():
 
 # Quit the game
 func _on_quit_pressed():
-	get_tree().quit()  # Quit the application
+	get_tree().change_scene_to_file("res://Scenes/main_menu.tscn")  # Go to Main Menu
