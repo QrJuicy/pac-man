@@ -74,3 +74,6 @@ func power_Up():#Function for when powerUp is activated
 
 func _on_power_up_timer_timeout(): #PowerUp deactivator
 	powerUp = false
+
+func die():
+	print("DIE")
