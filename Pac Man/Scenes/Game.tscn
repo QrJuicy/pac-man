@@ -449,10 +449,8 @@ script = SubResource("GDScript_jnq6f")
 [node name="Sprite2D" type="Sprite2D" parent="Ghosts3/Amber"]
 
 [node name="Maze" type="Node2D" parent="."]
-visible = false
 
 [node name="GameOverScreen" type="Control" parent="."]
-visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_left = -708.0
