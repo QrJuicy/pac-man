@@ -6,6 +6,7 @@ signal direction_change(current_direction: String)
 
 var current_scatter_index = 0
 var direction = null
+var collide = false 
 
 @export var speed = 120
 @export var movement_targets: Resource
