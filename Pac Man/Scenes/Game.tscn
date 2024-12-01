@@ -1,14 +1,12 @@
-[gd_scene load_steps=22 format=3 uid="uid://bsm7xcjml3o27"]
+[gd_scene load_steps=19 format=3 uid="uid://bsm7xcjml3o27"]
 
 [ext_resource type="PackedScene" uid="uid://betqj7xrmhu4y" path="res://Scenes/pac_man.tscn" id="1_6e285"]
-[ext_resource type="Script" path="res://Script/GameOverScreen.gd" id="1_eaivu"]
 [ext_resource type="Texture2D" uid="uid://bmtlbc44n3vm3" path="res://Main Assets/Walls/wall_atlas.png" id="2_7h60b"]
 [ext_resource type="PackedScene" uid="uid://b4nrrwhtewxye" path="res://Scenes/ghost.tscn" id="3_cxu34"]
 [ext_resource type="Resource" uid="uid://c8rpqjkwkyg8d" path="res://Resources/red_movement_targets.tres" id="4_myhlx"]
 [ext_resource type="PackedScene" uid="uid://bmkld43ht6amp" path="res://Scenes/coin.tscn" id="5_ii10l"]
-[ext_resource type="FontFile" uid="uid://eegfvh3nrht" path="res://Main Assets/Fonts/upheavtt.ttf" id="5_nuru8"]
+[ext_resource type="PackedScene" uid="uid://bvnx6lqk3l7uw" path="res://Scenes/game_over_screen.tscn" id="5_q3bht"]
 [ext_resource type="Script" path="res://Script/pellets_interaction.gd" id="5_snsd0"]
-[ext_resource type="Texture2D" uid="uid://c0tgqr308pmgl" path="res://Main Assets/Ghost/Ghost_Vulnerable_Blue_02.png" id="6_ytnah"]
 [ext_resource type="PackedScene" uid="uid://b43ph8jib88s8" path="res://Scenes/ui.tscn" id="7_uid1h"]
 
 [sub_resource type="GDScript" id="GDScript_uknlp"]
@@ -223,8 +221,6 @@ pattern_4 = SubResource("TileMapPattern_m5te8")
 pattern_5 = SubResource("TileMapPattern_lmxka")
 pattern_6 = SubResource("TileMapPattern_qi2w4")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mimi4"]
-
 [node name="Level" type="Node2D"]
 script = SubResource("GDScript_uknlp")
 
@@ -269,69 +265,11 @@ position = Vector2(0, -84)
 scale = Vector2(2, 2)
 speed = null
 movement_targets = ExtResource("4_myhlx")
-tile_map = NodePath("../../Node/TileMap")
 color = Color(1, 0, 0, 1)
+tile_map = NodePath("../../Node/TileMap")
 chasing_target = NodePath("../../PacMan")
 
-[node name="GameOverScreen" type="Control" parent="."]
-visible = false
-layout_mode = 3
-anchors_preset = 0
-offset_left = -708.0
-offset_top = -391.0
-offset_right = 716.0
-offset_bottom = 406.0
-script = ExtResource("1_eaivu")
-
-[node name="Menu" type="Panel" parent="GameOverScreen"]
-modulate = Color(0.913725, 0.858824, 0.901961, 0.709804)
-visibility_layer = 128
-layout_mode = 0
-offset_left = 432.0
-offset_top = 252.0
-offset_right = 983.0
-offset_bottom = 559.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_mimi4")
-
-[node name="Game Over" type="Label" parent="GameOverScreen"]
-layout_mode = 0
-offset_left = 550.0
-offset_top = 333.0
-offset_right = 865.0
-offset_bottom = 483.0
-theme_override_colors/font_color = Color(0.584314, 0, 0, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = ExtResource("5_nuru8")
-theme_override_font_sizes/font_size = 60
-text = "Game Over"
-vertical_alignment = 1
-
-[node name="Try Again" type="Button" parent="GameOverScreen"]
-layout_mode = 0
-offset_left = 514.0
-offset_top = 465.0
-offset_right = 672.0
-offset_bottom = 518.0
-theme_override_fonts/font = ExtResource("5_nuru8")
-theme_override_font_sizes/font_size = 20
-text = "Try Again"
-
-[node name="Main Menu" type="Button" parent="GameOverScreen"]
-layout_mode = 0
-offset_left = 749.0
-offset_top = 465.0
-offset_right = 906.0
-offset_bottom = 519.0
-theme_override_fonts/font = ExtResource("5_nuru8")
-theme_override_font_sizes/font_size = 20
-text = "Main Menu"
-
-[node name="Ghost" type="Sprite2D" parent="GameOverScreen"]
-texture_filter = 1
-position = Vector2(708, 326)
-scale = Vector2(5.28125, 5.28125)
-texture = ExtResource("6_ytnah")
+[node name="GameOverScreen" parent="." instance=ExtResource("5_q3bht")]
 
 [node name="Pellets" type="Node" parent="."]
 script = ExtResource("5_snsd0")
@@ -1727,6 +1665,3 @@ position = Vector2(-12, 348)
 collision_layer = 5
 
 [node name="UI" parent="." instance=ExtResource("7_uid1h")]
-
-[connection signal="pressed" from="GameOverScreen/Try Again" to="GameOverScreen" method="_on_try_again_pressed"]
-[connection signal="pressed" from="GameOverScreen/Main Menu" to="GameOverScreen" method="_on_quit_pressed"]
