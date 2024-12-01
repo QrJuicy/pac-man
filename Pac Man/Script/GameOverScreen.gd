@@ -6,6 +6,7 @@ func _ready():
 
 # Show the Game Over screen
 func show_game_over():
+	
 	visible = true  # Make the screen visible
 	get_tree().paused = true  # Pause the game (optional)
 
