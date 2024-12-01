@@ -1,7 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://b43ph8jib88s8"]
+[gd_scene load_steps=4 format=3 uid="uid://b43ph8jib88s8"]
 
 [ext_resource type="Script" path="res://Script/ui.gd" id="1_5a808"]
-[ext_resource type="FontFile" uid="uid://eegfvh3nrht" path="res://Main Assets/Fonts/upheavtt.ttf" id="2_vgdy0"]
+[ext_resource type="Theme" uid="uid://dayjblgcjcity" path="res://Scenes/label_theme.tres" id="2_f6ugk"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4ae5u"]
 bg_color = Color(0, 0, 0, 1)
@@ -14,10 +14,6 @@ corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
-
-[sub_resource type="Theme" id="Theme_5h45o"]
-default_font = ExtResource("2_vgdy0")
-default_font_size = 40
 
 [node name="UI" type="CanvasLayer"]
 script = ExtResource("1_5a808")
@@ -55,6 +51,6 @@ offset_right = 20.0
 offset_bottom = 11.5
 grow_horizontal = 2
 grow_vertical = 2
-theme = SubResource("Theme_5h45o")
+theme = ExtResource("2_f6ugk")
 text = "Game won!"
 vertical_alignment = 1

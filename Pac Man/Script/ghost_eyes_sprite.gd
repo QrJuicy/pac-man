@@ -1,5 +1,7 @@
 extends Sprite2D
 
+class_name EyesSprite
+
 @export_group("Eye Textures")
 @export var up: Texture2D
 @export var down: Texture2D
@@ -19,4 +21,10 @@ func _ready():
 	
 func on_direction_change(direction: String):
 	texture = direction_lookup_table[direction]
+	
+func hide_eyes():
+	hide()
+	
+func show_eyes():
+	show()
 

@@ -5,59 +5,61 @@ var pacman_speed = 100
 var ghost_speed = 80
 var frightened_duration = 10
 var scatter_duration = 7  # Duration for scatter state
+var chase_duration = 20  # Duration for chase state
 var is_frightened = false
 var is_scatter = true  # Ghosts start in scatter mode
 var level = 1  # Start at level 1
 
 # Speed and timing settings for each level
 var level_speeds = {
-	1: 80,
-	2: 85,
-	3: 90,
-	4: 95,
-	5: 100,
-	6: 105,
-	7: 110,
-	8: 115,
-	9: 120,
+	1: 80, 
+	2: 85, 
+	3: 90, 
+	4: 95, 
+	5: 100, 
+	6: 105, 
+	7: 110, 
+	8: 115, 
+	9: 120, 
 	10: 125,
-	11: 130,
-	12: 135,
-	13: 140,
-	14: 145,
-	15: 150,
-	16: 155,
-	17: 160,
-	18: 165,
-	19: 170,
-	20: 175,  # Max speed at level 20
+	11: 130, 
+	12: 135, 
+	13: 140, 
+	14: 145, 
+	15: 150, 
+	16: 155, 
+	17: 160, 
+	18: 165, 
+	19: 170, 
+	20: 175
 }
 
 var level_times = {
-	1: 100.0,  # Time allowed per level (in seconds)
-	2: 98.0,
-	3: 96.0,
-	4: 94.0,
-	5: 92.0,
-	6: 90.0,
-	7: 88.0,
-	8: 86.0,
-	9: 84.0,
+	1: 100.0, 
+	2: 98.0, 
+	3: 96.0, 
+	4: 94.0, 
+	5: 92.0, 
+	6: 90.0, 
+	7: 88.0, 
+	8: 86.0, 
+	9: 84.0, 
 	10: 82.0,
-	11: 80.0,
-	12: 78.0,
-	13: 76.0,
-	14: 74.0,
-	15: 72.0,
-	16: 70.0,
-	17: 68.0,
-	18: 66.0,
-	19: 64.0,
-	20: 62.0,  # Min time at level 20
+	11: 80.0, 
+	12: 78.0, 
+	13: 76.0, 
+	14: 74.0, 
+	15: 72.0, 
+	16: 70.0, 
+	17: 68.0, 
+	18: 66.0, 
+	19: 64.0, 
+	20: 62.0
 }
 
 var scatter_timer = 0.0
 var frightened_timer = 0.0
+var chase_timer = 0.0
 
 # Initialize with the first level's settings
 func _ready():
@@ -69,6 +71,7 @@ func set_level(new_level):
 	ghost_speed = level_speeds.get(level, 80)  # Default to 80 if level isn't found
 	pacman_speed = 100 + (level - 1) * 2  # Increment Pac-Man speed as levels increase
 	var level_time = level_times.get(level, 60.0)  # Default to 60 seconds if level isn't found
+	print("Level set to ", level, " with Ghost Speed: ", ghost_speed, " and Pac-Man Speed: ", pacman_speed)
 
 # Function to call when level progresses
 func next_level():
@@ -82,27 +85,35 @@ func next_level():
 func set_frightened_state(frightened: bool):
 	is_frightened = frightened
 	if is_frightened:
-		# When frightened, reduce ghost speed (e.g., by half)
 		frightened_timer = frightened_duration
 		ghost_speed = ghost_speed / 2
 		is_scatter = false  # Disable scatter mode during frightened state
+		emit_signal("update_ghost_state", "FRIGHTENED")
 		print("Ghosts are frightened!")
 	else:
-		# Reset ghost speed after the frightened state ends
 		ghost_speed = level_speeds.get(level, 80)  # Reset to current level's speed
+		emit_signal("update_ghost_state", "CHASE")
 		print("Ghosts are no longer frightened.")
 
 # Function to handle scatter mode
 func start_scatter_mode():
 	is_scatter = true
 	scatter_timer = scatter_duration
+	emit_signal("update_ghost_state", "SCATTER")
 	print("Ghosts are scattering!")
 
 func end_scatter_mode():
 	is_scatter = false
+	start_chase_mode()
 	print("Scatter mode ended. Ghosts are now chasing!")
 
-# Update the timers for frightened and scatter states
+# Function to handle chase mode
+func start_chase_mode():
+	chase_timer = chase_duration
+	emit_signal("update_ghost_state", "CHASE")
+	print("Ghosts are chasing Pac-Man!")
+
+# Update the timers for frightened, scatter, and chase states
 func _process(delta):
 	# Handle frightened mode
 	if is_frightened:
@@ -115,3 +126,9 @@ func _process(delta):
 		scatter_timer -= delta
 		if scatter_timer <= 0:
 			end_scatter_mode()  # End scatter mode when timer expires
+
+	# Handle chase mode
+	if not is_frightened and not is_scatter:
+		chase_timer -= delta
+		if chase_timer <= 0:
+			start_scatter_mode()  # Restart scatter mode after chase duration
