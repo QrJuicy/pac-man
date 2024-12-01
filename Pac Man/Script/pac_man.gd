@@ -1,5 +1,7 @@
 extends CharacterBody2D
 
+class_name Player
+
 ##Adjust the movement speed of Pac-Man
 @export var speed : float
 ##Status on whether Pac-Man is in powered up state or no

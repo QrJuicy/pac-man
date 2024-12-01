@@ -5,7 +5,8 @@ class_name Ghost
 enum GhostState {
 	SCATTER, 
 	CHASE,
-	RUN_AWAY
+	RUN_AWAY,
+	EATEN
 }
 
 signal direction_change(current_direction: String)
@@ -22,6 +23,10 @@ var current_state: GhostState
 
 @onready var navigation_agent_2d = $NavigationAgent2D
 @onready var scatter_timer = $ScatterTimer
+@onready var update_chasing_target_position_timer = $UpdateChasingTargetPositionTimer
+@onready var eyes_sprite = $EyesSprite
+@onready var body_sprite = $BodySprite 
+@onready var run_away_timer = $RunAwayTimer
 
 func _ready():
 	navigation_agent_2d.path_desired_distance = 4.0
@@ -110,3 +115,20 @@ func run_away_from_pacman():
 	update_chasing_target_position_timer.stop()
 	scatter_timer.stop()
 	
+
+func get_eaten():
+	body_sprite.hide()
+	eyes_sprite.show()
+	run_away_time.stop()
+	current_state = GhostState.EATEN
+
+func _on_body_entered(body: CharacterBody2D):
+	var player = body as Player
+	if current_state == GhostState.RUN_AWAY:
+		get_eaten()
+	elif current_state == GhostState.CHASE || current_state == GhostState.SCATTER:
+		set_collision_mask_value(1, false)
+		update_chasing_target_position_timer.stop()
+		player.die()
+		scatter_timer.wait_time = 600
+		scatter()
