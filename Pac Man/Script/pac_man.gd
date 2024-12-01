@@ -22,6 +22,8 @@ class_name Player
 @export_multiline var Regarding_Sprite : String = "Please put the Pac-Man sprite as a children of the main parent, then assign it to the \"Sprite\" column.";
 @export_multiline var Regarding_Ghost : String = "Put all ghosts in the same Group under Node > Group > \"+\" > Global = true, Then copy > paste the GroupName into the \"Ghost\" column. Make sure the ghosts are in the same physics layer as Pac-Man"
 
+@onready var animation_player = $AnimationPlayer
+
 func _physics_process(delta):
 	movement()
 	if powerUp:
@@ -78,4 +80,5 @@ func _on_power_up_timer_timeout(): #PowerUp deactivator
 	powerUp = false
 
 func die():
-	print("DIE")
+	animation_player.play("death")
+	set_physics_process(false)
