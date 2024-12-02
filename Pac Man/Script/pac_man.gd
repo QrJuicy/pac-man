@@ -39,10 +39,12 @@ func _on_detector_body_entered(body):
 		powerUpTimer.start() 
 	
 	if body.is_in_group(ghostGroup):
+		var ghost = body as Ghost
 		if powerUp:#Destroy ghost if powerUp on
-			body.queue_free()
+			##body.queue_free() <--- previous code, can be deleted if the current one works
+			ghost.get_eaten()
 		if !powerUp:#Destroyed by ghost if powerUp off
-			queue_free()
+			##queue_free() <--- previous code, can be deleted if the current one works
 			die()
 
 func movement():
