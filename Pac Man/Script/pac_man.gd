@@ -24,6 +24,7 @@ class_name Player
 
 @onready var animation_player = $AnimationPlayer
 
+
 func _physics_process(delta):
 	movement()
 	if powerUp:
@@ -82,3 +83,4 @@ func _on_power_up_timer_timeout(): #PowerUp deactivator
 func die():
 	animation_player.play("death")
 	set_physics_process(false)
+
