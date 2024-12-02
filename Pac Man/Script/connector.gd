@@ -14,7 +14,7 @@ func _on_right_area_2d_body_entered(body):
 		body.position.x = left_area_2d.global_position.x
 		allow_left_transition = false
 
-func _on_right_area_2d_body_exited(body):
+func _on_right_area_2d_body_exited(_body):
 	allow_right_transition = true
 
 
@@ -23,5 +23,5 @@ func _on_left_area_2d_body_entered(body):
 		body.position.x = right_area_2d.global_position.x
 		allow_right_transition = false
 
-func _on_left_area_2d_body_exited(body):
+func _on_left_area_2d_body_exited(_body):
 	allow_left_transition = true

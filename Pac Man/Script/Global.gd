@@ -1,5 +1,7 @@
 extends Node
 
+signal update_ghost_state(new_state)
+
 # Game parameters
 var pacman_speed = 100
 var ghost_speed = 80
@@ -70,7 +72,7 @@ func set_level(new_level):
 	level = new_level
 	ghost_speed = level_speeds.get(level, 80)  # Default to 80 if level isn't found
 	pacman_speed = 100 + (level - 1) * 2  # Increment Pac-Man speed as levels increase
-	var level_time = level_times.get(level, 60.0)  # Default to 60 seconds if level isn't found
+	var _level_time = level_times.get(level, 60.0)  # Default to 60 seconds if level isn't found
 	print("Level set to ", level, " with Ghost Speed: ", ghost_speed, " and Pac-Man Speed: ", pacman_speed)
 
 # Function to call when level progresses
@@ -88,30 +90,25 @@ func set_frightened_state(frightened: bool):
 		frightened_timer = frightened_duration
 		ghost_speed = ghost_speed / 2
 		is_scatter = false  # Disable scatter mode during frightened state
-		emit_signal("update_ghost_state", "FRIGHTENED")
-		print("Ghosts are frightened!")
+		emit_signal("update_ghost_state", "RUN_AWAY")
 	else:
 		ghost_speed = level_speeds.get(level, 80)  # Reset to current level's speed
 		emit_signal("update_ghost_state", "CHASE")
-		print("Ghosts are no longer frightened.")
 
 # Function to handle scatter mode
 func start_scatter_mode():
 	is_scatter = true
 	scatter_timer = scatter_duration
 	emit_signal("update_ghost_state", "SCATTER")
-	print("Ghosts are scattering!")
 
 func end_scatter_mode():
 	is_scatter = false
 	start_chase_mode()
-	print("Scatter mode ended. Ghosts are now chasing!")
 
 # Function to handle chase mode
 func start_chase_mode():
 	chase_timer = chase_duration
 	emit_signal("update_ghost_state", "CHASE")
-	print("Ghosts are chasing Pac-Man!")
 
 # Update the timers for frightened, scatter, and chase states
 func _process(delta):

@@ -25,7 +25,7 @@ class_name Player
 @onready var animation_player = $AnimationPlayer
 
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	movement()
 	if powerUp:
 		power_Up()

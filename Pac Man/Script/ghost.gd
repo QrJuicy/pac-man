@@ -26,7 +26,7 @@ signal run_away_timeout
 var current_scatter_index = 0
 var current_at_home_index = 0
 var direction = null
-var current_state: GhostState
+var current_state: GhostState = GhostState.SCATTER
 var is_blinking = false
 
 # Exported variables for customization
@@ -39,7 +39,7 @@ var is_blinking = false
 @export var chasing_target: Node2D          # Target node (usually Pac-Man)
 @export var points_manager: PointsManager   # Reference to points system
 @export var is_starting_at_home = false     # Whether the ghost starts in "home"
-@export var exit_delay: float = 0.0         # Delay before exiting home
+@export var scatter_wait_time = 1.0         # Delay before exiting home
 
 # Node references using @onready
 @onready var at_home_timer = $AtHomeTimer
@@ -54,6 +54,7 @@ var is_blinking = false
 
 func _ready():
 	# Setup navigation and initial state
+	scatter_timer.wait_time = scatter_wait_time
 	navigation_agent_2d.path_desired_distance = 4.0
 	navigation_agent_2d.target_desired_distance = 4.0
 	navigation_agent_2d.target_reached.connect(on_position_reached)
@@ -107,7 +108,7 @@ func setup():
 func start_at_home():
 	# Handle the starting "home" state
 	current_state = GhostState.STARTING_AT_HOME
-	at_home_timer.start(exit_delay)
+	at_home_timer.start(scatter_wait_time)
 	at_home_timer.timeout.connect(scatter)
 	navigation_agent_2d.target_position = movement_targets.at_home_targets[current_at_home_index].position
 

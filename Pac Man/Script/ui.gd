@@ -2,14 +2,15 @@ extends CanvasLayer
 
 class_name UI
 
+signal update_ghost_state(new_state)
+
 func _on_restart_button_pressed():
 	# Reload the current level
 	get_tree().reload_current_scene()
 
 func _on_next_level_button_pressed():
 	# Replace with logic to load the next level
-	var next_scene = "res://Scenes/NextLevel.tscn"  # Update path
-	get_tree().change_scene(next_scene)
+	emit_signal("next_level_requested")
 
 func _on_main_menu_button_pressed():
 	# Load the main menu
