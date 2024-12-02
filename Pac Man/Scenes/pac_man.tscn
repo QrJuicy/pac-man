@@ -1,9 +1,20 @@
-[gd_scene load_steps=10 format=3 uid="uid://betqj7xrmhu4y"]
+[gd_scene load_steps=21 format=3 uid="uid://betqj7xrmhu4y"]
 
 [ext_resource type="Script" path="res://Script/pac_man.gd" id="1_cixyg"]
+[ext_resource type="Texture2D" uid="uid://gadi87gcis7e" path="res://Main Assets/Pacman/Pacman_Death_01.png" id="2_bxbxq"]
 [ext_resource type="Texture2D" uid="uid://cnorlrp248wc1" path="res://Main Assets/Pacman/Pacman_02.png" id="2_xi26u"]
+[ext_resource type="Texture2D" uid="uid://x4uddrqhmwkj" path="res://Main Assets/Pacman/Pacman_Death_02.png" id="3_mcxf4"]
 [ext_resource type="Texture2D" uid="uid://b377jl6x6yvfq" path="res://Main Assets/Pacman/Pacman_01.png" id="3_v08hh"]
+[ext_resource type="Texture2D" uid="uid://hdqy178e64ff" path="res://Main Assets/Pacman/Pacman_Death_03.png" id="4_5ifaw"]
 [ext_resource type="Texture2D" uid="uid://pn1irp072fvp" path="res://Main Assets/Pacman/Pacman_03.png" id="4_8dq2e"]
+[ext_resource type="Texture2D" uid="uid://c54j1y8l0c1f3" path="res://Main Assets/Pacman/Pacman_Death_04.png" id="5_gwwy1"]
+[ext_resource type="Texture2D" uid="uid://d048x0sih52na" path="res://Main Assets/Pacman/Pacman_Death_05.png" id="6_nqkwd"]
+[ext_resource type="Texture2D" uid="uid://b4otphcmnjar2" path="res://Main Assets/Pacman/Pacman_Death_06.png" id="7_ch6tk"]
+[ext_resource type="Texture2D" uid="uid://cftmpcrrnou3r" path="res://Main Assets/Pacman/Pacman_Death_07.png" id="8_qf6ay"]
+[ext_resource type="Texture2D" uid="uid://dpp13b2pob5le" path="res://Main Assets/Pacman/Pacman_Death_08.png" id="9_b7xpr"]
+[ext_resource type="Texture2D" uid="uid://bdrhw6isafowa" path="res://Main Assets/Pacman/Pacman_Death_09.png" id="10_ecvct"]
+[ext_resource type="Texture2D" uid="uid://bg2dtu7x7g6vm" path="res://Main Assets/Pacman/Pacman_Death_10.png" id="11_y0wl8"]
+[ext_resource type="Texture2D" uid="uid://cox7nwfn8ah7j" path="res://Main Assets/Pacman/Pacman_Death_11.png" id="12_hi558"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_56hlh"]
 radius = 7.0
@@ -17,14 +28,14 @@ length = 2.5
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:sprite_frames")
+tracks/0/path = NodePath("Sprite2D:texture")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8, 1, 1.2, 1.4, 1.6, 1.8, 2),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
 "update": 1,
-"values": [null, null, null, null, null, null, null, null, null, null, null]
+"values": [ExtResource("2_bxbxq"), ExtResource("3_mcxf4"), ExtResource("4_5ifaw"), ExtResource("5_gwwy1"), ExtResource("6_nqkwd"), ExtResource("7_ch6tk"), ExtResource("8_qf6ay"), ExtResource("9_b7xpr"), ExtResource("10_ecvct"), ExtResource("11_y0wl8"), ExtResource("12_hi558")]
 }
 
 [sub_resource type="Animation" id="Animation_rpi71"]
@@ -70,7 +81,7 @@ debug_color = Color(0.988235, 0, 0.196078, 0.419608)
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture_filter = 1
 scale = Vector2(-1, -1)
-texture = ExtResource("3_v08hh")
+texture = ExtResource("2_bxbxq")
 
 [node name="PowerUpTimer" type="Timer" parent="."]
 wait_time = 5.0

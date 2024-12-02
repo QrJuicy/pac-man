@@ -19,6 +19,21 @@
 radius = 8.0
 height = 16.0
 
+[sub_resource type="Animation" id="Animation_ml5sa"]
+resource_name = "blinking"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("BodySprite:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25, 0.5, 0.75),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [ExtResource("12_qv50q"), ExtResource("13_nw6ce"), ExtResource("10_l4wvm"), ExtResource("11_uy73q")]
+}
+
 [sub_resource type="Animation" id="Animation_6xqig"]
 resource_name = "moving"
 length = 0.5
@@ -52,21 +67,6 @@ tracks/0/keys = {
 "values": [ExtResource("10_l4wvm"), ExtResource("11_uy73q")]
 }
 
-[sub_resource type="Animation" id="Animation_ml5sa"]
-resource_name = "blinking"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("BodySprite:texture")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.25, 0.5, 0.75),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 1,
-"values": [ExtResource("12_qv50q"), ExtResource("13_nw6ce"), ExtResource("10_l4wvm"), ExtResource("11_uy73q")]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_2y78h"]
 _data = {
 "blinking": SubResource("Animation_ml5sa"),
@@ -80,7 +80,7 @@ script = ExtResource("1_ie3no")
 
 [node name="BodySprite" type="Sprite2D" parent="."]
 texture_filter = 1
-texture = ExtResource("10_l4wvm")
+texture = ExtResource("12_qv50q")
 script = ExtResource("3_77dim")
 
 [node name="EyesSprite" type="Sprite2D" parent="."]

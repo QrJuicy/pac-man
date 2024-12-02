@@ -43,6 +43,7 @@ func _on_detector_body_entered(body):
 			body.queue_free()
 		if !powerUp:#Destroyed by ghost if powerUp off
 			queue_free()
+			die()
 
 func movement():
 	#Get input
