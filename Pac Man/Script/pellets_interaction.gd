@@ -16,7 +16,7 @@ var pellets_eaten = 0
 var eaten_ghost_counter = 0
 
 func _ready():
-	var pellets = self.get_children() as Array[Pellet]
+	var pellets = self.get_children() as Array[PelletsManager]
 	total_pellets_count = pellets.size()
 	for pellet in pellets:
 		pellet.pellet_eaten.connect(on_pellet_eaten)
