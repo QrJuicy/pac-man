@@ -11,12 +11,13 @@ config_version=5
 [application]
 
 config/name="Pac Man"
-run/main_scene="res://Scenes/main_menu.tscn"
+run/main_scene="res://Scenes/intro.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
+config/icon="res://Main Assets/Icon.png"
 
 [autoload]
 
-Global="*res://Script/Global.gd"
+Global="res://Script/Global.gd"
 
 [display]
 
@@ -55,6 +56,7 @@ down={
 2d_physics/layer_2="Wall"
 2d_physics/layer_3="SmallPellet"
 2d_physics/layer_4="BigPellet"
+2d_physics/layer_5="Ghost"
 
 [rendering]
 
