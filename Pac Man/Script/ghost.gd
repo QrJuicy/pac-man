@@ -11,6 +11,7 @@ enum GhostType {
 }
 
 enum GhostState {
+	NORMAL,
 	SCATTER, 
 	CHASE,
 	RUN_AWAY,
@@ -51,6 +52,7 @@ var is_blinking = false
 @onready var run_away_timer = $RunAwayTimer
 @onready var points_label = $PointsLabel
 @onready var animation_player = $AnimationPlayer
+@onready var pacman = $"../PacMan"  # Path to PacMan node
 
 func _ready():
 	# Setup navigation and initial state
@@ -230,13 +232,13 @@ func get_eaten():
 	navigation_agent_2d.target_position = movement_targets.at_home_targets[0].position
 
 func _on_body_entered(body: CharacterBody2D):
-	# Handle collision with Pac-Man
-	var player = body as Player
-	if current_state == GhostState.RUN_AWAY:
-		get_eaten()
-	elif current_state == GhostState.CHASE or current_state == GhostState.SCATTER:
-		set_collision_mask_value(1, false)
-		update_chasing_target_position_timer.stop()
-		player.die()
-		scatter_timer.wait_time = 600
-		scatter()
+	if body.name == "PacMan":
+		if current_state == GhostState.RUN_AWAY:
+			get_eaten()
+		elif current_state == GhostState.CHASE or current_state == GhostState.SCATTER:
+			set_collision_mask_value(1, false)
+			update_chasing_target_position_timer.stop()
+			pacman.die()  # Now 'player' is correctly casted to Player and die() can be called
+			scatter_timer.wait_time = 600
+			scatter()
+

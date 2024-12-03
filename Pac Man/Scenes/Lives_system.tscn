@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=3 uid="uid://cm3cpegjrhvn3"]
+
+[ext_resource type="Script" path="res://Scenes/Lives_system.gd" id="1_j6i2n"]
+[ext_resource type="Texture2D" uid="uid://cnorlrp248wc1" path="res://Main Assets/Pacman/Pacman_02.png" id="2_vhs0d"]
+
+[node name="LivesSystem" type="Node2D"]
+position = Vector2(450, 300)
+script = ExtResource("1_j6i2n")
+
+[node name="Horizontal lives" type="HBoxContainer" parent="."]
+offset_left = -27.0
+offset_top = -19.0
+offset_right = 28.0
+offset_bottom = 21.0
+
+[node name="LIFE1" type="TextureRect" parent="Horizontal lives"]
+layout_mode = 2
+texture = ExtResource("2_vhs0d")
+
+[node name="LIFE 2" type="TextureRect" parent="Horizontal lives"]
+layout_mode = 2
+texture = ExtResource("2_vhs0d")
+
+[node name="LIFE 3" type="TextureRect" parent="Horizontal lives"]
+layout_mode = 2
+texture = ExtResource("2_vhs0d")

@@ -20,6 +20,11 @@ extends CharacterBody2D
 @export_multiline var Regarding_Sprite : String = "Please put the Pac-Man sprite as a children of the main parent, then assign it to the \"Sprite\" column.";
 @export_multiline var Regarding_Ghost : String = "Put all ghosts in the same Group under Node > Group > \"+\" > Global = true, Then copy > paste the GroupName into the \"Ghost\" column. Make sure the ghosts are in the same physics layer as Pac-Man"
 
+# Lives variables
+var max_lives = 3
+var current_lives = max_lives
+@onready var lives_ui = $"../LivesUI"  # Reference to Lives UI script node
+
 # Physics process for Pac-Man movement and power-up state
 func _physics_process(delta):
 	movement()
@@ -74,7 +79,6 @@ func movement():
 func power_Up():
 	sprite.modulate = Color(0, 0, 1)  # Example: Change sprite color to blue (frightened state)
 
-
 # Power-Up timer timeout: Deactivate after the timer expires
 func _on_power_up_timer_timeout():
 	powerUp = false  # Reset power-up status
@@ -82,5 +86,18 @@ func _on_power_up_timer_timeout():
 
 # Pac-Man DIES
 func die():
-	print("DIED")
-	queue_free()  # Remove Pac-Man from the scene
+	current_lives -= 1  # Decrement lives
+	lives_ui.update_lives()  # Update the lives UI
+	
+	if current_lives > 0:
+		# Respawn Pac-Man if there are remaining lives
+		reset_position()
+	else:
+		# Game Over logic if no lives are left
+		print("Game Over!")
+		get_tree().change_scene("res://Scenes/GameOver.tscn")  # Example Game Over scene path
+
+# Reset Pac-Man's position (respawn logic)
+func reset_position():
+	position = Vector2(0, 200)  #reset position
+	powerUp = false  # Reset power-up state
