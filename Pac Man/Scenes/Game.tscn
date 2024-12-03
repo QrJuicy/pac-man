@@ -737,9 +737,8 @@ is_starting_at_home = true
 [node name="GameOverScreen" parent="." instance=ExtResource("5_q3bht")]
 visible = false
 
-[node name="Pellets" type="Node" parent="." node_paths=PackedStringArray("ghost_array")]
+[node name="Pellets" type="Node" parent="."]
 script = ExtResource("5_snsd0")
-ghost_array = [NodePath("../Ghosts/Scarlet"), NodePath("../Ghosts/Blush"), NodePath("../Ghosts/Azure"), null]
 
 [node name="Pellet_1" parent="Pellets" instance=ExtResource("5_ii10l")]
 visible = false
