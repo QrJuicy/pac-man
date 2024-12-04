@@ -65,9 +65,13 @@ _data = {
 collision_mask = 30
 script = ExtResource("1_cixyg")
 speed = 100.0
+powerUp = null
 powerUpTimer = NodePath("PowerUpTimer")
 detector = NodePath("Detector")
+ghostGroup = null
 powerUpGroup = "PowerUp"
+Regarding_Sprite = null
+Regarding_Ghost = null
 
 [node name="PacMan Collider" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_56hlh")
@@ -91,3 +95,5 @@ one_shot = true
 libraries = {
 "": SubResource("AnimationLibrary_8d0lb")
 }
+
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]

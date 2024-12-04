@@ -570,6 +570,10 @@ zoom = Vector2(0.812, 0.812)
 [node name="PacMan" parent="." instance=ExtResource("1_6e285")]
 position = Vector2(0, 60)
 scale = Vector2(3, 3)
+powerUp = false
+ghostGroup = ""
+Regarding_Sprite = "Please put the Pac-Man sprite as a children of the main parent, then assign it to the \"Sprite\" column."
+Regarding_Ghost = "Put all ghosts in the same Group under Node > Group > \"+\" > Global = true, Then copy > paste the GroupName into the \"Ghost\" column. Make sure the ghosts are in the same physics layer as Pac-Man"
 
 [node name="MovementTargets" type="Node" parent="."]
 
@@ -597,6 +601,8 @@ position = Vector2(-53, 26)
 [node name="Top" type="Marker2D" parent="MovementTargets/Scarlet/Home"]
 position = Vector2(-53, -27)
 
+[node name="StartingPosition" type="Marker2D" parent="MovementTargets/Scarlet"]
+
 [node name="Blush" type="Node" parent="MovementTargets"]
 
 [node name="Scatter" type="Node" parent="MovementTargets/Blush"]
@@ -620,6 +626,9 @@ position = Vector2(-19, 27)
 
 [node name="Top" type="Marker2D" parent="MovementTargets/Blush/Home"]
 position = Vector2(-19, -27)
+
+[node name="StartingPosition" type="Marker2D" parent="MovementTargets/Blush"]
+position = Vector2(50, 0)
 
 [node name="Azure" type="Node" parent="MovementTargets"]
 
@@ -657,6 +666,8 @@ position = Vector2(20, 27)
 [node name="Top" type="Marker2D" parent="MovementTargets/Azure/Home"]
 position = Vector2(19, -27)
 
+[node name="StartingPosition" type="Marker2D" parent="MovementTargets/Azure"]
+
 [node name="Amber" type="Node" parent="MovementTargets"]
 
 [node name="Scatter" type="Node" parent="MovementTargets/Amber"]
@@ -693,6 +704,13 @@ position = Vector2(54, 27)
 [node name="Top" type="Marker2D" parent="MovementTargets/Amber/Home"]
 position = Vector2(54, -27)
 
+[node name="StartingPosition" type="Marker2D" parent="MovementTargets/Amber"]
+
+[node name="Player" type="Node" parent="MovementTargets"]
+
+[node name="StartingPosition" type="Marker2D" parent="MovementTargets/Player"]
+position = Vector2(0, 72)
+
 [node name="Ghosts" type="Node2D" parent="."]
 visible = false
 position = Vector2(0, 15)
@@ -700,47 +718,65 @@ position = Vector2(0, 15)
 [node name="Scarlet" parent="Ghosts" node_paths=PackedStringArray("tile_map", "chasing_target", "points_manager") instance=ExtResource("3_cxu34")]
 position = Vector2(0, -84)
 scale = Vector2(2, 2)
+ghost_type = null
+eaten_speed = null
+speed = null
 movement_targets = ExtResource("4_myhlx")
 tile_map = NodePath("../../TileMap")
 color = Color(1, 0.32549, 0.258824, 1)
 chasing_target = NodePath("../../PacMan")
 points_manager = NodePath("../../PointsManager")
+is_starting_at_home = null
+scatter_wait_time = null
 
 [node name="Blush" parent="Ghosts" node_paths=PackedStringArray("tile_map", "chasing_target", "points_manager") instance=ExtResource("3_cxu34")]
 position = Vector2(-19, -28)
 scale = Vector2(2, 2)
+ghost_type = null
+eaten_speed = null
+speed = null
 movement_targets = ExtResource("6_nxh5w")
 tile_map = NodePath("../../TileMap")
 color = Color(0.770326, 0.475854, 0.812099, 1)
 chasing_target = NodePath("../../PacMan")
 points_manager = NodePath("../../PointsManager")
 is_starting_at_home = true
+scatter_wait_time = null
 
 [node name="Azure" parent="Ghosts" node_paths=PackedStringArray("tile_map", "chasing_target", "points_manager") instance=ExtResource("3_cxu34")]
 position = Vector2(19, -28)
 scale = Vector2(2, 2)
+ghost_type = null
+eaten_speed = null
+speed = null
 movement_targets = ExtResource("7_wuoa1")
 tile_map = NodePath("../../TileMap")
 color = Color(0.153645, 0.559141, 0.628796, 1)
 chasing_target = NodePath("../../PacMan")
 points_manager = NodePath("../../PointsManager")
 is_starting_at_home = true
+scatter_wait_time = null
 
 [node name="Amber" parent="Ghosts" node_paths=PackedStringArray("tile_map", "chasing_target", "points_manager") instance=ExtResource("3_cxu34")]
 position = Vector2(54, -28)
 scale = Vector2(2, 2)
+ghost_type = null
+eaten_speed = null
+speed = null
 movement_targets = ExtResource("8_qi48x")
 tile_map = NodePath("../../TileMap")
 color = Color(0.700012, 0.587908, 0.188264, 1)
 chasing_target = NodePath("../../PacMan")
 points_manager = NodePath("../../PointsManager")
 is_starting_at_home = true
+scatter_wait_time = null
 
 [node name="GameOverScreen" parent="." instance=ExtResource("5_q3bht")]
 visible = false
 
-[node name="Pellets" type="Node" parent="."]
+[node name="Pellets" type="Node" parent="." node_paths=PackedStringArray("ghost_array")]
 script = ExtResource("5_snsd0")
+ghost_array = [NodePath("../Ghosts/Scarlet"), NodePath("../Ghosts/Blush"), NodePath("../Ghosts/Azure"), NodePath("../Ghosts/Amber")]
 
 [node name="Pellet_1" parent="Pellets" instance=ExtResource("5_ii10l")]
 visible = false

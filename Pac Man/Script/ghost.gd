@@ -39,6 +39,7 @@ var is_blinking = false
 @export var chasing_target: Node2D          # Target node (usually Pac-Man)
 @export var points_manager: PointsManager   # Reference to points system
 @export var is_starting_at_home = false     # Whether the ghost starts in "home"
+@export var starting_position: Node2D
 @export var scatter_wait_time = 1.0         # Delay before exiting home
 
 # Node references using @onready
@@ -222,6 +223,7 @@ func get_eaten():
 	body_sprite.hide()
 	eyes_sprite.show_eyes()
 	points_label.show()
+	points_label.text = "%d" % points_manager.points_for_ghost_eaten
 	await points_manager.pause_on_ghost_eaten()
 	points_label.hide()
 	run_away_timer.stop()
@@ -231,7 +233,7 @@ func get_eaten():
 
 func _on_body_entered(body: CharacterBody2D):
 	# Handle collision with Pac-Man
-	var player = body as Player
+	var player = body as PacMan
 	if current_state == GhostState.RUN_AWAY:
 		get_eaten()
 	elif current_state == GhostState.CHASE or current_state == GhostState.SCATTER:

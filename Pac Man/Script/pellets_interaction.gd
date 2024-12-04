@@ -8,7 +8,6 @@ var pellets_eaten = 0
 @onready var points_manager = $"../PointsManager"
 @onready var chomp_sound_player = $"../SoundPlayers/ChompSoundPlayer"
 @onready var power_pellet_sound_player = $"../SoundPlayers/PowerPelletSoundPlayer"
-
 @onready var ui = $"../UI" as UI
 
 @export var ghost_array: Array[Ghost]
@@ -31,6 +30,7 @@ func on_pellet_eaten(should_allow_eating_ghosts: bool):
 	pellets_eaten += 1
 	
 	if should_allow_eating_ghosts:
+		get_tree().create_timer(8).timeout.connect(reset_points_for_ghosts)
 		power_pellet_sound_player.play()
 		for ghost in ghost_array:
 			if ghost.current_state != ghost.GhostState.STARTING_AT_HOME:
@@ -39,6 +39,9 @@ func on_pellet_eaten(should_allow_eating_ghosts: bool):
 	if pellets_eaten == total_pellets_count:
 		ui.game_won()
 		
+func reset_points_for_ghosts():
+	points_manager.reset_points_for_ghosts()
+
 func on_ghost_run_away_timeout():
 	eaten_ghost_counter += 1
 	if eaten_ghost_counter == ghost_array.size():

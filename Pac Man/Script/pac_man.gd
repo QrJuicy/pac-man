@@ -2,6 +2,8 @@ extends CharacterBody2D
 
 class_name Player
 
+signal player_died
+
 ##Adjust the movement speed of Pac-Man
 @export var speed : float
 ##Status on whether Pac-Man is in powered up state or no
@@ -22,11 +24,19 @@ class_name Player
 @export_multiline var Regarding_Sprite : String = "Please put the Pac-Man sprite as a children of the main parent, then assign it to the \"Sprite\" column.";
 @export_multiline var Regarding_Ghost : String = "Put all ghosts in the same Group under Node > Group > \"+\" > Global = true, Then copy > paste the GroupName into the \"Ghost\" column. Make sure the ghosts are in the same physics layer as Pac-Man"
 
+@export var start_position: Node2D
+
 var max_lives = 3
 var current_lives = max_lives
 @onready var lives_ui = $"../LivesUI"
 @onready var animation_player = $AnimationPlayer
 
+func _ready():
+	reset_player()
+
+func reset_player():
+	animation_player.play("default")
+	position = start_position.position
 
 func _physics_process(_delta):
 	movement()
@@ -100,3 +110,9 @@ func die():
 func reset_position():
 	position = Vector2(0, 200)  #reset position
 	powerUp = false  
+
+
+func _on_animation_player_animation_finished(anim_name):
+	if anim_name == "death":
+		player_died.emit()
+		reset_player()
