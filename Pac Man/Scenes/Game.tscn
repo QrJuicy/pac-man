@@ -1,4 +1,4 @@
-[gd_scene load_steps=50 format=3 uid="uid://bsm7xcjml3o27"]
+[gd_scene load_steps=49 format=3 uid="uid://bsm7xcjml3o27"]
 
 [ext_resource type="PackedScene" uid="uid://betqj7xrmhu4y" path="res://Scenes/pac_man.tscn" id="1_6e285"]
 [ext_resource type="Texture2D" uid="uid://bmtlbc44n3vm3" path="res://Main Assets/Walls/wall_atlas.png" id="2_7h60b"]
@@ -21,141 +21,6 @@
 [ext_resource type="AudioStream" uid="uid://dmpo4vasr1u13" path="res://Main Assets/Sounds/pacman_death.wav" id="18_my8c6"]
 [ext_resource type="PackedScene" uid="uid://pqi18hxa5jbo" path="res://Scenes/LivesUI.tscn" id="19_as5hw"]
 [ext_resource type="PackedScene" uid="uid://dxttnvaumjdlk" path="res://Scenes/Score.tscn" id="20_va7ne"]
-
-[sub_resource type="GDScript" id="GDScript_uknlp"]
-resource_name = "Global.gd"
-script/source = "extends Node
-
-signal update_ghost_state(new_state)
-
-# Game parameters
-var pacman_speed = 100
-var ghost_speed = 80
-var frightened_duration = 10
-var scatter_duration = 7  # Duration for scatter state
-var chase_duration = 20  # Duration for chase state
-var is_frightened = false
-var is_scatter = true  # Ghosts start in scatter mode
-var level = 1  # Start at level 1
-
-# Speed and timing settings for each level
-var level_speeds = {
-	1: 80, 
-	2: 85, 
-	3: 90, 
-	4: 95, 
-	5: 100, 
-	6: 105, 
-	7: 110, 
-	8: 115, 
-	9: 120, 
-	10: 125,
-	11: 130, 
-	12: 135, 
-	13: 140, 
-	14: 145, 
-	15: 150, 
-	16: 155, 
-	17: 160, 
-	18: 165, 
-	19: 170, 
-	20: 175
-}
-
-var level_times = {
-	1: 100.0, 
-	2: 98.0, 
-	3: 96.0, 
-	4: 94.0, 
-	5: 92.0, 
-	6: 90.0, 
-	7: 88.0, 
-	8: 86.0, 
-	9: 84.0, 
-	10: 82.0,
-	11: 80.0, 
-	12: 78.0, 
-	13: 76.0, 
-	14: 74.0, 
-	15: 72.0, 
-	16: 70.0, 
-	17: 68.0, 
-	18: 66.0, 
-	19: 64.0, 
-	20: 62.0
-}
-
-var scatter_timer = 0.0
-var frightened_timer = 0.0
-var chase_timer = 0.0
-
-# Initialize with the first level's settings
-func _ready():
-	set_level(level)
-	start_scatter_mode()  # Begin with scatter mode
-
-func set_level(new_level):
-	level = new_level
-	ghost_speed = level_speeds.get(level, 80)  # Default to 80 if level isn't found
-	pacman_speed = 100 + (level - 1) * 2  # Increment Pac-Man speed as levels increase
-	var _level_time = level_times.get(level, 60.0)  # Default to 60 seconds if level isn't found
-	print(\"Level set to \", level, \" with Ghost Speed: \", ghost_speed, \" and Pac-Man Speed: \", pacman_speed)
-
-# Function to call when level progresses
-func next_level():
-	level += 1
-	if level <= 20:
-		set_level(level)  # Set new level parameters
-	else:
-		print(\"Game Over! You've completed all 20 levels.\")
-
-# Handle the frightened state
-func set_frightened_state(frightened: bool):
-	is_frightened = frightened
-	if is_frightened:
-		frightened_timer = frightened_duration
-		ghost_speed = ghost_speed / 2
-		is_scatter = false  # Disable scatter mode during frightened state
-		emit_signal(\"update_ghost_state\", \"RUN_AWAY\")
-	else:
-		ghost_speed = level_speeds.get(level, 80)  # Reset to current level's speed
-		emit_signal(\"update_ghost_state\", \"CHASE\")
-
-# Function to handle scatter mode
-func start_scatter_mode():
-	is_scatter = true
-	scatter_timer = scatter_duration
-	emit_signal(\"update_ghost_state\", \"SCATTER\")
-
-func end_scatter_mode():
-	is_scatter = false
-	start_chase_mode()
-
-# Function to handle chase mode
-func start_chase_mode():
-	chase_timer = chase_duration
-	emit_signal(\"update_ghost_state\", \"CHASE\")
-
-# Update the timers for frightened, scatter, and chase states
-func _process(delta):
-	# Handle frightened mode
-	if is_frightened:
-		frightened_timer -= delta
-		if frightened_timer <= 0:
-			set_frightened_state(false)  # Disable frightened state when timer ends
-
-	# Handle scatter mode
-	if not is_frightened and is_scatter:
-		scatter_timer -= delta
-		if scatter_timer <= 0:
-			end_scatter_mode()  # End scatter mode when timer expires
-
-	# Handle chase mode
-	if not is_frightened and not is_scatter:
-		chase_timer -= delta
-		if chase_timer <= 0:
-			start_scatter_mode()  # Restart scatter mode after chase duration
-"
 
 [sub_resource type="TileMapPattern" id="TileMapPattern_e6met"]
 tile_data = PackedInt32Array(0, 458752, 0, 65536, 327680, 0, 131072, 65536, 1, 1, 131072, 0, 131073, 196608, 0, 2, 131072, 0, 131074, 196608, 0, 3, 131072, 0, 131075, 196608, 0, 4, 393216, 0, 65540, 262144, 0, 131076, 0, 1)
@@ -552,7 +417,6 @@ pattern_6 = SubResource("TileMapPattern_qi2w4")
 
 [node name="Level" type="Node2D"]
 position = Vector2(0, 13)
-script = SubResource("GDScript_uknlp")
 
 [node name="TileMap" type="TileMap" parent="."]
 position = Vector2(0, -1)
@@ -571,12 +435,6 @@ zoom = Vector2(0.812, 0.812)
 [node name="PacMan" parent="." instance=ExtResource("1_6e285")]
 position = Vector2(0, 60)
 scale = Vector2(3, 3)
-speed = 0.0
-powerUp = false
-ghostGroup = ""
-powerUpGroup = ""
-Regarding_Sprite = "Please put the Pac-Man sprite as a children of the main parent, then assign it to the \"Sprite\" column."
-Regarding_Ghost = "Put all ghosts in the same Group under Node > Group > \"+\" > Global = true, Then copy > paste the GroupName into the \"Ghost\" column. Make sure the ghosts are in the same physics layer as Pac-Man"
 
 [node name="MovementTargets" type="Node" parent="."]
 

@@ -70,13 +70,13 @@ func _process(delta):
 
 	# Continue pathfinding for CHASE state
 	if navigation_agent_2d.is_navigation_finished() and current_state == GhostState.CHASE:
-		calculate_path_to_target(chasing_target.global_position)
+		calculate_path_to_target(chasing_target.position)
 	
 	move_ghost(navigation_agent_2d.get_next_path_position(), delta)
 
 func move_ghost(next_position: Vector2, delta: float):
 	# Move ghost towards the next position
-	var current_ghost_position = global_position
+	var current_ghost_position = position
 	var current_speed = eaten_speed if current_state == GhostState.EATEN else speed
 	var new_velocity = (next_position - current_ghost_position).normalized() * current_speed * delta
 	calculate_direction(new_velocity)
@@ -120,24 +120,6 @@ func scatter():
 	current_state = GhostState.SCATTER
 	navigation_agent_2d.target_position = movement_targets.scatter_targets[current_scatter_index].position
 
-func calculate_path_to_target(target_position: Vector2):
-	# Pathfinding logic based on ghost type
-	match ghost_type:
-		"scarlet":  # Greedy pathfinding (A*)
-			navigation_agent_2d.target_position = target_position
-		"blush":  # Prediction-based pathfinding
-			var pacman_velocity = chasing_target.velocity 
-			var prediction_offset = pacman_velocity.normalized() * 4 * tile_map.cell_size.x
-			navigation_agent_2d.target_position = chasing_target.global_position + prediction_offset
-		"azure":  # Combined targeting
-			var scarlet_position = movement_targets.get_scarlet_position()
-			var midpoint = (scarlet_position + chasing_target.global_position) / 2
-			navigation_agent_2d.target_position = midpoint
-		"amber":  # Proximity-based switching
-			if global_position.distance_to(chasing_target.global_position) < 5 * tile_map.cell_size.x:
-				navigation_agent_2d.target_position = chasing_target.global_position
-			else:
-				navigation_agent_2d.target_position = tile_map.get_random_empty_cell_position()
 
 func on_position_reached():
 	# Handle actions upon reaching a target position
@@ -145,7 +127,7 @@ func on_position_reached():
 		GhostState.SCATTER:
 			scatter_position_reached()
 		GhostState.CHASE:
-			calculate_path_to_target(chasing_target.global_position)
+			calculate_path_to_target(chasing_target.position)
 		GhostState.RUN_AWAY:
 			run_away_from_pacman()
 		GhostState.EATEN:
@@ -153,23 +135,26 @@ func on_position_reached():
 		GhostState.STARTING_AT_HOME:
 			move_to_next_home_position()
 
-func scatter_position_reached():
-	# Move to the next scatter target
-	if current_scatter_index < 3:
-		current_scatter_index += 1
-	else:
-		current_scatter_index = 0
-		
-	navigation_agent_2d.target_position = movement_targets.scatter_targets[current_scatter_index].position
-
-func chase_position_reached():
-	# Placeholder for chase logic
-	print("KILL PACMAN")
-
 func move_to_next_home_position():
 	# Alternate between home positions
 	current_at_home_index = 1 - current_at_home_index
 	navigation_agent_2d.target_position = movement_targets.at_home_targets[current_at_home_index].position
+
+func chase_position_reached():
+	# Placeholder for chase logic
+	print("KILL PACMAN")
+	
+func scatter_position_reached():
+	print(current_scatter_index)
+	if current_scatter_index < 3:
+		current_scatter_index += 1
+	else:
+		current_scatter_index = 0
+	print(current_scatter_index)
+		
+	navigation_agent_2d.target_position = movement_targets.scatter_targets[current_scatter_index].position
+
+
 
 func _on_scatter_timer_timeout():
 	# Transition from scatter to chase
@@ -181,11 +166,12 @@ func start_chasing_pacman():
 		print("NO CHASING TARGET. CHASING WILL NOT WORK!!")
 		return
 	current_state = GhostState.CHASE
-	calculate_path_to_target(chasing_target.global_position)
+	
+	calculate_path_to_target(chasing_target.position)
 
 func _on_update_chasing_target_position_time_timeout():
 	# Periodically update chasing target
-	calculate_path_to_target(chasing_target.global_position)
+	calculate_path_to_target(chasing_target.position)
 
 func start_chasing_pacman_after_being_eaten():
 	# Resume chasing after being eaten
@@ -243,3 +229,22 @@ func _on_body_entered(body: CharacterBody2D):
 		player.die()
 		scatter_timer.wait_time = 600
 		scatter()
+		
+func calculate_path_to_target(target_position: Vector2):
+	# Pathfinding logic based on ghost type
+	match ghost_type:
+		"scarlet":  # Greedy pathfinding (A*)
+			navigation_agent_2d.target_position = target_position
+		"blush":  # Prediction-based pathfinding
+			var pacman_velocity = chasing_target.velocity 
+			var prediction_offset = pacman_velocity.normalized() * 4 * tile_map.cell_size.x
+			navigation_agent_2d.target_position = chasing_target.position + prediction_offset
+		"azure":  # Combined targeting
+			var scarlet_position = movement_targets.get_scarlet_position()
+			var midpoint = (scarlet_position + chasing_target.position) / 2
+			navigation_agent_2d.target_position = midpoint
+		"amber":  # Proximity-based switching
+			if global_position.distance_to(chasing_target.position) < 5 * tile_map.cell_size.x:
+				navigation_agent_2d.target_position = chasing_target.position
+			else:
+				navigation_agent_2d.target_position = tile_map.get_random_empty_cell_position()

@@ -67,6 +67,7 @@ var chase_timer = 0.0
 func _ready():
 	set_level(level)
 	start_scatter_mode()  # Begin with scatter mode
+	 # Adjust the path to your Pac-Man node
 
 func set_level(new_level):
 	level = new_level
@@ -112,6 +113,7 @@ func start_chase_mode():
 
 # Update the timers for frightened, scatter, and chase states
 func _process(delta):
+	
 	# Handle frightened mode
 	if is_frightened:
 		frightened_timer -= delta
