@@ -5,15 +5,26 @@
 [sub_resource type="GDScript" id="GDScript_tibmm"]
 script/source = "extends Area2D
 
+signal powerup_collected
 
-func _on_Powerup_body_entered(body):
-	if body.name == \"Player\":  
-		apply_powerup_effect()
-		queue_free()  
+@onready var score_manager = $\"Score\"  # Assuming ScoreManager is a sibling or parent node
+@onready var pacman = $\"pac_man\"  # Path to PacMan node
 
-func apply_powerup_effect():
-	print(\"Powerup collected!\")
- 
+# Called when Pac-Man collides with the power-up
+func _on_PowerUp_body_entered(body):
+	if body.name == \"PacMan\":  # Check if Pac-Man collided with the power-up
+		emit_signal(\"powerup_collected\")  # Emit signal when power-up is collected
+		score_manager.add_score(50)  # Add 50 points for collecting a power-up
+		
+		# Activate power-up state in Pac-Man
+		pacman.powerUp = true
+		pacman.powerUpTimer.start()  # Start the power-up timer
+		
+		# Transition ghosts to frightened state
+		for ghost in get_tree().get_nodes_in_group(pacman.ghostGroup):
+			ghost.set_frightened()  # Use method to set ghosts to frightened state
+		
+		queue_free()  # Remove the power-up after collection
 "
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0yo7n"]

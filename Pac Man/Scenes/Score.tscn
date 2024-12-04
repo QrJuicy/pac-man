@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://dxttnvaumjdlk"]
+
+[ext_resource type="Script" path="res://Scenes/Score.gd" id="1_5nn5j"]
+[ext_resource type="FontFile" uid="uid://eegfvh3nrht" path="res://Main Assets/Fonts/upheavtt.ttf" id="2_q64df"]
+
+[node name="Score" type="Node"]
+script = ExtResource("1_5nn5j")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ScoreUI" type="Label" parent="CanvasLayer"]
+offset_left = -448.0
+offset_top = -331.0
+offset_right = -421.0
+offset_bottom = -308.0
+theme_override_fonts/font = ExtResource("2_q64df")
+text = "0"

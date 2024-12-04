@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=3 uid="uid://pqi18hxa5jbo"]
+
+[ext_resource type="Script" path="res://Scenes/LivesUI.gd" id="1_tinwq"]
+[ext_resource type="Texture2D" uid="uid://cnorlrp248wc1" path="res://Main Assets/Pacman/Pacman_02.png" id="2_bbl3o"]
+
+[node name="LivesUI" type="Node2D"]
+script = ExtResource("1_tinwq")
+
+[node name="Horizontal lives" type="HBoxContainer" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="LIFE1" type="TextureRect" parent="Horizontal lives"]
+layout_mode = 2
+texture = ExtResource("2_bbl3o")
+
+[node name="LIFE2" type="TextureRect" parent="Horizontal lives"]
+layout_mode = 2
+texture = ExtResource("2_bbl3o")
+
+[node name="LIFE3" type="TextureRect" parent="Horizontal lives"]
+layout_mode = 2
+texture = ExtResource("2_bbl3o")

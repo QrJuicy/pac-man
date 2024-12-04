@@ -22,6 +22,9 @@ class_name Player
 @export_multiline var Regarding_Sprite : String = "Please put the Pac-Man sprite as a children of the main parent, then assign it to the \"Sprite\" column.";
 @export_multiline var Regarding_Ghost : String = "Put all ghosts in the same Group under Node > Group > \"+\" > Global = true, Then copy > paste the GroupName into the \"Ghost\" column. Make sure the ghosts are in the same physics layer as Pac-Man"
 
+var max_lives = 3
+var current_lives = max_lives
+@onready var lives_ui = $"../LivesUI"
 @onready var animation_player = $AnimationPlayer
 
 
@@ -77,13 +80,23 @@ func movement():
 			sprite.rotation_degrees = 270
 	move_and_slide()
 
-func power_Up():#Function for when powerUp is activated
-	pass #change this with code
+func power_Up():
+	powerUp = true; 
 
-func _on_power_up_timer_timeout(): #PowerUp deactivator
+func _on_power_up_timer_timeout(): 
 	powerUp = false
 
 func die():
-	animation_player.play("death")
-	set_physics_process(false)
+	current_lives -= 1  # Decrease lives 
+	lives_ui.update_lives()  # Update the lives 
+	
+	if current_lives > 0:
+		reset_position()
+	else:
+		print("Game Over!")
+		get_tree().change_scene("res://Scenes/game_over_screen.tscn")  # Example Game Over scene path
 
+# Reset Pac-Man's position (respawn logic)
+func reset_position():
+	position = Vector2(0, 200)  #reset position
+	powerUp = false  

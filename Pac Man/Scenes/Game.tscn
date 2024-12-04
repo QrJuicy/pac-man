@@ -1,4 +1,4 @@
-[gd_scene load_steps=47 format=3 uid="uid://bsm7xcjml3o27"]
+[gd_scene load_steps=49 format=3 uid="uid://bsm7xcjml3o27"]
 
 [ext_resource type="PackedScene" uid="uid://betqj7xrmhu4y" path="res://Scenes/pac_man.tscn" id="1_6e285"]
 [ext_resource type="Texture2D" uid="uid://bmtlbc44n3vm3" path="res://Main Assets/Walls/wall_atlas.png" id="2_7h60b"]
@@ -18,6 +18,8 @@
 [ext_resource type="AudioStream" uid="uid://goc7tsa804px" path="res://Main Assets/Sounds/pacman_eatghost.wav" id="16_gwg4p"]
 [ext_resource type="AudioStream" uid="uid://dxjg8dwefuvq7" path="res://Main Assets/Sounds/pacman_power_pellet.wav" id="17_aw4ci"]
 [ext_resource type="AudioStream" uid="uid://dmpo4vasr1u13" path="res://Main Assets/Sounds/pacman_death.wav" id="18_my8c6"]
+[ext_resource type="PackedScene" uid="uid://pqi18hxa5jbo" path="res://Scenes/LivesUI.tscn" id="19_as5hw"]
+[ext_resource type="PackedScene" uid="uid://dxttnvaumjdlk" path="res://Scenes/Score.tscn" id="20_va7ne"]
 
 [sub_resource type="GDScript" id="GDScript_uknlp"]
 resource_name = "Global.gd"
@@ -2358,3 +2360,8 @@ stream = ExtResource("17_aw4ci")
 
 [node name="PacmanDeathSoundPlayer" type="AudioStreamPlayer2D" parent="SoundPlayers"]
 stream = ExtResource("18_my8c6")
+
+[node name="LivesUI" parent="." instance=ExtResource("19_as5hw")]
+position = Vector2(-480, 232)
+
+[node name="Score" parent="." instance=ExtResource("20_va7ne")]
