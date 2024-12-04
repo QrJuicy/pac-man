@@ -26,11 +26,12 @@ signal run_away_timeout
 var current_scatter_index = 0
 var current_at_home_index = 0
 var direction = null
-var current_state: GhostState = GhostState.SCATTER
+var current_state: GhostState
 var is_blinking = false
 
 # Exported variables for customization
 @export var ghost_type: String = "scarlet"  # Ghost type (scarlet, blush, azure, amber)
+@export var scatter_wait_time = 8           # Scatter timer wait time
 @export var eaten_speed = 240               # Speed when eaten
 @export var speed = 120                     # Regular movement speed
 @export var movement_targets: Resource      # Reference to movement targets
@@ -39,8 +40,8 @@ var is_blinking = false
 @export var chasing_target: Node2D          # Target node (usually Pac-Man)
 @export var points_manager: PointsManager   # Reference to points system
 @export var is_starting_at_home = false     # Whether the ghost starts in "home"
-@export var starting_position: Node2D
-@export var scatter_wait_time = 1.0         # Delay before exiting home
+@export var starting_position: Node2D       # Starting Point for Ghost and Player
+@export var ghost_eaten_sound_player: AudioStreamPlayer2D
 
 # Node references using @onready
 @onready var at_home_timer = $AtHomeTimer
@@ -56,6 +57,7 @@ var is_blinking = false
 func _ready():
 	# Setup navigation and initial state
 	scatter_timer.wait_time = scatter_wait_time
+	at_home_timer.timeout.connect(scatter)
 	navigation_agent_2d.path_desired_distance = 4.0
 	navigation_agent_2d.target_desired_distance = 4.0
 	navigation_agent_2d.target_reached.connect(on_position_reached)
@@ -97,10 +99,10 @@ func calculate_direction(new_velocity: Vector2):
 		direction_change.emit(direction)
 
 func setup():
+	position = starting_position.position
 	# Initialize navigation map and starting state
-	print(tile_map.get_navigation_map(0))
 	navigation_agent_2d.set_navigation_map(tile_map.get_navigation_map(0))
-
+	NavigationServer2D.agent_set_map(navigation_agent_2d.get_rid(), tile_map.get_navigation_map(0))
 	if is_starting_at_home:
 		start_at_home()
 	else:
@@ -110,7 +112,6 @@ func start_at_home():
 	# Handle the starting "home" state
 	current_state = GhostState.STARTING_AT_HOME
 	at_home_timer.start(scatter_wait_time)
-	at_home_timer.timeout.connect(scatter)
 	navigation_agent_2d.target_position = movement_targets.at_home_targets[current_at_home_index].position
 
 func scatter():
@@ -233,7 +234,7 @@ func get_eaten():
 
 func _on_body_entered(body: CharacterBody2D):
 	# Handle collision with Pac-Man
-	var player = body as PacMan
+	var player = body as Player
 	if current_state == GhostState.RUN_AWAY:
 		get_eaten()
 	elif current_state == GhostState.CHASE or current_state == GhostState.SCATTER:

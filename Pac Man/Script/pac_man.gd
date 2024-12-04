@@ -4,6 +4,10 @@ class_name Player
 
 signal player_died
 
+#variables
+var next_movement_direction = Vector2.ZERO
+var movement_direction = Vector2.ZERO
+
 ##Adjust the movement speed of Pac-Man
 @export var speed : float
 ##Status on whether Pac-Man is in powered up state or no
@@ -37,6 +41,9 @@ func _ready():
 func reset_player():
 	animation_player.play("default")
 	position = start_position.position
+	set_physics_process(true)
+	next_movement_direction = Vector2.ZERO
+	movement_direction = Vector2.ZERO
 
 func _physics_process(_delta):
 	movement()

@@ -61,17 +61,9 @@ _data = {
 "default": SubResource("Animation_rpi71")
 }
 
-[node name="PacMan" type="CharacterBody2D" node_paths=PackedStringArray("powerUpTimer", "detector")]
+[node name="PacMan" type="CharacterBody2D"]
 collision_mask = 30
 script = ExtResource("1_cixyg")
-speed = 100.0
-powerUp = null
-powerUpTimer = NodePath("PowerUpTimer")
-detector = NodePath("Detector")
-ghostGroup = null
-powerUpGroup = "PowerUp"
-Regarding_Sprite = null
-Regarding_Ghost = null
 
 [node name="PacMan Collider" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_56hlh")
