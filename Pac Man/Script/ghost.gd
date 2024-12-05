@@ -37,7 +37,7 @@ var is_blinking = false
 @export var movement_targets: Node2D        # Reference to movement targets
 @export var tile_map: MazeTileMap           # Reference to the maze's tilemap
 @export var color: Color                    # Ghost's color
-@export var chasing_target: Node2D          # Target node (usually Pac-Man)
+@export var chasing_target: Node2D          # Target node (Pac-Man)
 @export var points_manager: PointsManager   # Reference to points system
 @export var is_starting_at_home = false     # Whether the ghost starts in "home"
 @export var starting_position: Node2D       # Starting Point for Ghost and Player
@@ -89,7 +89,7 @@ func move_ghost(next_position: Vector2, delta: float):
 	
 func calculate_direction(new_velocity: Vector2):
 	# Determine the current direction based on velocity
-	var current_direction = null 
+	var current_direction
 	if new_velocity.x > 1:
 		current_direction = "right"
 	elif new_velocity.x < -1:
@@ -100,16 +100,18 @@ func calculate_direction(new_velocity: Vector2):
 		current_direction = "up"
 
 	# Emit signal only if the direction is valid
-	if current_direction != null and current_direction != direction:
+	if current_direction != direction:	
 		direction = current_direction
 		direction_change.emit(direction)
 
-
 func setup():
+	set_collision_mask_value(1, true)
 	position = starting_position.position
 	# Initialize navigation map and starting state
 	navigation_agent_2d.set_navigation_map(tile_map.get_navigation_map(0))
 	NavigationServer2D.agent_set_map(navigation_agent_2d.get_rid(), tile_map.get_navigation_map(0))
+	eyes_sprite.show_eyes()
+	body_sprite.move()
 	if is_starting_at_home:
 		start_at_home()
 	else:
@@ -118,12 +120,10 @@ func setup():
 func start_at_home():
 	# Handle the starting "home" state
 	current_state = GhostState.STARTING_AT_HOME
-	at_home_timer.start(scatter_wait_time)
-	movement_targets.at_home_targets[current_at_home_index].position
+	at_home_timer.start()
 	navigation_agent_2d.target_position = movement_targets.at_home_targets[current_at_home_index].position
-
+	
 func scatter():
-	print("test")
 	# Start scatter mode
 	scatter_timer.start()
 	current_state = GhostState.SCATTER
@@ -131,23 +131,22 @@ func scatter():
 
 func on_position_reached():
 	# Handle actions upon reaching a target position
-	match current_state:
-		GhostState.SCATTER:
-			scatter_position_reached()
-		GhostState.CHASE:
-			calculate_path_to_target(chasing_target.position)
-		GhostState.RUN_AWAY:
-			run_away_from_pacman()
-		GhostState.EATEN:
-			start_chasing_pacman_after_being_eaten()
-		GhostState.STARTING_AT_HOME:
-			move_to_next_home_position()
+	if current_state == GhostState.SCATTER:
+		scatter_position_reached()
+	elif current_state == GhostState.CHASE:
+		chase_position_reached()
+	elif current_state == GhostState.RUN_AWAY:
+		run_away_from_pacman()
+	elif current_state == GhostState.EATEN:
+		start_chasing_pacman_after_being_eaten()
+	elif current_state == GhostState.STARTING_AT_HOME:
+		move_to_next_home_position()
 
 func move_to_next_home_position():
 	# Alternate between home positions
-	current_at_home_index = 1 - current_at_home_index
+	current_at_home_index = 1 if current_at_home_index == 0 else 0 
 	navigation_agent_2d.target_position = movement_targets.at_home_targets[current_at_home_index].position
-
+	
 func chase_position_reached():
 	# Placeholder for chase logic
 	print("KILL PACMAN")
@@ -162,8 +161,6 @@ func scatter_position_reached():
 		
 	navigation_agent_2d.target_position = movement_targets.scatter_targets[current_scatter_index].position
 
-
-
 func _on_scatter_timer_timeout():
 	# Transition from scatter to chase
 	start_chasing_pacman()
@@ -171,13 +168,14 @@ func _on_scatter_timer_timeout():
 func start_chasing_pacman():
 	# Begin chasing Pac-Man
 	if chasing_target == null:
-		print("NO CHASING TARGET. CHASING WILL NOT WORK!!")
-		return
+		print("NO CHASING TARGET. CHASING WILL NOT WORK!!!")
 	current_state = GhostState.CHASE
-	
+	update_chasing_target_position_timer.start()
+	navigation_agent_2d.target_position = chasing_target.position
 	calculate_path_to_target(chasing_target.position)
 
 func _on_update_chasing_target_position_time_timeout():
+	navigation_agent_2d.target_position = chasing_target.position
 	# Periodically update chasing target
 	calculate_path_to_target(chasing_target.position)
 
@@ -202,7 +200,6 @@ func run_away_from_pacman():
 
 func start_blinking():
 	# Start blinking animation
-	animation_player.play("blinking")
 	body_sprite.start_blinking()
 	
 func _on_run_away_timer_timeout():
@@ -226,7 +223,7 @@ func get_eaten():
 	current_state = GhostState.EATEN
 	navigation_agent_2d.target_position = movement_targets.at_home_targets[0].position
 
-func _on_body_entered(body: CharacterBody2D):
+func _on_body_entered(body):
 	# Handle collision with Pac-Man
 	var player = body as Player
 	if current_state == GhostState.RUN_AWAY:
@@ -256,3 +253,4 @@ func calculate_path_to_target(target_position: Vector2):
 				navigation_agent_2d.target_position = chasing_target.position
 			else:
 				navigation_agent_2d.target_position = tile_map.get_random_empty_cell()
+

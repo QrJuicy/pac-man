@@ -2182,11 +2182,16 @@ script = ExtResource("4_4g6r5")
 position = Vector2(0, -84)
 scale = Vector2(2, 2)
 ghost_type = "scarlet"
+scatter_wait_time = null
+eaten_speed = null
+speed = null
 tile_map = NodePath("../../TileMap")
 color = Color(1, 0.32549, 0.258824, 1)
 chasing_target = NodePath("../../PacMan")
 points_manager = NodePath("../../PointsManager")
+is_starting_at_home = null
 starting_position = NodePath("../../MovementTargets/Scarlet/StartingPosition")
+cell_size = null
 
 [node name="ArrayManager" parent="Ghosts/Scarlet" index="0" node_paths=PackedStringArray("scatter_targets", "at_home_targets")]
 scatter_targets = [NodePath("../../../MovementTargets/Scarlet/Scatter/Red1"), NodePath("../../../MovementTargets/Scarlet/Scatter/Red2"), NodePath("../../../MovementTargets/Scarlet/Scatter/Red3"), NodePath("../../../MovementTargets/Scarlet/Scatter/Red4")]
@@ -2196,12 +2201,16 @@ at_home_targets = [NodePath("../../../MovementTargets/Scarlet/Home/Bottom"), Nod
 position = Vector2(-19, -28)
 scale = Vector2(2, 2)
 ghost_type = "blush"
+scatter_wait_time = null
+eaten_speed = null
+speed = null
 tile_map = NodePath("../../TileMap")
 color = Color(0.770326, 0.475854, 0.812099, 1)
 chasing_target = NodePath("../../PacMan")
 points_manager = NodePath("../../PointsManager")
 is_starting_at_home = true
 starting_position = NodePath("../../MovementTargets/Blush/StartingPosition")
+cell_size = null
 
 [node name="ArrayManager" parent="Ghosts/Blush" index="0" node_paths=PackedStringArray("scatter_targets", "at_home_targets")]
 scatter_targets = [NodePath("../../../MovementTargets/Blush/Scatter/Pink1"), NodePath("../../../MovementTargets/Blush/Scatter/Pink2"), NodePath("../../../MovementTargets/Blush/Scatter/Pink3"), NodePath("../../../MovementTargets/Blush/Scatter/Pink4")]
@@ -2211,12 +2220,16 @@ at_home_targets = [NodePath("../../../MovementTargets/Blush/Home/Bottom"), NodeP
 position = Vector2(19, -28)
 scale = Vector2(2, 2)
 ghost_type = "azure"
+scatter_wait_time = null
+eaten_speed = null
+speed = null
 tile_map = NodePath("../../TileMap")
 color = Color(0.153645, 0.559141, 0.628796, 1)
 chasing_target = NodePath("../../PacMan")
 points_manager = NodePath("../../PointsManager")
 is_starting_at_home = true
 starting_position = NodePath("../../MovementTargets/Azure/StartingPosition")
+cell_size = null
 
 [node name="ArrayManager" parent="Ghosts/Azure" index="0" node_paths=PackedStringArray("scatter_targets", "at_home_targets")]
 scatter_targets = [NodePath("../../../MovementTargets/Azure/Scatter/Cyan1"), NodePath("../../../MovementTargets/Azure/Scatter/Cyan2"), NodePath("../../../MovementTargets/Azure/Scatter/Cyan3"), NodePath("../../../MovementTargets/Azure/Scatter/Cyan4"), NodePath("../../../MovementTargets/Azure/Scatter/Cyan5"), NodePath("../../../MovementTargets/Azure/Scatter/Cyan6"), NodePath("../../../MovementTargets/Azure/Scatter/Cyan7"), NodePath("../../../MovementTargets/Azure/Scatter/Cyan8")]
@@ -2226,12 +2239,16 @@ at_home_targets = [NodePath("../../../MovementTargets/Azure/Home/Bottom"), NodeP
 position = Vector2(54, -28)
 scale = Vector2(2, 2)
 ghost_type = "amber"
+scatter_wait_time = null
+eaten_speed = null
+speed = null
 tile_map = NodePath("../../TileMap")
 color = Color(0.700012, 0.587908, 0.188264, 1)
 chasing_target = NodePath("../../PacMan")
 points_manager = NodePath("../../PointsManager")
 is_starting_at_home = true
 starting_position = NodePath("../../MovementTargets/Amber/StartingPosition")
+cell_size = null
 
 [node name="ArrayManager" parent="Ghosts/Amber" index="0" node_paths=PackedStringArray("scatter_targets", "at_home_targets")]
 scatter_targets = [NodePath("../../../MovementTargets/Amber/Scatter/Orange1"), NodePath("../../../MovementTargets/Amber/Scatter/Orange2"), NodePath("../../../MovementTargets/Amber/Scatter/Orange3"), NodePath("../../../MovementTargets/Amber/Scatter/Orange4"), NodePath("../../../MovementTargets/Amber/Scatter/Orange5"), NodePath("../../../MovementTargets/Amber/Scatter/Orange6"), NodePath("../../../MovementTargets/Amber/Scatter/Orange7"), NodePath("../../../MovementTargets/Amber/Scatter/Orange8")]

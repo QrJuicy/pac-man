@@ -18,7 +18,7 @@ class_name EyesSprite
 
 func _ready():
 	(get_parent() as Ghost).direction_change.connect(on_direction_change)
-	
+
 func on_direction_change(direction: String):
 	texture = direction_lookup_table[direction]
 	
@@ -27,6 +27,3 @@ func hide_eyes():
 	
 func show_eyes():
 	show()
-
-
-
