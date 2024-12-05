@@ -36,7 +36,7 @@ var is_blinking = false
 @export var speed = 120                     # Regular movement speed
 @export var movement_targets: Node2D        # Reference to movement targets
 @export var tile_map: MazeTileMap           # Reference to the maze's tilemap
-@export var color: Color                    # G host's color
+@export var color: Color                    # Ghost's color
 @export var chasing_target: Node2D          # Target node (usually Pac-Man)
 @export var points_manager: PointsManager   # Reference to points system
 @export var is_starting_at_home = false     # Whether the ghost starts in "home"
@@ -117,15 +117,15 @@ func start_at_home():
 	# Handle the starting "home" state
 	current_state = GhostState.STARTING_AT_HOME
 	at_home_timer.start(scatter_wait_time)
-	print(movement_targets.at_home_targets[1])
-	#navigation_agent_2d.target_position = movement_targets.at_home_targets[current_at_home_index].position
+	movement_targets.at_home_targets[current_at_home_index].position
+	navigation_agent_2d.target_position = movement_targets.at_home_targets[current_at_home_index].position
 
 func scatter():
 	print("test")
 	# Start scatter mode
 	scatter_timer.start()
 	current_state = GhostState.SCATTER
-	#navigation_agent_2d.target_position = movement_targets.scatter_targets[current_scatter_index].position
+	navigation_agent_2d.target_position = movement_targets.scatter_targets[current_scatter_index].position
 
 func on_position_reached():
 	# Handle actions upon reaching a target position

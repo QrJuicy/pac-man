@@ -2040,6 +2040,18 @@ collision_layer = 5
 
 [node name="Scatter" type="Node" parent="MovementTargets/Scarlet"]
 
+[node name="Red1" type="Marker2D" parent="MovementTargets/Scarlet/Scatter"]
+position = Vector2(-180, -215)
+
+[node name="Red2" type="Marker2D" parent="MovementTargets/Scarlet/Scatter"]
+position = Vector2(-302, -215)
+
+[node name="Red3" type="Marker2D" parent="MovementTargets/Scarlet/Scatter"]
+position = Vector2(-302, -311)
+
+[node name="Red4" type="Marker2D" parent="MovementTargets/Scarlet/Scatter"]
+position = Vector2(-180, -311)
+
 [node name="Home" type="Node" parent="MovementTargets/Scarlet"]
 
 [node name="Bottom" type="Marker2D" parent="MovementTargets/Scarlet/Home"]
@@ -2160,18 +2172,6 @@ position = Vector2(54, -28)
 [node name="StartingPosition" type="Marker2D" parent="MovementTargets/Player"]
 position = Vector2(0, 72)
 
-[node name="Red1" type="Marker2D" parent="MovementTargets"]
-position = Vector2(-180, -215)
-
-[node name="Red2" type="Marker2D" parent="MovementTargets"]
-position = Vector2(-302, -215)
-
-[node name="Red3" type="Marker2D" parent="MovementTargets"]
-position = Vector2(-302, -311)
-
-[node name="Red4" type="Marker2D" parent="MovementTargets"]
-position = Vector2(-180, -311)
-
 [node name="Ghosts" type="Node2D" parent="."]
 visible = false
 position = Vector2(0, 15)
@@ -2187,7 +2187,8 @@ chasing_target = NodePath("../../PacMan")
 points_manager = NodePath("../../PointsManager")
 starting_position = NodePath("../../MovementTargets/Scarlet/StartingPosition")
 
-[node name="ArrayManager" parent="Ghosts/Scarlet" index="0" node_paths=PackedStringArray("at_home_targets")]
+[node name="ArrayManager" parent="Ghosts/Scarlet" index="0" node_paths=PackedStringArray("scatter_targets", "at_home_targets")]
+scatter_targets = [NodePath("../../../MovementTargets/Scarlet/Scatter/Red1"), NodePath("../../../MovementTargets/Scarlet/Scatter/Red2"), NodePath("../../../MovementTargets/Scarlet/Scatter/Red3"), NodePath("../../../MovementTargets/Scarlet/Scatter/Red4")]
 at_home_targets = [NodePath("../../../MovementTargets/Scarlet/Home/Bottom"), NodePath("../../../MovementTargets/Scarlet/Home/Top")]
 
 [node name="Blush" parent="Ghosts" node_paths=PackedStringArray("tile_map", "chasing_target", "points_manager", "starting_position") instance=ExtResource("3_cxu34")]
@@ -2201,6 +2202,10 @@ points_manager = NodePath("../../PointsManager")
 is_starting_at_home = true
 starting_position = NodePath("../../MovementTargets/Blush/StartingPosition")
 
+[node name="ArrayManager" parent="Ghosts/Blush" index="0" node_paths=PackedStringArray("scatter_targets", "at_home_targets")]
+scatter_targets = [NodePath("../../../MovementTargets/Blush/Scatter/Pink1"), NodePath("../../../MovementTargets/Blush/Scatter/Pink2"), NodePath("../../../MovementTargets/Blush/Scatter/Pink3"), NodePath("../../../MovementTargets/Blush/Scatter/Pink4")]
+at_home_targets = [NodePath("../../../MovementTargets/Blush/Home/Bottom"), NodePath("../../../MovementTargets/Blush/Home/Top")]
+
 [node name="Azure" parent="Ghosts" node_paths=PackedStringArray("tile_map", "chasing_target", "points_manager", "starting_position") instance=ExtResource("3_cxu34")]
 position = Vector2(19, -28)
 scale = Vector2(2, 2)
@@ -2212,6 +2217,10 @@ points_manager = NodePath("../../PointsManager")
 is_starting_at_home = true
 starting_position = NodePath("../../MovementTargets/Azure/StartingPosition")
 
+[node name="ArrayManager" parent="Ghosts/Azure" index="0" node_paths=PackedStringArray("scatter_targets", "at_home_targets")]
+scatter_targets = [NodePath("../../../MovementTargets/Azure/Scatter/Cyan1"), NodePath("../../../MovementTargets/Azure/Scatter/Cyan2"), NodePath("../../../MovementTargets/Azure/Scatter/Cyan3"), NodePath("../../../MovementTargets/Azure/Scatter/Cyan4"), NodePath("../../../MovementTargets/Azure/Scatter/Cyan5"), NodePath("../../../MovementTargets/Azure/Scatter/Cyan6"), NodePath("../../../MovementTargets/Azure/Scatter/Cyan7"), NodePath("../../../MovementTargets/Azure/Scatter/Cyan8")]
+at_home_targets = [NodePath("../../../MovementTargets/Azure/Home/Bottom"), NodePath("../../../MovementTargets/Azure/Home/Top")]
+
 [node name="Amber" parent="Ghosts" node_paths=PackedStringArray("tile_map", "chasing_target", "points_manager", "starting_position") instance=ExtResource("3_cxu34")]
 position = Vector2(54, -28)
 scale = Vector2(2, 2)
@@ -2222,6 +2231,10 @@ chasing_target = NodePath("../../PacMan")
 points_manager = NodePath("../../PointsManager")
 is_starting_at_home = true
 starting_position = NodePath("../../MovementTargets/Amber/StartingPosition")
+
+[node name="ArrayManager" parent="Ghosts/Amber" index="0" node_paths=PackedStringArray("scatter_targets", "at_home_targets")]
+scatter_targets = [NodePath("../../../MovementTargets/Amber/Scatter/Orange1"), NodePath("../../../MovementTargets/Amber/Scatter/Orange2"), NodePath("../../../MovementTargets/Amber/Scatter/Orange3"), NodePath("../../../MovementTargets/Amber/Scatter/Orange4"), NodePath("../../../MovementTargets/Amber/Scatter/Orange5"), NodePath("../../../MovementTargets/Amber/Scatter/Orange6"), NodePath("../../../MovementTargets/Amber/Scatter/Orange7"), NodePath("../../../MovementTargets/Amber/Scatter/Orange8")]
+at_home_targets = [NodePath("../../../MovementTargets/Amber/Home/Bottom"), NodePath("../../../MovementTargets/Amber/Home/Top")]
 
 [node name="PointsManager" type="Node" parent="."]
 script = ExtResource("10_008q4")
