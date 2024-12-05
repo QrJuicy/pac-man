@@ -36,7 +36,7 @@ var is_blinking = false
 @export var speed = 120                     # Regular movement speed
 @export var movement_targets: Resource      # Reference to movement targets
 @export var tile_map: MazeTileMap           # Reference to the maze's tilemap
-@export var color: Color                    # Ghost's color
+@export var color: Color                    # G host's color
 @export var chasing_target: Node2D          # Target node (usually Pac-Man)
 @export var points_manager: PointsManager   # Reference to points system
 @export var is_starting_at_home = false     # Whether the ghost starts in "home"

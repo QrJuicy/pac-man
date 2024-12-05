@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dxkj70juhu2dv"
-path="res://.godot/imported/Quit-Highlight.png-4e4339eb79800d45b4cd7915ff49a00c.ctex"
+uid="uid://be1h1yhxp74of"
+path="res://.godot/imported/QuitP.png-7dfb491689dd9dc37e0cdb84296b653b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Main Assets/Button/Buttons Highlighted/Quit-Highlight.png"
-dest_files=["res://.godot/imported/Quit-Highlight.png-4e4339eb79800d45b4cd7915ff49a00c.ctex"]
+source_file="res://Main Assets/Button/Buttons Pressed/QuitP.png"
+dest_files=["res://.godot/imported/QuitP.png-7dfb491689dd9dc37e0cdb84296b653b.ctex"]
 
 [params]
 

@@ -8,7 +8,7 @@
 [ext_resource type="Resource" uid="uid://c8rpqjkwkyg8d" path="res://Resources/red_movement_targets.tres" id="4_myhlx"]
 [ext_resource type="PackedScene" uid="uid://bmkld43ht6amp" path="res://Scenes/coin.tscn" id="5_ii10l"]
 [ext_resource type="PackedScene" uid="uid://bvnx6lqk3l7uw" path="res://Scenes/game_over_screen.tscn" id="5_q3bht"]
-[ext_resource type="Script" path="res://Script/pellets_interaction.gd" id="5_snsd0"]
+[ext_resource type="Script" path="res://Script/pellets_manager.gd" id="5_snsd0"]
 [ext_resource type="Resource" uid="uid://cou5av8ay7a0i" path="res://Resources/pink_movement_targets.tres" id="6_nxh5w"]
 [ext_resource type="PackedScene" uid="uid://b43ph8jib88s8" path="res://Scenes/ui.tscn" id="7_uid1h"]
 [ext_resource type="Resource" uid="uid://bd2hbn6yobl2v" path="res://Resources/cyan_movement_targets.tres" id="7_wuoa1"]
@@ -430,203 +430,12 @@ script = ExtResource("2_m1ls4")
 position = Vector2(0, -13)
 zoom = Vector2(0.812, 0.812)
 
-[node name="Navigation" type="NavigationAgent2D" parent="."]
+[node name="UI" parent="." instance=ExtResource("7_uid1h")]
 
-[node name="PacMan" parent="." instance=ExtResource("1_6e285")]
+[node name="PacMan" parent="." node_paths=PackedStringArray("ui") instance=ExtResource("1_6e285")]
 position = Vector2(0, 60)
 scale = Vector2(3, 3)
-
-[node name="MovementTargets" type="Node" parent="."]
-
-[node name="Scarlet" type="Node" parent="MovementTargets"]
-
-[node name="Scatter" type="Node" parent="MovementTargets/Scarlet"]
-
-[node name="Red1" type="Marker2D" parent="MovementTargets/Scarlet/Scatter"]
-position = Vector2(-180, -215)
-
-[node name="Red2" type="Marker2D" parent="MovementTargets/Scarlet/Scatter"]
-position = Vector2(-302, -215)
-
-[node name="Red3" type="Marker2D" parent="MovementTargets/Scarlet/Scatter"]
-position = Vector2(-302, -311)
-
-[node name="Red4" type="Marker2D" parent="MovementTargets/Scarlet/Scatter"]
-position = Vector2(-180, -311)
-
-[node name="Home" type="Node" parent="MovementTargets/Scarlet"]
-
-[node name="Bottom" type="Marker2D" parent="MovementTargets/Scarlet/Home"]
-position = Vector2(-53, 26)
-
-[node name="Top" type="Marker2D" parent="MovementTargets/Scarlet/Home"]
-position = Vector2(-53, -27)
-
-[node name="StartingPosition" type="Marker2D" parent="MovementTargets/Scarlet"]
-
-[node name="Blush" type="Node" parent="MovementTargets"]
-
-[node name="Scatter" type="Node" parent="MovementTargets/Blush"]
-
-[node name="Pink1" type="Marker2D" parent="MovementTargets/Blush/Scatter"]
-position = Vector2(180, -214)
-
-[node name="Pink2" type="Marker2D" parent="MovementTargets/Blush/Scatter"]
-position = Vector2(302, -214)
-
-[node name="Pink3" type="Marker2D" parent="MovementTargets/Blush/Scatter"]
-position = Vector2(302, -311)
-
-[node name="Pink4" type="Marker2D" parent="MovementTargets/Blush/Scatter"]
-position = Vector2(180, -311)
-
-[node name="Home" type="Node" parent="MovementTargets/Blush"]
-
-[node name="Bottom" type="Marker2D" parent="MovementTargets/Blush/Home"]
-position = Vector2(-19, 27)
-
-[node name="Top" type="Marker2D" parent="MovementTargets/Blush/Home"]
-position = Vector2(-19, -27)
-
-[node name="StartingPosition" type="Marker2D" parent="MovementTargets/Blush"]
-position = Vector2(-19, -28)
-
-[node name="Azure" type="Node" parent="MovementTargets"]
-
-[node name="Scatter" type="Node" parent="MovementTargets/Azure"]
-
-[node name="Cyan1" type="Marker2D" parent="MovementTargets/Azure/Scatter"]
-position = Vector2(-107, 216)
-
-[node name="Cyan2" type="Marker2D" parent="MovementTargets/Azure/Scatter"]
-position = Vector2(-180, 216)
-
-[node name="Cyan3" type="Marker2D" parent="MovementTargets/Azure/Scatter"]
-position = Vector2(-180, 289)
-
-[node name="Cyan4" type="Marker2D" parent="MovementTargets/Azure/Scatter"]
-position = Vector2(-301, 288)
-
-[node name="Cyan5" type="Marker2D" parent="MovementTargets/Azure/Scatter"]
-position = Vector2(-302, 360)
-
-[node name="Cyan6" type="Marker2D" parent="MovementTargets/Azure/Scatter"]
-position = Vector2(-39, 361)
-
-[node name="Cyan7" type="Marker2D" parent="MovementTargets/Azure/Scatter"]
-position = Vector2(-39, 289)
-
-[node name="Cyan8" type="Marker2D" parent="MovementTargets/Azure/Scatter"]
-position = Vector2(-107, 290)
-
-[node name="Home" type="Node" parent="MovementTargets/Azure"]
-
-[node name="Bottom" type="Marker2D" parent="MovementTargets/Azure/Home"]
-position = Vector2(20, 27)
-
-[node name="Top" type="Marker2D" parent="MovementTargets/Azure/Home"]
-position = Vector2(19, -27)
-
-[node name="StartingPosition" type="Marker2D" parent="MovementTargets/Azure"]
-position = Vector2(19, -28)
-
-[node name="Amber" type="Node" parent="MovementTargets"]
-
-[node name="Scatter" type="Node" parent="MovementTargets/Amber"]
-
-[node name="Orange1" type="Marker2D" parent="MovementTargets/Amber/Scatter"]
-position = Vector2(110, 216)
-
-[node name="Orange2" type="Marker2D" parent="MovementTargets/Amber/Scatter"]
-position = Vector2(180, 217)
-
-[node name="Orange3" type="Marker2D" parent="MovementTargets/Amber/Scatter"]
-position = Vector2(181, 288)
-
-[node name="Orange4" type="Marker2D" parent="MovementTargets/Amber/Scatter"]
-position = Vector2(302, 289)
-
-[node name="Orange5" type="Marker2D" parent="MovementTargets/Amber/Scatter"]
-position = Vector2(303, 360)
-
-[node name="Orange6" type="Marker2D" parent="MovementTargets/Amber/Scatter"]
-position = Vector2(36, 360)
-
-[node name="Orange7" type="Marker2D" parent="MovementTargets/Amber/Scatter"]
-position = Vector2(37, 288)
-
-[node name="Orange8" type="Marker2D" parent="MovementTargets/Amber/Scatter"]
-position = Vector2(108, 289)
-
-[node name="Home" type="Node" parent="MovementTargets/Amber"]
-
-[node name="Bottom" type="Marker2D" parent="MovementTargets/Amber/Home"]
-position = Vector2(54, 27)
-
-[node name="Top" type="Marker2D" parent="MovementTargets/Amber/Home"]
-position = Vector2(54, -27)
-
-[node name="StartingPosition" type="Marker2D" parent="MovementTargets/Amber"]
-position = Vector2(54, -28)
-
-[node name="Player" type="Node" parent="MovementTargets"]
-
-[node name="StartingPosition" type="Marker2D" parent="MovementTargets/Player"]
-position = Vector2(0, 72)
-
-[node name="Ghosts" type="Node2D" parent="."]
-visible = false
-position = Vector2(0, 15)
-script = ExtResource("4_4g6r5")
-
-[node name="Scarlet" parent="Ghosts" node_paths=PackedStringArray("tile_map", "chasing_target", "points_manager", "starting_position") instance=ExtResource("3_cxu34")]
-position = Vector2(0, -84)
-scale = Vector2(2, 2)
-movement_targets = ExtResource("4_myhlx")
-tile_map = NodePath("../../TileMap")
-color = Color(1, 0.32549, 0.258824, 1)
-chasing_target = NodePath("../../PacMan")
-points_manager = NodePath("../../PointsManager")
-starting_position = NodePath("../../MovementTargets/Scarlet/StartingPosition")
-
-[node name="Blush" parent="Ghosts" node_paths=PackedStringArray("tile_map", "chasing_target", "points_manager", "starting_position") instance=ExtResource("3_cxu34")]
-position = Vector2(-19, -28)
-scale = Vector2(2, 2)
-ghost_type = "blush"
-movement_targets = ExtResource("6_nxh5w")
-tile_map = NodePath("../../TileMap")
-color = Color(0.770326, 0.475854, 0.812099, 1)
-chasing_target = NodePath("../../PacMan")
-points_manager = NodePath("../../PointsManager")
-is_starting_at_home = true
-starting_position = NodePath("../../MovementTargets/Blush/StartingPosition")
-
-[node name="Azure" parent="Ghosts" node_paths=PackedStringArray("tile_map", "chasing_target", "points_manager", "starting_position") instance=ExtResource("3_cxu34")]
-position = Vector2(19, -28)
-scale = Vector2(2, 2)
-ghost_type = "azure"
-movement_targets = ExtResource("7_wuoa1")
-tile_map = NodePath("../../TileMap")
-color = Color(0.153645, 0.559141, 0.628796, 1)
-chasing_target = NodePath("../../PacMan")
-points_manager = NodePath("../../PointsManager")
-is_starting_at_home = true
-starting_position = NodePath("../../MovementTargets/Azure/StartingPosition")
-
-[node name="Amber" parent="Ghosts" node_paths=PackedStringArray("tile_map", "chasing_target", "points_manager", "starting_position") instance=ExtResource("3_cxu34")]
-position = Vector2(54, -28)
-scale = Vector2(2, 2)
-ghost_type = "amber"
-movement_targets = ExtResource("8_qi48x")
-tile_map = NodePath("../../TileMap")
-color = Color(0.700012, 0.587908, 0.188264, 1)
-chasing_target = NodePath("../../PacMan")
-points_manager = NodePath("../../PointsManager")
-is_starting_at_home = true
-starting_position = NodePath("../../MovementTargets/Amber/StartingPosition")
-
-[node name="GameOverScreen" parent="." instance=ExtResource("5_q3bht")]
-visible = false
+ui = NodePath("../UI")
 
 [node name="Pellets" type="Node" parent="." node_paths=PackedStringArray("ghost_array")]
 script = ExtResource("5_snsd0")
@@ -2229,7 +2038,197 @@ collision_layer = 5
 
 [node name="Connector" parent="." instance=ExtResource("12_1mgif")]
 
-[node name="UI" parent="." instance=ExtResource("7_uid1h")]
+[node name="MovementTargets" type="Node" parent="."]
+
+[node name="Scarlet" type="Node" parent="MovementTargets"]
+
+[node name="Scatter" type="Node" parent="MovementTargets/Scarlet"]
+
+[node name="Red1" type="Marker2D" parent="MovementTargets/Scarlet/Scatter"]
+position = Vector2(-180, -215)
+
+[node name="Red2" type="Marker2D" parent="MovementTargets/Scarlet/Scatter"]
+position = Vector2(-302, -215)
+
+[node name="Red3" type="Marker2D" parent="MovementTargets/Scarlet/Scatter"]
+position = Vector2(-302, -311)
+
+[node name="Red4" type="Marker2D" parent="MovementTargets/Scarlet/Scatter"]
+position = Vector2(-180, -311)
+
+[node name="Home" type="Node" parent="MovementTargets/Scarlet"]
+
+[node name="Bottom" type="Marker2D" parent="MovementTargets/Scarlet/Home"]
+position = Vector2(-53, 26)
+
+[node name="Top" type="Marker2D" parent="MovementTargets/Scarlet/Home"]
+position = Vector2(-53, -27)
+
+[node name="StartingPosition" type="Marker2D" parent="MovementTargets/Scarlet"]
+
+[node name="Blush" type="Node" parent="MovementTargets"]
+
+[node name="Scatter" type="Node" parent="MovementTargets/Blush"]
+
+[node name="Pink1" type="Marker2D" parent="MovementTargets/Blush/Scatter"]
+position = Vector2(180, -214)
+
+[node name="Pink2" type="Marker2D" parent="MovementTargets/Blush/Scatter"]
+position = Vector2(302, -214)
+
+[node name="Pink3" type="Marker2D" parent="MovementTargets/Blush/Scatter"]
+position = Vector2(302, -311)
+
+[node name="Pink4" type="Marker2D" parent="MovementTargets/Blush/Scatter"]
+position = Vector2(180, -311)
+
+[node name="Home" type="Node" parent="MovementTargets/Blush"]
+
+[node name="Bottom" type="Marker2D" parent="MovementTargets/Blush/Home"]
+position = Vector2(-19, 27)
+
+[node name="Top" type="Marker2D" parent="MovementTargets/Blush/Home"]
+position = Vector2(-19, -27)
+
+[node name="StartingPosition" type="Marker2D" parent="MovementTargets/Blush"]
+position = Vector2(-19, -28)
+
+[node name="Azure" type="Node" parent="MovementTargets"]
+
+[node name="Scatter" type="Node" parent="MovementTargets/Azure"]
+
+[node name="Cyan1" type="Marker2D" parent="MovementTargets/Azure/Scatter"]
+position = Vector2(-107, 216)
+
+[node name="Cyan2" type="Marker2D" parent="MovementTargets/Azure/Scatter"]
+position = Vector2(-180, 216)
+
+[node name="Cyan3" type="Marker2D" parent="MovementTargets/Azure/Scatter"]
+position = Vector2(-180, 289)
+
+[node name="Cyan4" type="Marker2D" parent="MovementTargets/Azure/Scatter"]
+position = Vector2(-301, 288)
+
+[node name="Cyan5" type="Marker2D" parent="MovementTargets/Azure/Scatter"]
+position = Vector2(-302, 360)
+
+[node name="Cyan6" type="Marker2D" parent="MovementTargets/Azure/Scatter"]
+position = Vector2(-39, 361)
+
+[node name="Cyan7" type="Marker2D" parent="MovementTargets/Azure/Scatter"]
+position = Vector2(-39, 289)
+
+[node name="Cyan8" type="Marker2D" parent="MovementTargets/Azure/Scatter"]
+position = Vector2(-107, 290)
+
+[node name="Home" type="Node" parent="MovementTargets/Azure"]
+
+[node name="Bottom" type="Marker2D" parent="MovementTargets/Azure/Home"]
+position = Vector2(20, 27)
+
+[node name="Top" type="Marker2D" parent="MovementTargets/Azure/Home"]
+position = Vector2(19, -27)
+
+[node name="StartingPosition" type="Marker2D" parent="MovementTargets/Azure"]
+position = Vector2(19, -28)
+
+[node name="Amber" type="Node" parent="MovementTargets"]
+
+[node name="Scatter" type="Node" parent="MovementTargets/Amber"]
+
+[node name="Orange1" type="Marker2D" parent="MovementTargets/Amber/Scatter"]
+position = Vector2(110, 216)
+
+[node name="Orange2" type="Marker2D" parent="MovementTargets/Amber/Scatter"]
+position = Vector2(180, 217)
+
+[node name="Orange3" type="Marker2D" parent="MovementTargets/Amber/Scatter"]
+position = Vector2(181, 288)
+
+[node name="Orange4" type="Marker2D" parent="MovementTargets/Amber/Scatter"]
+position = Vector2(302, 289)
+
+[node name="Orange5" type="Marker2D" parent="MovementTargets/Amber/Scatter"]
+position = Vector2(303, 360)
+
+[node name="Orange6" type="Marker2D" parent="MovementTargets/Amber/Scatter"]
+position = Vector2(36, 360)
+
+[node name="Orange7" type="Marker2D" parent="MovementTargets/Amber/Scatter"]
+position = Vector2(37, 288)
+
+[node name="Orange8" type="Marker2D" parent="MovementTargets/Amber/Scatter"]
+position = Vector2(108, 289)
+
+[node name="Home" type="Node" parent="MovementTargets/Amber"]
+
+[node name="Bottom" type="Marker2D" parent="MovementTargets/Amber/Home"]
+position = Vector2(54, 27)
+
+[node name="Top" type="Marker2D" parent="MovementTargets/Amber/Home"]
+position = Vector2(54, -27)
+
+[node name="StartingPosition" type="Marker2D" parent="MovementTargets/Amber"]
+position = Vector2(54, -28)
+
+[node name="Player" type="Node" parent="MovementTargets"]
+
+[node name="StartingPosition" type="Marker2D" parent="MovementTargets/Player"]
+position = Vector2(0, 72)
+
+[node name="Ghosts" type="Node2D" parent="."]
+visible = false
+position = Vector2(0, 15)
+script = ExtResource("4_4g6r5")
+
+[node name="Scarlet" parent="Ghosts" node_paths=PackedStringArray("tile_map", "chasing_target", "points_manager", "starting_position") instance=ExtResource("3_cxu34")]
+position = Vector2(0, -84)
+scale = Vector2(2, 2)
+movement_targets = ExtResource("4_myhlx")
+tile_map = NodePath("../../TileMap")
+color = Color(1, 0.32549, 0.258824, 1)
+chasing_target = NodePath("../../PacMan")
+points_manager = NodePath("../../PointsManager")
+starting_position = NodePath("../../MovementTargets/Scarlet/StartingPosition")
+
+[node name="Blush" parent="Ghosts" node_paths=PackedStringArray("tile_map", "chasing_target", "points_manager", "starting_position") instance=ExtResource("3_cxu34")]
+position = Vector2(-19, -28)
+scale = Vector2(2, 2)
+ghost_type = "blush"
+movement_targets = ExtResource("6_nxh5w")
+tile_map = NodePath("../../TileMap")
+color = Color(0.770326, 0.475854, 0.812099, 1)
+chasing_target = NodePath("../../PacMan")
+points_manager = NodePath("../../PointsManager")
+is_starting_at_home = true
+starting_position = NodePath("../../MovementTargets/Blush/StartingPosition")
+
+[node name="Azure" parent="Ghosts" node_paths=PackedStringArray("tile_map", "chasing_target", "points_manager", "starting_position") instance=ExtResource("3_cxu34")]
+position = Vector2(19, -28)
+scale = Vector2(2, 2)
+ghost_type = "azure"
+movement_targets = ExtResource("7_wuoa1")
+tile_map = NodePath("../../TileMap")
+color = Color(0.153645, 0.559141, 0.628796, 1)
+chasing_target = NodePath("../../PacMan")
+points_manager = NodePath("../../PointsManager")
+is_starting_at_home = true
+starting_position = NodePath("../../MovementTargets/Azure/StartingPosition")
+
+[node name="Amber" parent="Ghosts" node_paths=PackedStringArray("tile_map", "chasing_target", "points_manager", "starting_position") instance=ExtResource("3_cxu34")]
+position = Vector2(54, -28)
+scale = Vector2(2, 2)
+ghost_type = "amber"
+movement_targets = ExtResource("8_qi48x")
+tile_map = NodePath("../../TileMap")
+color = Color(0.700012, 0.587908, 0.188264, 1)
+chasing_target = NodePath("../../PacMan")
+points_manager = NodePath("../../PointsManager")
+is_starting_at_home = true
+starting_position = NodePath("../../MovementTargets/Amber/StartingPosition")
+
+[node name="GameOverScreen" parent="." instance=ExtResource("5_q3bht")]
+visible = false
 
 [node name="PointsManager" type="Node" parent="."]
 script = ExtResource("10_008q4")

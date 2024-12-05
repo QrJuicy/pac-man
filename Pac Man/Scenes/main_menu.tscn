@@ -1,15 +1,16 @@
-[gd_scene load_steps=11 format=3 uid="uid://byeqrbqg1p6yd"]
+[gd_scene load_steps=12 format=3 uid="uid://byeqrbqg1p6yd"]
 
 [ext_resource type="Script" path="res://Script/main_menu.gd" id="1_k4622"]
-[ext_resource type="Texture2D" uid="uid://kjlenvx1dhx5" path="res://Main Assets/Button/Assets-05.png" id="2_dqdps"]
-[ext_resource type="Texture2D" uid="uid://doboattikdd3v" path="res://Main Assets/Button/Main Pic.png" id="3_11bbe"]
-[ext_resource type="Texture2D" uid="uid://8vkc5gmeqi5o" path="res://Main Assets/Button/Buttons Normal/Play.png" id="4_417u4"]
-[ext_resource type="Texture2D" uid="uid://3cpf38dof74q" path="res://Main Assets/Button/Assets-06.png" id="4_fajb7"]
-[ext_resource type="Texture2D" uid="uid://b4t14ghqtf8qd" path="res://Main Assets/Button/Buttons Highlighted/Play-Highlight.png" id="5_yr2le"]
-[ext_resource type="Texture2D" uid="uid://dh4iccsddr45x" path="res://Main Assets/Button/Buttons Normal/Option.png" id="6_p0mpb"]
-[ext_resource type="Texture2D" uid="uid://cl40scpsnxjgx" path="res://Main Assets/Button/Buttons Highlighted/Option-Highlight.png" id="7_fyity"]
-[ext_resource type="Texture2D" uid="uid://bhi33o2r8xqo3" path="res://Main Assets/Button/Buttons Normal/Quit.png" id="8_e63n5"]
-[ext_resource type="Texture2D" uid="uid://dxkj70juhu2dv" path="res://Main Assets/Button/Buttons Highlighted/Quit-Highlight.png" id="9_ixop5"]
+[ext_resource type="Texture2D" uid="uid://02cbwebgl84w" path="res://Main Assets/Button/Background.png" id="2_abgai"]
+[ext_resource type="Texture2D" uid="uid://b17p12cs8sg75" path="res://Main Assets/Button/Buttons Normal/Play Normal.png" id="3_uywii"]
+[ext_resource type="Texture2D" uid="uid://dxumr01r7f4f" path="res://Main Assets/Button/Buttons Pressed/PlayP.png" id="4_7mhoj"]
+[ext_resource type="Texture2D" uid="uid://dkjyihkdamy74" path="res://Main Assets/Button/Buttons Hover/PlayH.png" id="5_yfcpo"]
+[ext_resource type="Texture2D" uid="uid://b8agea1cmehs3" path="res://Main Assets/Button/Buttons Normal/Option.png" id="6_p0mpb"]
+[ext_resource type="Texture2D" uid="uid://ja1mdyrlo8ln" path="res://Main Assets/Button/Buttons Pressed/OptionP.png" id="7_1483t"]
+[ext_resource type="Texture2D" uid="uid://dvmjwyjoc1vn1" path="res://Main Assets/Button/Buttons Normal/Quit.png" id="8_e63n5"]
+[ext_resource type="Texture2D" uid="uid://bi0nm1j1t7uqr" path="res://Main Assets/Button/Buttons Hover/OptionH.png" id="8_gbvoq"]
+[ext_resource type="Texture2D" uid="uid://be1h1yhxp74of" path="res://Main Assets/Button/Buttons Pressed/QuitP.png" id="10_27wmv"]
+[ext_resource type="Texture2D" uid="uid://d3caik1hylv6" path="res://Main Assets/Button/Buttons Hover/QuitH.png" id="11_n1x33"]
 
 [node name="Menu" type="Control"]
 layout_mode = 3
@@ -21,52 +22,45 @@ grow_vertical = 2
 script = ExtResource("1_k4622")
 
 [node name="Background" type="Sprite2D" parent="."]
-position = Vector2(577, 326.125)
-scale = Vector2(0.14375, 0.151336)
-texture = ExtResource("2_dqdps")
-
-[node name="Pacman" type="Sprite2D" parent="."]
-position = Vector2(337, 333)
-scale = Vector2(0.127111, 0.124726)
-texture = ExtResource("3_11bbe")
-
-[node name="Title" type="Sprite2D" parent="."]
-position = Vector2(834, 115)
-scale = Vector2(0.121132, 0.121132)
-texture = ExtResource("4_fajb7")
+position = Vector2(577, 309)
+scale = Vector2(0.239315, 0.251944)
+texture = ExtResource("2_abgai")
 
 [node name="Play" type="TextureButton" parent="."]
 texture_filter = 1
 layout_mode = 2
-offset_left = 671.0
-offset_top = 180.0
-offset_right = 799.0
-offset_bottom = 215.0
+offset_left = 660.0
+offset_top = 191.0
+offset_right = 772.0
+offset_bottom = 239.0
 scale = Vector2(2.5, 2.5)
-texture_normal = ExtResource("4_417u4")
-texture_hover = ExtResource("5_yr2le")
+texture_normal = ExtResource("3_uywii")
+texture_pressed = ExtResource("4_7mhoj")
+texture_hover = ExtResource("5_yfcpo")
 
 [node name="Options" type="TextureButton" parent="."]
 texture_filter = 1
 layout_mode = 2
-offset_left = 751.0
-offset_top = 254.0
-offset_right = 879.0
-offset_bottom = 286.0
+offset_left = 657.0
+offset_top = 324.0
+offset_right = 769.0
+offset_bottom = 372.0
 scale = Vector2(2.5, 2.5)
 texture_normal = ExtResource("6_p0mpb")
-texture_hover = ExtResource("7_fyity")
+texture_pressed = ExtResource("7_1483t")
+texture_hover = ExtResource("8_gbvoq")
 
 [node name="Quit" type="TextureButton" parent="."]
 texture_filter = 1
 layout_mode = 2
-offset_left = 761.0
-offset_top = 315.0
-offset_right = 857.0
-offset_bottom = 347.0
+offset_left = 657.0
+offset_top = 465.0
+offset_right = 769.0
+offset_bottom = 513.0
 scale = Vector2(2.5, 2.5)
 texture_normal = ExtResource("8_e63n5")
-texture_hover = ExtResource("9_ixop5")
+texture_pressed = ExtResource("10_27wmv")
+texture_hover = ExtResource("11_n1x33")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 0

@@ -40,6 +40,7 @@ func on_pellet_eaten(should_allow_eating_ghosts: bool):
 		ui.game_won()
 		
 func reset_points_for_ghosts():
+	power_pellet_sound_player.stop()
 	points_manager.reset_points_for_ghosts()
 
 func on_ghost_run_away_timeout():
