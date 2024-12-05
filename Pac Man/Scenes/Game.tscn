@@ -1,17 +1,13 @@
-[gd_scene load_steps=48 format=3 uid="uid://bsm7xcjml3o27"]
+[gd_scene load_steps=44 format=3 uid="uid://bsm7xcjml3o27"]
 
 [ext_resource type="PackedScene" uid="uid://betqj7xrmhu4y" path="res://Scenes/pac_man.tscn" id="1_6e285"]
 [ext_resource type="Texture2D" uid="uid://bmtlbc44n3vm3" path="res://Main Assets/Walls/wall_atlas.png" id="2_7h60b"]
 [ext_resource type="Script" path="res://Script/tilemap.gd" id="2_m1ls4"]
 [ext_resource type="PackedScene" uid="uid://b4nrrwhtewxye" path="res://Scenes/ghost.tscn" id="3_cxu34"]
 [ext_resource type="Script" path="res://Scenes/Ghosts.gd" id="4_4g6r5"]
-[ext_resource type="Resource" uid="uid://c8rpqjkwkyg8d" path="res://Resources/red_movement_targets.tres" id="4_myhlx"]
 [ext_resource type="PackedScene" uid="uid://bmkld43ht6amp" path="res://Scenes/coin.tscn" id="5_ii10l"]
 [ext_resource type="Script" path="res://Script/pellets_manager.gd" id="5_snsd0"]
-[ext_resource type="Resource" uid="uid://cou5av8ay7a0i" path="res://Resources/pink_movement_targets.tres" id="6_nxh5w"]
 [ext_resource type="PackedScene" uid="uid://b43ph8jib88s8" path="res://Scenes/ui.tscn" id="7_uid1h"]
-[ext_resource type="Resource" uid="uid://bd2hbn6yobl2v" path="res://Resources/cyan_movement_targets.tres" id="7_wuoa1"]
-[ext_resource type="Resource" uid="uid://djlmiyqp7wlkr" path="res://Resources/orange_movement_targets.tres" id="8_qi48x"]
 [ext_resource type="Script" path="res://Script/points_manager.gd" id="10_008q4"]
 [ext_resource type="PackedScene" uid="uid://6uhjwrwe2dmk" path="res://Scenes/connector.tscn" id="12_1mgif"]
 [ext_resource type="AudioStream" uid="uid://oeo4cn8leb72" path="res://Main Assets/Sounds/pacman_chomp.wav" id="15_3nc1b"]
@@ -2185,18 +2181,19 @@ script = ExtResource("4_4g6r5")
 position = Vector2(0, -84)
 scale = Vector2(2, 2)
 ghost_type = "scarlet"
-movement_targets = ExtResource("4_myhlx")
 tile_map = NodePath("../../TileMap")
 color = Color(1, 0.32549, 0.258824, 1)
 chasing_target = NodePath("../../PacMan")
 points_manager = NodePath("../../PointsManager")
 starting_position = NodePath("../../MovementTargets/Scarlet/StartingPosition")
 
+[node name="ArrayManager" parent="Ghosts/Scarlet" index="0" node_paths=PackedStringArray("at_home_targets")]
+at_home_targets = [NodePath("../../../MovementTargets/Scarlet/Home/Bottom"), NodePath("../../../MovementTargets/Scarlet/Home/Top")]
+
 [node name="Blush" parent="Ghosts" node_paths=PackedStringArray("tile_map", "chasing_target", "points_manager", "starting_position") instance=ExtResource("3_cxu34")]
 position = Vector2(-19, -28)
 scale = Vector2(2, 2)
 ghost_type = "blush"
-movement_targets = ExtResource("6_nxh5w")
 tile_map = NodePath("../../TileMap")
 color = Color(0.770326, 0.475854, 0.812099, 1)
 chasing_target = NodePath("../../PacMan")
@@ -2208,7 +2205,6 @@ starting_position = NodePath("../../MovementTargets/Blush/StartingPosition")
 position = Vector2(19, -28)
 scale = Vector2(2, 2)
 ghost_type = "azure"
-movement_targets = ExtResource("7_wuoa1")
 tile_map = NodePath("../../TileMap")
 color = Color(0.153645, 0.559141, 0.628796, 1)
 chasing_target = NodePath("../../PacMan")
@@ -2220,7 +2216,6 @@ starting_position = NodePath("../../MovementTargets/Azure/StartingPosition")
 position = Vector2(54, -28)
 scale = Vector2(2, 2)
 ghost_type = "amber"
-movement_targets = ExtResource("8_qi48x")
 tile_map = NodePath("../../TileMap")
 color = Color(0.700012, 0.587908, 0.188264, 1)
 chasing_target = NodePath("../../PacMan")
@@ -2252,3 +2247,8 @@ stream = ExtResource("18_my8c6")
 position = Vector2(-480, 232)
 
 [node name="Score" parent="." instance=ExtResource("20_va7ne")]
+
+[editable path="Ghosts/Scarlet"]
+[editable path="Ghosts/Blush"]
+[editable path="Ghosts/Azure"]
+[editable path="Ghosts/Amber"]

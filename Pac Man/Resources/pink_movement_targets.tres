@@ -1,8 +1,0 @@
-[gd_resource type="Resource" load_steps=2 format=3 uid="uid://cou5av8ay7a0i"]
-
-[ext_resource type="Script" path="res://Resources/movement_targets.gd" id="1_uohot"]
-
-[resource]
-script = ExtResource("1_uohot")
-scatter_targets = Array[NodePath]([NodePath("MovementTargets/Blush/Scatter/Pink1"), NodePath("MovementTargets/Blush/Scatter/Pink2"), NodePath("MovementTargets/Blush/Scatter/Pink3"), NodePath("MovementTargets/Blush/Scatter/Pink4")])
-at_home_targets = Array[NodePath]([NodePath("MovementTargets/Blush/Home/Bottom"), NodePath("MovementTargets/Blush/Home/Top")])

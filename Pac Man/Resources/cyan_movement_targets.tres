@@ -1,8 +1,0 @@
-[gd_resource type="Resource" load_steps=2 format=3 uid="uid://bd2hbn6yobl2v"]
-
-[ext_resource type="Script" path="res://Resources/movement_targets.gd" id="1_pg16y"]
-
-[resource]
-script = ExtResource("1_pg16y")
-scatter_targets = Array[NodePath]([NodePath("MovementTargets/Azure/Scatter/Cyan1"), NodePath("MovementTargets/Azure/Scatter/Cyan2"), NodePath("MovementTargets/Azure/Scatter/Cyan3"), NodePath("MovementTargets/Azure/Scatter/Cyan4"), NodePath("MovementTargets/Azure/Scatter/Cyan5"), NodePath("MovementTargets/Azure/Scatter/Cyan6"), NodePath("MovementTargets/Azure/Scatter/Cyan7"), NodePath("MovementTargets/Azure/Scatter/Cyan8")])
-at_home_targets = Array[NodePath]([NodePath("MovementTargets/Azure/Home/Bottom"), NodePath("MovementTargets/Azure/Home/Top")])

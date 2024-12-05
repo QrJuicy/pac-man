@@ -1,8 +1,0 @@
-[gd_resource type="Resource" load_steps=2 format=3 uid="uid://c8rpqjkwkyg8d"]
-
-[ext_resource type="Script" path="res://Resources/movement_targets.gd" id="1_qorve"]
-
-[resource]
-script = ExtResource("1_qorve")
-scatter_targets = Array[NodePath]([NodePath("MovementTargets/Scarlet/Scatter/Red1"), NodePath("MovementTargets/Scarlet/Scatter/Red2"), NodePath("MovementTargets/Scarlet/Scatter/Red3"), NodePath("MovementTargets/Scarlet/Scatter/Red4")])
-at_home_targets = Array[NodePath]([NodePath("MovementTargets/Scarlet/Home/Bottom"), NodePath("MovementTargets/Scarlet/Home/Top")])
