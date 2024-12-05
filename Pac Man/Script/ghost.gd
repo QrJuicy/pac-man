@@ -79,10 +79,12 @@ func _process(delta):
 
 func move_ghost(next_position: Vector2, delta: float):
 	# Move ghost towards the next position
-	var current_ghost_position = position
+	var current_ghost_position = global_position
 	var current_speed = eaten_speed if current_state == GhostState.EATEN else speed
 	var new_velocity = (next_position - current_ghost_position).normalized() * current_speed * delta
+	
 	calculate_direction(new_velocity)
+	
 	position += new_velocity
 	
 func calculate_direction(new_velocity: Vector2):
@@ -253,4 +255,4 @@ func calculate_path_to_target(target_position: Vector2):
 			if global_position.distance_to(chasing_target.position) < 5 * tile_map.get_cell_size().x:
 				navigation_agent_2d.target_position = chasing_target.position
 			else:
-				navigation_agent_2d.target_position = tile_map.get_random_empty_cell_position()
+				navigation_agent_2d.target_position = tile_map.get_random_empty_cell()

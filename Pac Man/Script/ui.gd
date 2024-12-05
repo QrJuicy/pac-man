@@ -26,6 +26,7 @@ func game_won():
 	# Show the "Game Won" message
 	center_container.show()  # Display the center container for game win
 	center_container_2.hide()  # Hide the game over container (if shown)
+	
 
 func game_lost():
 	# Show the "Game Over" message
@@ -47,4 +48,3 @@ func _on_main_menu_button_pressed():
 func _on_try_again_button_pressed():
 	# Reload the current scene and unpause the game
 	get_tree().reload_current_scene()
-	get_tree().paused = false
