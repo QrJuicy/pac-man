@@ -8,12 +8,14 @@ signal player_died(life: int)
 var next_movement_direction = Vector2.ZERO
 var movement_direction = Vector2.ZERO
 var shape_query = PhysicsShapeQueryParameters2D.new()
+var is_powered = false
 
 #export variables
 @export var speed = 300
 @export var start_position: Node2D
 @export var pacman_death_sound_player: AudioStreamPlayer2D
 @export var pellets_manager: PelletsManager
+@export var powerup_timer : Timer
 @export var lifes: int = 2
 @export var ui: UI
 
@@ -46,9 +48,7 @@ func _physics_process(delta):
 	velocity = movement_direction * speed
 	move_and_slide()
 	
-
 func get_input():
-	
 	if Input.is_action_pressed("left"):
 		next_movement_direction = Vector2.LEFT
 		rotation_degrees = 0
@@ -68,9 +68,9 @@ func can_move_in_direction(dir: Vector2, delta: float) -> bool:
 	return result.size() == 0	
 
 func die():
-	#pellets_manager.power_pellet_sound_player.stop()
-	#if !pacman_death_sound_player.playing:
-		#pacman_death_sound_player.play()
+	pellets_manager.power_pellet_sound_player.stop()
+	if !pacman_death_sound_player.playing:
+		pacman_death_sound_player.play()
 	animation_player.play("death")
 	set_physics_process(false)
 
@@ -86,3 +86,13 @@ func _on_animation_player_animation_finished(anim_name):
 		else:
 			position = start_position.position
 			set_collision_layer_value(1, false)
+	
+func powerup():#<--- powerup activator
+	powerup_timer.start()
+	is_powered = true
+	
+func _on_powerup_timer_timeout():#<--- powerup deactivator
+	print("power off")
+	is_powered = false
+	
+

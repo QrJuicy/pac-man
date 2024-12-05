@@ -62,9 +62,10 @@ _data = {
 "default": SubResource("Animation_rpi71")
 }
 
-[node name="PacMan" type="CharacterBody2D"]
+[node name="PacMan" type="CharacterBody2D" node_paths=PackedStringArray("powerup_timer")]
 collision_mask = 30
 script = ExtResource("1_cixyg")
+powerup_timer = NodePath("PowerupTimer")
 
 [node name="PacMan Collider" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_56hlh")
@@ -86,7 +87,7 @@ rotation = -1.5708
 scale = Vector2(0.1, 0.1)
 texture = ExtResource("3_2d2wu")
 
-[node name="PowerUpTimer" type="Timer" parent="."]
+[node name="PowerupTimer" type="Timer" parent="."]
 wait_time = 5.0
 one_shot = true
 
@@ -95,4 +96,5 @@ libraries = {
 "": SubResource("AnimationLibrary_8d0lb")
 }
 
+[connection signal="timeout" from="PowerupTimer" to="." method="_on_powerup_timer_timeout"]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]

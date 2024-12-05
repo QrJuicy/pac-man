@@ -1,4 +1,4 @@
-[gd_scene load_steps=44 format=3 uid="uid://bsm7xcjml3o27"]
+[gd_scene load_steps=45 format=3 uid="uid://bsm7xcjml3o27"]
 
 [ext_resource type="PackedScene" uid="uid://betqj7xrmhu4y" path="res://Scenes/pac_man.tscn" id="1_6e285"]
 [ext_resource type="Texture2D" uid="uid://bmtlbc44n3vm3" path="res://Main Assets/Walls/wall_atlas.png" id="2_7h60b"]
@@ -12,6 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://6uhjwrwe2dmk" path="res://Scenes/connector.tscn" id="12_1mgif"]
 [ext_resource type="AudioStream" uid="uid://oeo4cn8leb72" path="res://Main Assets/Sounds/pacman_chomp.wav" id="15_3nc1b"]
 [ext_resource type="AudioStream" uid="uid://goc7tsa804px" path="res://Main Assets/Sounds/pacman_eatghost.wav" id="16_gwg4p"]
+[ext_resource type="PackedScene" uid="uid://bt8l0uvco1kxt" path="res://Scenes/power_up.tscn" id="17_0nrao"]
 [ext_resource type="AudioStream" uid="uid://dxjg8dwefuvq7" path="res://Main Assets/Sounds/pacman_power_pellet.wav" id="17_aw4ci"]
 [ext_resource type="AudioStream" uid="uid://dmpo4vasr1u13" path="res://Main Assets/Sounds/pacman_death.wav" id="18_my8c6"]
 [ext_resource type="PackedScene" uid="uid://pqi18hxa5jbo" path="res://Scenes/LivesUI.tscn" id="19_as5hw"]
@@ -440,1167 +441,918 @@ script = ExtResource("5_snsd0")
 ghost_array = [NodePath("../Ghosts/Scarlet"), NodePath("../Ghosts/Blush"), NodePath("../Ghosts/Azure"), NodePath("../Ghosts/Amber")]
 
 [node name="Pellet_1" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(180, -131)
 collision_layer = 5
 
 [node name="Pellet_2" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(180, -143)
 collision_layer = 5
 
 [node name="Pellet_3" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(180, -167)
 collision_layer = 5
 
 [node name="Pellet_4" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(180, -191)
 collision_layer = 5
 
 [node name="Pellet_5" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(180, -214)
 collision_layer = 5
 
 [node name="Pellet_6" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(180, -239)
 collision_layer = 5
 
 [node name="Pellet_7" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(180, -263)
 collision_layer = 5
 
 [node name="Pellet_8" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(180, -287)
 collision_layer = 5
 
 [node name="Pellet_9" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(180, -96)
 collision_layer = 5
 
 [node name="Pellet_10" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(180, 95)
 collision_layer = 5
 
 [node name="Pellet_11" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(180, 71)
 collision_layer = 5
 
 [node name="Pellet_12" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(180, 47)
 collision_layer = 5
 
 [node name="Pellet_13" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(180, 23)
 collision_layer = 5
 
 [node name="Pellet_14" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(180, -1)
 collision_layer = 5
 
 [node name="Pellet_15" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(180, -25)
 collision_layer = 5
 
 [node name="Pellet_16" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(180, -49)
 collision_layer = 5
 
 [node name="Pellet_17" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(180, -120)
 collision_layer = 5
 
 [node name="Pellet_18" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(180, -73)
 collision_layer = 5
 
 [node name="Pellet_19" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(180, 119)
 collision_layer = 5
 
 [node name="Pellet_20" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(180, 119)
 collision_layer = 5
 
 [node name="Pellet_21" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(303, 360)
 collision_layer = 5
 
 [node name="Pellet_22" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(303, 336)
 collision_layer = 5
 
 [node name="Pellet_23" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(303, 312)
 collision_layer = 5
 
 [node name="Pellet_24" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(303, 288)
 collision_layer = 5
 
 [node name="Pellet_25" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(180, 192)
 collision_layer = 5
 
 [node name="Pellet_26" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(180, 168)
 collision_layer = 5
 
 [node name="Pellet_27" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(180, 119)
 collision_layer = 5
 
 [node name="Pellet_28" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(180, 144)
 collision_layer = 5
 
 [node name="Pellet_29" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-180, -311)
 collision_layer = 5
 
 [node name="Pellet_30" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-180, -119)
 collision_layer = 5
 
 [node name="Pellet_31" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-180, -143)
 collision_layer = 5
 
 [node name="Pellet_32" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-180, -167)
 collision_layer = 5
 
 [node name="Pellet_33" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-180, -191)
 collision_layer = 5
 
 [node name="Pellet_34" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-180, -215)
 collision_layer = 5
 
 [node name="Pellet_35" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-180, -239)
 collision_layer = 5
 
 [node name="Pellet_36" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-180, -263)
 collision_layer = 5
 
 [node name="Pellet_37" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-180, -287)
 collision_layer = 5
 
 [node name="Pellet_38" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-180, -96)
 collision_layer = 5
 
 [node name="Pellet_39" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-180, 95)
 collision_layer = 5
 
 [node name="Pellet_40" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-180, 71)
 collision_layer = 5
 
 [node name="Pellet_41" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-180, 47)
 collision_layer = 5
 
 [node name="Pellet_42" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-180, 23)
 collision_layer = 5
 
 [node name="Pellet_43" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-180, -1)
 collision_layer = 5
 
 [node name="Pellet_44" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-156, -1)
 collision_layer = 5
 
 [node name="Pellet_45" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-132, -1)
 collision_layer = 5
 
 [node name="Pellet_288" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-108, -1)
 collision_layer = 5
 
 [node name="Pellet_289" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(108, -1)
 collision_layer = 5
 
 [node name="Pellet_290" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(132, -1)
 collision_layer = 5
 
 [node name="Pellet_291" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(156, -1)
 collision_layer = 5
 
 [node name="Pellet_46" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-205, -1)
 collision_layer = 5
 
 [node name="Pellet_47" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-229, -1)
 collision_layer = 5
 
 [node name="Pellet_48" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-253, -1)
 collision_layer = 5
 
 [node name="Pellet_49" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-277, -1)
 collision_layer = 5
 
 [node name="Pellet_50" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-301, -1)
 collision_layer = 5
 
 [node name="Pellet_51" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(300, -1)
 collision_layer = 5
 
 [node name="Pellet_52" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(276, -1)
 collision_layer = 5
 
 [node name="Pellet_53" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(252, -1)
 collision_layer = 5
 
 [node name="Pellet_54" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(228, -1)
 collision_layer = 5
 
 [node name="Pellet_55" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(204, -1)
 collision_layer = 5
 
 [node name="Pellet_56" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-180, -25)
 collision_layer = 5
 
 [node name="Pellet_57" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-180, -49)
 collision_layer = 5
 
 [node name="Pellet_58" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-180, -73)
 collision_layer = 5
 
 [node name="Pellet_59" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-180, 119)
 collision_layer = 5
 
 [node name="Pellet_60" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-180, 288)
 collision_layer = 5
 
 [node name="Pellet_61" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-180, 264)
 collision_layer = 5
 
 [node name="Pellet_62" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-180, 240)
 collision_layer = 5
 
 [node name="Pellet_63" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-180, 216)
 collision_layer = 5
 
 [node name="Pellet_64" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-180, 192)
 collision_layer = 5
 
 [node name="Pellet_65" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-180, 168)
 collision_layer = 5
 
 [node name="Pellet_66" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-180, 144)
 collision_layer = 5
 
 [node name="Pellet_67" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(302, -143)
 collision_layer = 5
 
 [node name="Pellet_68" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(302, -167)
 collision_layer = 5
 
 [node name="Pellet_69" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(302, -191)
 collision_layer = 5
 
 [node name="Pellet_70" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(302, -214)
 collision_layer = 5
 
 [node name="Pellet_71" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(302, -239)
 collision_layer = 5
 
 [node name="Pellet_72" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(302, -287)
 collision_layer = 5
 
 [node name="Pellet_73" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(300, 192)
 collision_layer = 5
 
 [node name="Pellet_74" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(300, 168)
 collision_layer = 5
 
 [node name="Pellet_75" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(300, 144)
 collision_layer = 5
 
-[node name="Pellet_76" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
-position = Vector2(-302, -311)
-collision_layer = 5
-
-[node name="Pellet_77" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
-position = Vector2(-302, -311)
-collision_layer = 5
-
 [node name="Pellet_78" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-302, -143)
 collision_layer = 5
 
 [node name="Pellet_79" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-302, -167)
 collision_layer = 5
 
 [node name="Pellet_80" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-302, -191)
 collision_layer = 5
 
 [node name="Pellet_81" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-302, -215)
 collision_layer = 5
 
 [node name="Pellet_82" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-302, -239)
 collision_layer = 5
 
 [node name="Pellet_83" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
-position = Vector2(-302, -287)
+position = Vector2(-302, -265)
 collision_layer = 5
 
 [node name="Pellet_84" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-302, 192)
 collision_layer = 5
 
 [node name="Pellet_85" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-302, 168)
 collision_layer = 5
 
 [node name="Pellet_86" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-302, 144)
 collision_layer = 5
 
 [node name="Pellet_87" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-301, 360)
 collision_layer = 5
 
 [node name="Pellet_88" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-301, 336)
 collision_layer = 5
 
 [node name="Pellet_89" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-301, 312)
 collision_layer = 5
 
 [node name="Pellet_90" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-301, 288)
 collision_layer = 5
 
 [node name="Pellet_91" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(37, -214)
 collision_layer = 5
 
 [node name="Pellet_92" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(37, -239)
 collision_layer = 5
 
 [node name="Pellet_93" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(37, -263)
 collision_layer = 5
 
 [node name="Pellet_94" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(37, -287)
 collision_layer = 5
 
 [node name="Pellet_95" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-37, -311)
 collision_layer = 5
 
 [node name="Pellet_96" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-37, -311)
 collision_layer = 5
 
 [node name="Pellet_97" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-37, -214)
 collision_layer = 5
 
 [node name="Pellet_98" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-37, -238)
 collision_layer = 5
 
 [node name="Pellet_99" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-37, -262)
 collision_layer = 5
 
 [node name="Pellet_100" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-37, -311)
 collision_layer = 5
 
 [node name="Pellet_101" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-37, -286)
 collision_layer = 5
 
 [node name="Pellet_102" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(107, -143)
 collision_layer = 5
 
 [node name="Pellet_103" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(107, -167)
 collision_layer = 5
 
 [node name="Pellet_104" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(107, -191)
 collision_layer = 5
 
 [node name="Pellet_105" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-110, -143)
 collision_layer = 5
 
 [node name="Pellet_106" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-110, -167)
 collision_layer = 5
 
 [node name="Pellet_107" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-110, -191)
 collision_layer = 5
 
 [node name="Pellet_108" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-107, 289)
 collision_layer = 5
 
 [node name="Pellet_109" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-107, 265)
 collision_layer = 5
 
 [node name="Pellet_110" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-107, 241)
 collision_layer = 5
 
 [node name="Pellet_111" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(108, 288)
 collision_layer = 5
 
 [node name="Pellet_112" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(109, 264)
 collision_layer = 5
 
 [node name="Pellet_113" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(109, 239)
 collision_layer = 5
 
 [node name="Pellet_114" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(181, 288)
 collision_layer = 5
 
 [node name="Pellet_115" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(181, 264)
 collision_layer = 5
 
 [node name="Pellet_116" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(181, 240)
 collision_layer = 5
 
 [node name="Pellet_117" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(181, 216)
 collision_layer = 5
 
 [node name="Pellet_118" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(252, 288)
 collision_layer = 5
 
 [node name="Pellet_119" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(252, 264)
 collision_layer = 5
 
 [node name="Pellet_120" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(252, 240)
 collision_layer = 5
 
 [node name="Pellet_121" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(252, 216)
 collision_layer = 5
 
 [node name="Pellet_122" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-248, 288)
 collision_layer = 5
 
 [node name="Pellet_123" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-248, 264)
 collision_layer = 5
 
 [node name="Pellet_124" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-248, 240)
 collision_layer = 5
 
 [node name="Pellet_125" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-248, 216)
 collision_layer = 5
 
 [node name="Pellet_126" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(36, 360)
 collision_layer = 5
 
 [node name="Pellet_127" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(36, 336)
 collision_layer = 5
 
 [node name="Pellet_128" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(36, 312)
 collision_layer = 5
 
 [node name="Pellet_129" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(36, 288)
 collision_layer = 5
 
 [node name="Pellet_130" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-39, 360)
 collision_layer = 5
 
 [node name="Pellet_131" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-39, 337)
 collision_layer = 5
 
 [node name="Pellet_132" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-39, 313)
 collision_layer = 5
 
 [node name="Pellet_133" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-39, 289)
 collision_layer = 5
 
 [node name="Pellet_134" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(35, 216)
 collision_layer = 5
 
 [node name="Pellet_135" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(35, 192)
 collision_layer = 5
 
 [node name="Pellet_136" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(35, 168)
 collision_layer = 5
 
 [node name="Pellet_137" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(35, 144)
 collision_layer = 5
 
 [node name="Pellet_138" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-38, 216)
 collision_layer = 5
 
 [node name="Pellet_139" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-38, 192)
 collision_layer = 5
 
 [node name="Pellet_140" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-38, 168)
 collision_layer = 5
 
 [node name="Pellet_141" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-38, 144)
 collision_layer = 5
 
-[node name="Pellet_142" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
-position = Vector2(-278, -311)
-collision_layer = 5
-
 [node name="Pellet_143" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-254, -311)
 collision_layer = 5
 
 [node name="Pellet_144" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-230, -311)
 collision_layer = 5
 
 [node name="Pellet_145" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-206, -311)
 collision_layer = 5
 
 [node name="Pellet_146" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-278, -215)
 collision_layer = 5
 
 [node name="Pellet_147" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-254, -215)
 collision_layer = 5
 
 [node name="Pellet_148" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-230, -215)
 collision_layer = 5
 
 [node name="Pellet_149" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-206, -215)
 collision_layer = 5
 
 [node name="Pellet_150" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-278, -143)
 collision_layer = 5
 
 [node name="Pellet_151" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-254, -143)
 collision_layer = 5
 
 [node name="Pellet_152" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-230, -143)
 collision_layer = 5
 
 [node name="Pellet_153" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-206, -143)
 collision_layer = 5
 
 [node name="Pellet_154" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-277, 144)
 collision_layer = 5
 
 [node name="Pellet_155" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-253, 144)
 collision_layer = 5
 
 [node name="Pellet_156" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-229, 144)
 collision_layer = 5
 
 [node name="Pellet_157" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-205, 144)
 collision_layer = 5
 
 [node name="Pellet_158" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(205, 288)
 collision_layer = 5
 
 [node name="Pellet_159" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(229, 288)
 collision_layer = 5
 
 [node name="Pellet_160" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-156, -311)
 collision_layer = 5
 
 [node name="Pellet_161" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-132, -311)
 collision_layer = 5
 
 [node name="Pellet_162" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-108, -311)
 collision_layer = 5
 
 [node name="Pellet_163" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-84, -311)
 collision_layer = 5
 
 [node name="Pellet_164" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-61, -311)
 collision_layer = 5
 
 [node name="Pellet_165" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-181, 360)
 collision_layer = 5
 
 [node name="Pellet_166" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-278, 360)
 collision_layer = 5
 
 [node name="Pellet_167" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-254, 360)
 collision_layer = 5
 
 [node name="Pellet_168" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-230, 360)
 collision_layer = 5
 
 [node name="Pellet_169" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-206, 360)
 collision_layer = 5
 
 [node name="Pellet_170" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-156, 360)
 collision_layer = 5
 
 [node name="Pellet_171" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-132, 360)
 collision_layer = 5
 
 [node name="Pellet_172" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-108, 360)
 collision_layer = 5
 
 [node name="Pellet_173" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-84, 360)
 collision_layer = 5
 
 [node name="Pellet_174" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-61, 360)
 collision_layer = 5
 
 [node name="Pellet_175" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(158, 360)
 collision_layer = 5
 
 [node name="Pellet_176" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(61, 360)
 collision_layer = 5
 
 [node name="Pellet_177" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(85, 360)
 collision_layer = 5
 
 [node name="Pellet_178" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(109, 360)
 collision_layer = 5
 
 [node name="Pellet_179" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(133, 360)
 collision_layer = 5
 
 [node name="Pellet_180" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(183, 360)
 collision_layer = 5
 
 [node name="Pellet_181" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(207, 360)
 collision_layer = 5
 
 [node name="Pellet_182" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(231, 360)
 collision_layer = 5
 
 [node name="Pellet_183" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(255, 360)
 collision_layer = 5
 
 [node name="Pellet_184" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(278, 360)
 collision_layer = 5
 
 [node name="Pellet_185" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-180, -311)
 collision_layer = 5
 
-[node name="Pellet_186" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
-position = Vector2(-278, -311)
-collision_layer = 5
-
 [node name="Pellet_187" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-254, -311)
 collision_layer = 5
 
 [node name="Pellet_188" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-230, -311)
 collision_layer = 5
 
 [node name="Pellet_189" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-206, -311)
 collision_layer = 5
 
 [node name="Pellet_190" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-156, -311)
 collision_layer = 5
 
 [node name="Pellet_191" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-132, -311)
 collision_layer = 5
 
 [node name="Pellet_192" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-108, -311)
 collision_layer = 5
 
 [node name="Pellet_193" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-84, -311)
 collision_layer = 5
 
 [node name="Pellet_194" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-61, -311)
 collision_layer = 5
 
 [node name="Pellet_195" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(158, -311)
 collision_layer = 5
 
 [node name="Pellet_196" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(37, -311)
 collision_layer = 5
 
 [node name="Pellet_197" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(302, -311)
 collision_layer = 5
 
 [node name="Pellet_198" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(61, -311)
 collision_layer = 5
 
 [node name="Pellet_199" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(85, -311)
 collision_layer = 5
 
 [node name="Pellet_200" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(109, -311)
 collision_layer = 5
 
 [node name="Pellet_201" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(133, -311)
 collision_layer = 5
 
 [node name="Pellet_202" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(180, -311)
 collision_layer = 5
 
 [node name="Pellet_203" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(207, -311)
 collision_layer = 5
 
 [node name="Pellet_204" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(231, -311)
 collision_layer = 5
 
 [node name="Pellet_205" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(255, -311)
 collision_layer = 5
 
 [node name="Pellet_206" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(278, -311)
 collision_layer = 5
 
 [node name="Pellet_207" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(158, -311)
 collision_layer = 5
 
 [node name="Pellet_208" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(61, -311)
 collision_layer = 5
 
 [node name="Pellet_209" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(85, -311)
 collision_layer = 5
 
 [node name="Pellet_210" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(109, -311)
 collision_layer = 5
 
 [node name="Pellet_211" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(133, -311)
 collision_layer = 5
 
 [node name="Pellet_212" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(205, -214)
 collision_layer = 5
 
 [node name="Pellet_213" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(229, -214)
 collision_layer = 5
 
 [node name="Pellet_214" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(253, -214)
 collision_layer = 5
 
 [node name="Pellet_215" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(276, -214)
 collision_layer = 5
 
 [node name="Pellet_216" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(206, -143)
 collision_layer = 5
 
 [node name="Pellet_217" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(230, -143)
 collision_layer = 5
 
 [node name="Pellet_218" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(254, -143)
 collision_layer = 5
 
 [node name="Pellet_219" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(277, -143)
 collision_layer = 5
 
 [node name="Pellet_220" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(156, -214)
 collision_layer = 5
 
 [node name="Pellet_221" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(59, -214)
 collision_layer = 5
 
 [node name="Pellet_222" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(83, -214)
 collision_layer = 5
 
 [node name="Pellet_223" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(107, -214)
 collision_layer = 5
 
 [node name="Pellet_224" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(131, -214)
 collision_layer = 5
 
 [node name="Pellet_225" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-157, -214)
 collision_layer = 5
 
 [node name="Pellet_226" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-133, -214)
 collision_layer = 5
 
 [node name="Pellet_227" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-109, -214)
 collision_layer = 5
 
 [node name="Pellet_228" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-85, -214)
 collision_layer = 5
 
 [node name="Pellet_229" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-62, -214)
 collision_layer = 5
 
@@ -1645,392 +1397,314 @@ position = Vector2(-61, 132)
 collision_layer = 5
 
 [node name="Pellet_240" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(61, 144)
 collision_layer = 5
 
 [node name="Pellet_241" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(85, 144)
 collision_layer = 5
 
 [node name="Pellet_242" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(109, 144)
 collision_layer = 5
 
 [node name="Pellet_243" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(133, 144)
 collision_layer = 5
 
 [node name="Pellet_244" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(156, 144)
 collision_layer = 5
 
 [node name="Pellet_245" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-155, 216)
 collision_layer = 5
 
 [node name="Pellet_246" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-131, 216)
 collision_layer = 5
 
 [node name="Pellet_247" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-107, 216)
 collision_layer = 5
 
 [node name="Pellet_248" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-86, 216)
 collision_layer = 5
 
 [node name="Pellet_249" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-63, 216)
 collision_layer = 5
 
 [node name="Pellet_250" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-11, -214)
 collision_layer = 5
 
 [node name="Pellet_251" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(12, -214)
 collision_layer = 5
 
 [node name="Pellet_252" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(205, 144)
 collision_layer = 5
 
 [node name="Pellet_253" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(229, 144)
 collision_layer = 5
 
 [node name="Pellet_254" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(253, 144)
 collision_layer = 5
 
 [node name="Pellet_255" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(276, 144)
 collision_layer = 5
 
 [node name="Pellet_256" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-157, 144)
 collision_layer = 5
 
 [node name="Pellet_257" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-133, 144)
 collision_layer = 5
 
 [node name="Pellet_258" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-109, 144)
 collision_layer = 5
 
 [node name="Pellet_259" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-85, 144)
 collision_layer = 5
 
 [node name="Pellet_260" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-62, 144)
 collision_layer = 5
 
 [node name="Pellet_261" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(37, -143)
 collision_layer = 5
 
 [node name="Pellet_264" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(37, -119)
 collision_layer = 5
 
 [node name="Pellet_265" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(37, -95)
 collision_layer = 5
 
 [node name="Pellet_292" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(37, -71)
 collision_layer = 5
 
 [node name="Pellet_306" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-37, -144)
 collision_layer = 5
 
 [node name="Pellet_315" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-37, -120)
 collision_layer = 5
 
 [node name="Pellet_316" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-37, -96)
 collision_layer = 5
 
 [node name="Pellet_317" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-37, -72)
 collision_layer = 5
 
 [node name="Pellet_322" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-13, -72)
 collision_layer = 5
 
 [node name="Pellet_323" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(11, -72)
 collision_layer = 5
 
 [node name="Pellet_293" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(61, -71)
 collision_layer = 5
 
 [node name="Pellet_294" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(85, -71)
 collision_layer = 5
 
 [node name="Pellet_295" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(108, -71)
 collision_layer = 5
 
 [node name="Pellet_296" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(108, -25)
 collision_layer = 5
 
 [node name="Pellet_297" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(108, -49)
 collision_layer = 5
 
 [node name="Pellet_298" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(108, 71)
 collision_layer = 5
 
 [node name="Pellet_299" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(84, 71)
 collision_layer = 5
 
 [node name="Pellet_302" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(60, 71)
 collision_layer = 5
 
 [node name="Pellet_303" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(36, 71)
 collision_layer = 5
 
 [node name="Pellet_318" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-36, 71)
 collision_layer = 5
 
 [node name="Pellet_319" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-60, 71)
 collision_layer = 5
 
 [node name="Pellet_320" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-84, 71)
 collision_layer = 5
 
 [node name="Pellet_321" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-108, 71)
 collision_layer = 5
 
 [node name="Pellet_300" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(108, 45)
 collision_layer = 5
 
 [node name="Pellet_301" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(108, 21)
 collision_layer = 5
 
 [node name="Pellet_304" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(108, 115)
 collision_layer = 5
 
 [node name="Pellet_305" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(108, 91)
 collision_layer = 5
 
 [node name="Pellet_307" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-108, -71)
 collision_layer = 5
 
 [node name="Pellet_308" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-108, -25)
 collision_layer = 5
 
 [node name="Pellet_309" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-108, -49)
 collision_layer = 5
 
 [node name="Pellet_311" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-108, 45)
 collision_layer = 5
 
 [node name="Pellet_312" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-108, 21)
 collision_layer = 5
 
 [node name="Pellet_313" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-108, 115)
 collision_layer = 5
 
 [node name="Pellet_314" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-108, 91)
 collision_layer = 5
 
 [node name="Pellet_262" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(59, -143)
 collision_layer = 5
 
 [node name="Pellet_263" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(83, -143)
 collision_layer = 5
 
 [node name="Pellet_267" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-85, -144)
 collision_layer = 5
 
 [node name="Pellet_268" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-62, -144)
 collision_layer = 5
 
 [node name="Pellet_269" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-85, -71)
 collision_layer = 5
 
 [node name="Pellet_270" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-62, -71)
 collision_layer = 5
 
 [node name="Pellet_271" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(61, 216)
 collision_layer = 5
 
 [node name="Pellet_272" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(85, 216)
 collision_layer = 5
 
 [node name="Pellet_273" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(109, 216)
 collision_layer = 5
 
 [node name="Pellet_274" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(133, 216)
 collision_layer = 5
 
 [node name="Pellet_275" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(156, 216)
 collision_layer = 5
 
 [node name="Pellet_276" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-86, 289)
 collision_layer = 5
 
 [node name="Pellet_277" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-62, 289)
 collision_layer = 5
 
 [node name="Pellet_278" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(277, 216)
 collision_layer = 5
 
 [node name="Pellet_279" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(60, 288)
 collision_layer = 5
 
 [node name="Pellet_280" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(84, 288)
 collision_layer = 5
 
 [node name="Pellet_281" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(276, 288)
 collision_layer = 5
 
 [node name="Pellet_282" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-275, 288)
 collision_layer = 5
 
 [node name="Pellet_283" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-272, 216)
 collision_layer = 5
 
 [node name="Pellet_284" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-225, 288)
 collision_layer = 5
 
 [node name="Pellet_285" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(12, 360)
 collision_layer = 5
 
 [node name="Pellet_286" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-203, 288)
 collision_layer = 5
 
 [node name="Pellet_287" parent="Pellets" instance=ExtResource("5_ii10l")]
-visible = false
 position = Vector2(-12, 360)
 collision_layer = 5
 
@@ -2260,10 +1934,16 @@ stream = ExtResource("18_my8c6")
 [node name="LivesUI" parent="." instance=ExtResource("19_as5hw")]
 position = Vector2(-480, 232)
 
-[node name="Score" parent="." instance=ExtResource("20_va7ne")]
+[node name="Score" parent="." node_paths=PackedStringArray("score_label") instance=ExtResource("20_va7ne")]
+score_label = NodePath("../UI/MarginContainer/VBoxContainer/GameScoreLabel")
+
+[node name="Powerup" parent="." node_paths=PackedStringArray("pac_man") instance=ExtResource("17_0nrao")]
+position = Vector2(-294, -320)
+pac_man = NodePath("../PacMan")
 
 [connection signal="timeout" from="Ghosts/Scarlet/AtHomeTimer" to="Ghosts/Scarlet" method="_on_at_home_timer_timeout"]
 
+[editable path="UI"]
 [editable path="Ghosts/Scarlet"]
 [editable path="Ghosts/Blush"]
 [editable path="Ghosts/Azure"]

@@ -1,6 +1,6 @@
 extends Node  
 
-@onready var score_label = $"CanvasLayer"
+@export var score_label : Label
 
 var score: int = 0  
 

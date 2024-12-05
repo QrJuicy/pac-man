@@ -1,37 +1,14 @@
 [gd_scene load_steps=4 format=3 uid="uid://bt8l0uvco1kxt"]
 
 [ext_resource type="Texture2D" uid="uid://dbhrsis0fo063" path="res://Main Assets/Pellet/Pellet_Large.png" id="1_4p81y"]
-
-[sub_resource type="GDScript" id="GDScript_tibmm"]
-script/source = "extends Area2D
-
-signal powerup_collected
-
-@onready var score_manager = $\"Score\"  # Assuming ScoreManager is a sibling or parent node
-@onready var pacman = $\"pac_man\"  # Path to PacMan node
-
-# Called when Pac-Man collides with the power-up
-func _on_PowerUp_body_entered(body):
-	if body.name == \"PacMan\":  # Check if Pac-Man collided with the power-up
-		emit_signal(\"powerup_collected\")  # Emit signal when power-up is collected
-		score_manager.add_score(50)  # Add 50 points for collecting a power-up
-		
-		# Activate power-up state in Pac-Man
-		pacman.powerUp = true
-		pacman.powerUpTimer.start()  # Start the power-up timer
-		
-		# Transition ghosts to frightened state
-		for ghost in get_tree().get_nodes_in_group(pacman.ghostGroup):
-			ghost.set_frightened()  # Use method to set ghosts to frightened state
-		
-		queue_free()  # Remove the power-up after collection
-"
+[ext_resource type="Script" path="res://Script/Powerup.gd" id="1_j4h1b"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0yo7n"]
 size = Vector2(49, 48)
 
 [node name="Powerup" type="Area2D"]
-script = SubResource("GDScript_tibmm")
+scale = Vector2(0.69, 0.69)
+script = ExtResource("1_j4h1b")
 
 [node name="Sprite" type="Sprite2D" parent="."]
 position = Vector2(2.38419e-07, 1)
@@ -41,3 +18,5 @@ texture = ExtResource("1_4p81y")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0.5, 1)
 shape = SubResource("RectangleShape2D_0yo7n")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

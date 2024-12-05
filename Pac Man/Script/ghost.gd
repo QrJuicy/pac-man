@@ -231,7 +231,13 @@ func _on_body_entered(body):
 	elif current_state == GhostState.CHASE or current_state == GhostState.SCATTER:
 		set_collision_mask_value(1, false)
 		update_chasing_target_position_timer.stop()
-		player.die()
+		
+		#Player collision conditionals
+		if player.is_powered == false:
+			player.die() #<--- this still works as intended
+		else:
+			get_eaten() #<--- inconsistent, might need to fix RUN_AWAY state
+		
 		scatter_timer.wait_time = 600
 		scatter()
 		
