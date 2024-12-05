@@ -4,3 +4,5 @@
 
 [resource]
 script = ExtResource("1_qorve")
+scatter_targets = Array[NodePath]([NodePath("MovementTargets/Scarlet/Scatter/Red1"), NodePath("MovementTargets/Scarlet/Scatter/Red2"), NodePath("MovementTargets/Scarlet/Scatter/Red3"), NodePath("MovementTargets/Scarlet/Scatter/Red4")])
+at_home_targets = Array[NodePath]([NodePath("MovementTargets/Scarlet/Home/Bottom"), NodePath("MovementTargets/Scarlet/Home/Top")])

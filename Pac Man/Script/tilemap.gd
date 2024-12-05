@@ -14,3 +14,4 @@ func _ready():
 			
 func get_random_empty_cell():
 	return to_global(map_to_local(empty_cells.pick_random()))
+

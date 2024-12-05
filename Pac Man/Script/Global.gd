@@ -36,29 +36,6 @@ var level_speeds = {
 	20: 175
 }
 
-var level_times = {
-	1: 100.0, 
-	2: 98.0, 
-	3: 96.0, 
-	4: 94.0, 
-	5: 92.0, 
-	6: 90.0, 
-	7: 88.0, 
-	8: 86.0, 
-	9: 84.0, 
-	10: 82.0,
-	11: 80.0, 
-	12: 78.0, 
-	13: 76.0, 
-	14: 74.0, 
-	15: 72.0, 
-	16: 70.0, 
-	17: 68.0, 
-	18: 66.0, 
-	19: 64.0, 
-	20: 62.0
-}
-
 var scatter_timer = 0.0
 var frightened_timer = 0.0
 var chase_timer = 0.0
@@ -73,7 +50,6 @@ func set_level(new_level):
 	level = new_level
 	ghost_speed = level_speeds.get(level, 80)  # Default to 80 if level isn't found
 	pacman_speed = 100 + (level - 1) * 2  # Increment Pac-Man speed as levels increase
-	var _level_time = level_times.get(level, 60.0)  # Default to 60 seconds if level isn't found
 	print("Level set to ", level, " with Ghost Speed: ", ghost_speed, " and Pac-Man Speed: ", pacman_speed)
 
 # Function to call when level progresses

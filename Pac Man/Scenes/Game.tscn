@@ -1,4 +1,4 @@
-[gd_scene load_steps=49 format=3 uid="uid://bsm7xcjml3o27"]
+[gd_scene load_steps=48 format=3 uid="uid://bsm7xcjml3o27"]
 
 [ext_resource type="PackedScene" uid="uid://betqj7xrmhu4y" path="res://Scenes/pac_man.tscn" id="1_6e285"]
 [ext_resource type="Texture2D" uid="uid://bmtlbc44n3vm3" path="res://Main Assets/Walls/wall_atlas.png" id="2_7h60b"]
@@ -7,7 +7,6 @@
 [ext_resource type="Script" path="res://Scenes/Ghosts.gd" id="4_4g6r5"]
 [ext_resource type="Resource" uid="uid://c8rpqjkwkyg8d" path="res://Resources/red_movement_targets.tres" id="4_myhlx"]
 [ext_resource type="PackedScene" uid="uid://bmkld43ht6amp" path="res://Scenes/coin.tscn" id="5_ii10l"]
-[ext_resource type="PackedScene" uid="uid://bvnx6lqk3l7uw" path="res://Scenes/game_over_screen.tscn" id="5_q3bht"]
 [ext_resource type="Script" path="res://Script/pellets_manager.gd" id="5_snsd0"]
 [ext_resource type="Resource" uid="uid://cou5av8ay7a0i" path="res://Resources/pink_movement_targets.tres" id="6_nxh5w"]
 [ext_resource type="PackedScene" uid="uid://b43ph8jib88s8" path="res://Scenes/ui.tscn" id="7_uid1h"]
@@ -2226,9 +2225,6 @@ chasing_target = NodePath("../../PacMan")
 points_manager = NodePath("../../PointsManager")
 is_starting_at_home = true
 starting_position = NodePath("../../MovementTargets/Amber/StartingPosition")
-
-[node name="GameOverScreen" parent="." instance=ExtResource("5_q3bht")]
-visible = false
 
 [node name="PointsManager" type="Node" parent="."]
 script = ExtResource("10_008q4")
