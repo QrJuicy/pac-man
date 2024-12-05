@@ -9,6 +9,7 @@ func _ready():
 	
 func move():
 	self.modulate = (get_parent() as Ghost).color
+	self.visible = true
 	animation_player.play("moving")
 
 func run_away():

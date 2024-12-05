@@ -19,18 +19,18 @@ enum GhostState {
 }
 
 # Signals for specific events
-signal direction_change(current_direction: String)
+signal direction_change(direction: String)
 signal run_away_timeout
 
 # Variables for movement and state
-var current_scatter_index = 0
-var current_at_home_index = 0
+var current_scatter_index 
+var current_at_home_index
 var direction = null
 var current_state: GhostState
 var is_blinking = false
 
 # Exported variables for customization
-@export var ghost_type: String = "scarlet"  # Ghost type (scarlet, blush, azure, amber)
+@export var ghost_type: String              # Ghost type (scarlet, blush, azure, amber)
 @export var scatter_wait_time = 8           # Scatter timer wait time
 @export var eaten_speed = 240               # Speed when eaten
 @export var speed = 120                     # Regular movement speed
@@ -41,7 +41,7 @@ var is_blinking = false
 @export var points_manager: PointsManager   # Reference to points system
 @export var is_starting_at_home = false     # Whether the ghost starts in "home"
 @export var starting_position: Node2D       # Starting Point for Ghost and Player
-@export var ghost_eaten_sound_player: AudioStreamPlayer2D
+@export var cell_size: Vector2 = Vector2(32, 32)  # Default tile size
 
 # Node references using @onready
 @onready var at_home_timer = $AtHomeTimer
@@ -61,6 +61,10 @@ func _ready():
 	navigation_agent_2d.path_desired_distance = 4.0
 	navigation_agent_2d.target_desired_distance = 4.0
 	navigation_agent_2d.target_reached.connect(on_position_reached)
+	current_scatter_index = 0
+	current_at_home_index = 0
+	movement_targets = preload("res://Resources/red_movement_targets.tres")
+	
 	call_deferred("setup")
 
 func _process(delta):
@@ -84,7 +88,7 @@ func move_ghost(next_position: Vector2, delta: float):
 	
 func calculate_direction(new_velocity: Vector2):
 	# Determine the current direction based on velocity
-	var current_direction
+	var current_direction = null 
 	if new_velocity.x > 1:
 		current_direction = "right"
 	elif new_velocity.x < -1:
@@ -94,9 +98,11 @@ func calculate_direction(new_velocity: Vector2):
 	elif new_velocity.y < -1:
 		current_direction = "up"
 
-	if current_direction != direction:
+	# Emit signal only if the direction is valid
+	if current_direction != null and current_direction != direction:
 		direction = current_direction
 		direction_change.emit(direction)
+
 
 func setup():
 	position = starting_position.position
@@ -120,7 +126,6 @@ func scatter():
 	scatter_timer.start()
 	current_state = GhostState.SCATTER
 	navigation_agent_2d.target_position = movement_targets.scatter_targets[current_scatter_index].position
-
 
 func on_position_reached():
 	# Handle actions upon reaching a target position
@@ -238,14 +243,14 @@ func calculate_path_to_target(target_position: Vector2):
 			navigation_agent_2d.target_position = target_position
 		"blush":  # Prediction-based pathfinding
 			var pacman_velocity = chasing_target.velocity 
-			var prediction_offset = pacman_velocity.normalized() * 4 * tile_map.cell_size.x
+			var prediction_offset = pacman_velocity.normalized() * 4 * tile_map.get_cell_size().x
 			navigation_agent_2d.target_position = chasing_target.position + prediction_offset
 		"azure":  # Combined targeting
-			var scarlet_position = movement_targets.get_scarlet_position()
+			var scarlet_position = movement_targets.get_scarlet_position(get_parent())
 			var midpoint = (scarlet_position + chasing_target.position) / 2
 			navigation_agent_2d.target_position = midpoint
 		"amber":  # Proximity-based switching
-			if global_position.distance_to(chasing_target.position) < 5 * tile_map.cell_size.x:
+			if global_position.distance_to(chasing_target.position) < 5 * tile_map.get_cell_size().x:
 				navigation_agent_2d.target_position = chasing_target.position
 			else:
 				navigation_agent_2d.target_position = tile_map.get_random_empty_cell_position()

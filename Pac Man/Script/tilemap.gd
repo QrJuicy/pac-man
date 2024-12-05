@@ -2,6 +2,8 @@ extends TileMap
 
 class_name MazeTileMap
 
+@export var cell_size: Vector2 = Vector2(32, 32)  # Default to 32x32 tiles
+
 var empty_cells = []
 
 func _ready():
@@ -15,3 +17,5 @@ func _ready():
 func get_random_empty_cell():
 	return to_global(map_to_local(empty_cells.pick_random()))
 
+func get_cell_size() -> Vector2:
+	return cell_size

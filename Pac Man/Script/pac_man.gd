@@ -68,7 +68,6 @@ func can_move_in_direction(dir: Vector2, delta: float) -> bool:
 	return result.size() == 0	
 
 func die():
-
 	pellets_manager.power_pellet_sound_player.stop()
 	if !pacman_death_sound_player.playing:
 		pacman_death_sound_player.play()

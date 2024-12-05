@@ -2044,18 +2044,6 @@ collision_layer = 5
 
 [node name="Scatter" type="Node" parent="MovementTargets/Scarlet"]
 
-[node name="Red1" type="Marker2D" parent="MovementTargets/Scarlet/Scatter"]
-position = Vector2(-180, -215)
-
-[node name="Red2" type="Marker2D" parent="MovementTargets/Scarlet/Scatter"]
-position = Vector2(-302, -215)
-
-[node name="Red3" type="Marker2D" parent="MovementTargets/Scarlet/Scatter"]
-position = Vector2(-302, -311)
-
-[node name="Red4" type="Marker2D" parent="MovementTargets/Scarlet/Scatter"]
-position = Vector2(-180, -311)
-
 [node name="Home" type="Node" parent="MovementTargets/Scarlet"]
 
 [node name="Bottom" type="Marker2D" parent="MovementTargets/Scarlet/Home"]
@@ -2176,6 +2164,18 @@ position = Vector2(54, -28)
 [node name="StartingPosition" type="Marker2D" parent="MovementTargets/Player"]
 position = Vector2(0, 72)
 
+[node name="Red1" type="Marker2D" parent="MovementTargets"]
+position = Vector2(-180, -215)
+
+[node name="Red2" type="Marker2D" parent="MovementTargets"]
+position = Vector2(-302, -215)
+
+[node name="Red3" type="Marker2D" parent="MovementTargets"]
+position = Vector2(-302, -311)
+
+[node name="Red4" type="Marker2D" parent="MovementTargets"]
+position = Vector2(-180, -311)
+
 [node name="Ghosts" type="Node2D" parent="."]
 visible = false
 position = Vector2(0, 15)
@@ -2184,6 +2184,7 @@ script = ExtResource("4_4g6r5")
 [node name="Scarlet" parent="Ghosts" node_paths=PackedStringArray("tile_map", "chasing_target", "points_manager", "starting_position") instance=ExtResource("3_cxu34")]
 position = Vector2(0, -84)
 scale = Vector2(2, 2)
+ghost_type = "scarlet"
 movement_targets = ExtResource("4_myhlx")
 tile_map = NodePath("../../TileMap")
 color = Color(1, 0.32549, 0.258824, 1)

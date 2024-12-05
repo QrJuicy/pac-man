@@ -24,13 +24,11 @@ func set_score(score: int):
 
 func game_won():
 	# Show the "Game Won" message
-	game_label.text = "Game Won!"
 	center_container.show()  # Display the center container for game win
 	center_container_2.hide()  # Hide the game over container (if shown)
 
 func game_lost():
 	# Show the "Game Over" message
-	game_label_2.text = "Game Over"
 	center_container_2.show()  # Display the container for game over
 	center_container.hide()  # Hide the game win container (if shown)
 
