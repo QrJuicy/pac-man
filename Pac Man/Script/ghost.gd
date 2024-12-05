@@ -115,6 +115,7 @@ func start_at_home():
 	navigation_agent_2d.target_position = movement_targets.at_home_targets[current_at_home_index].position
 
 func scatter():
+	print("test")
 	# Start scatter mode
 	scatter_timer.start()
 	current_state = GhostState.SCATTER

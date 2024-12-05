@@ -431,9 +431,10 @@ zoom = Vector2(0.812, 0.812)
 
 [node name="UI" parent="." instance=ExtResource("7_uid1h")]
 
-[node name="PacMan" parent="." node_paths=PackedStringArray("ui") instance=ExtResource("1_6e285")]
+[node name="PacMan" parent="." node_paths=PackedStringArray("start_position", "ui") instance=ExtResource("1_6e285")]
 position = Vector2(0, 60)
 scale = Vector2(3, 3)
+start_position = NodePath("../MovementTargets/Player/StartingPosition")
 ui = NodePath("../UI")
 
 [node name="Pellets" type="Node" parent="." node_paths=PackedStringArray("ghost_array")]

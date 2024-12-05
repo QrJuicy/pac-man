@@ -1,8 +1,9 @@
-[gd_scene load_steps=21 format=3 uid="uid://betqj7xrmhu4y"]
+[gd_scene load_steps=22 format=3 uid="uid://betqj7xrmhu4y"]
 
 [ext_resource type="Script" path="res://Script/pac_man.gd" id="1_cixyg"]
 [ext_resource type="Texture2D" uid="uid://gadi87gcis7e" path="res://Main Assets/Pacman/Pacman_Death_01.png" id="2_bxbxq"]
 [ext_resource type="Texture2D" uid="uid://cnorlrp248wc1" path="res://Main Assets/Pacman/Pacman_02.png" id="2_xi26u"]
+[ext_resource type="Texture2D" uid="uid://c7jbmkltolr3i" path="res://Main Assets/Pacman/direction_pointer.png" id="3_2d2wu"]
 [ext_resource type="Texture2D" uid="uid://x4uddrqhmwkj" path="res://Main Assets/Pacman/Pacman_Death_02.png" id="3_mcxf4"]
 [ext_resource type="Texture2D" uid="uid://b377jl6x6yvfq" path="res://Main Assets/Pacman/Pacman_01.png" id="3_v08hh"]
 [ext_resource type="Texture2D" uid="uid://hdqy178e64ff" path="res://Main Assets/Pacman/Pacman_Death_03.png" id="4_5ifaw"]
@@ -28,7 +29,7 @@ length = 2.5
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:texture")
+tracks/0/path = NodePath("Pacman:texture")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -45,7 +46,7 @@ loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:texture")
+tracks/0/path = NodePath("Pacman:texture")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -74,10 +75,16 @@ shape = SubResource("CircleShape2D_56hlh")
 shape = SubResource("CircleShape2D_d5cvy")
 debug_color = Color(0.988235, 0, 0.196078, 0.419608)
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Pacman" type="Sprite2D" parent="."]
 texture_filter = 1
 scale = Vector2(-1, -1)
 texture = ExtResource("2_bxbxq")
+
+[node name="DirectionPointer" type="Sprite2D" parent="."]
+position = Vector2(-2.13163e-14, 9)
+rotation = -1.5708
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("3_2d2wu")
 
 [node name="PowerUpTimer" type="Timer" parent="."]
 wait_time = 5.0
