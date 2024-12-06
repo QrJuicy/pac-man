@@ -53,11 +53,13 @@ var is_blinking = false
 @onready var run_away_timer = $RunAwayTimer
 @onready var points_label = $PointsLabel
 @onready var animation_player = $AnimationPlayer
+@onready var powerup_timer = $PowerupTimer
 
 func _ready():
 	# Setup navigation and initial state
 	scatter_timer.wait_time = scatter_wait_time
 	at_home_timer.timeout.connect(scatter)
+	print("at_home_timer_end")
 	navigation_agent_2d.path_desired_distance = 4.0
 	navigation_agent_2d.target_desired_distance = 4.0
 	navigation_agent_2d.target_reached.connect(on_position_reached)
@@ -68,6 +70,8 @@ func _ready():
 
 func _process(delta):
 	# Handle blinking during "run away"
+	#print(current_state)
+	#print(at_home_timer.wait_time)
 	if !run_away_timer.is_stopped() and run_away_timer.time_left < run_away_timer.wait_time / 2 and !is_blinking:
 		start_blinking()
 
@@ -78,6 +82,7 @@ func _process(delta):
 	move_ghost(navigation_agent_2d.get_next_path_position(), delta)
 
 func move_ghost(next_position: Vector2, delta: float):
+	#print("move")
 	# Move ghost towards the next position
 	var current_ghost_position = global_position
 	var current_speed = eaten_speed if current_state == GhostState.EATEN else speed
@@ -118,12 +123,15 @@ func setup():
 		scatter()
 
 func start_at_home():
+	print("start at home")
 	# Handle the starting "home" state
 	current_state = GhostState.STARTING_AT_HOME
 	at_home_timer.start()
+	print("at_home_timer")
 	navigation_agent_2d.target_position = movement_targets.at_home_targets[current_at_home_index].position
 	
 func scatter():
+#	print("scatter")
 	# Start scatter mode
 	scatter_timer.start()
 	current_state = GhostState.SCATTER
@@ -144,6 +152,7 @@ func on_position_reached():
 
 func move_to_next_home_position():
 	# Alternate between home positions
+	print("move to next home position")
 	current_at_home_index = 1 if current_at_home_index == 0 else 0 
 	navigation_agent_2d.target_position = movement_targets.at_home_targets[current_at_home_index].position
 	
@@ -166,6 +175,7 @@ func _on_scatter_timer_timeout():
 	start_chasing_pacman()
 
 func start_chasing_pacman():
+	print("start chasing pacman")
 	# Begin chasing Pac-Man
 	if chasing_target == null:
 		print("NO CHASING TARGET. CHASING WILL NOT WORK!!!")
@@ -199,6 +209,7 @@ func run_away_from_pacman():
 	navigation_agent_2d.target_position = empty_cell_position
 
 func start_blinking():
+	#print("start blinking")
 	# Start blinking animation
 	body_sprite.start_blinking()
 	
