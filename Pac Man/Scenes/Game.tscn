@@ -1848,11 +1848,20 @@ position = Vector2(54, -28)
 [node name="StartingPosition" type="Marker2D" parent="MovementTargets/Player"]
 position = Vector2(0, 72)
 
-[node name="Ghosts" type="Node2D" parent="."]
+[node name="Ghosts" type="Node2D" parent="." node_paths=PackedStringArray("scarlet_ghost", "blush_ghost", "azure_ghost", "amber_ghost")]
 position = Vector2(0, 15)
 script = ExtResource("4_4g6r5")
+scarlet_ghost = NodePath("Scarlet")
+scarlet_start_time = 1.0
+blush_ghost = NodePath("Blush")
+blush_start_time = 503.0
+azure_ghost = NodePath("Azure")
+azure_start_time = 991.0
+amber_ghost = NodePath("Amber")
+amber_start_time = 1481.0
 
 [node name="Scarlet" parent="Ghosts" node_paths=PackedStringArray("tile_map", "chasing_target", "points_manager", "starting_position") instance=ExtResource("3_cxu34")]
+process_mode = 4
 position = Vector2(0, -84)
 scale = Vector2(2, 2)
 ghost_type = "scarlet"
@@ -1867,6 +1876,7 @@ scatter_targets = [NodePath("../../../MovementTargets/Scarlet/Scatter/Red1"), No
 at_home_targets = [NodePath("../../../MovementTargets/Scarlet/Home/Bottom"), NodePath("../../../MovementTargets/Scarlet/Home/Top")]
 
 [node name="Blush" parent="Ghosts" node_paths=PackedStringArray("tile_map", "chasing_target", "points_manager", "starting_position") instance=ExtResource("3_cxu34")]
+process_mode = 4
 position = Vector2(-19, -28)
 scale = Vector2(2, 2)
 ghost_type = "blush"
@@ -1882,6 +1892,7 @@ scatter_targets = [NodePath("../../../MovementTargets/Blush/Scatter/Pink1"), Nod
 at_home_targets = [NodePath("../../../MovementTargets/Blush/Home/Bottom"), NodePath("../../../MovementTargets/Blush/Home/Top")]
 
 [node name="Azure" parent="Ghosts" node_paths=PackedStringArray("tile_map", "chasing_target", "points_manager", "starting_position") instance=ExtResource("3_cxu34")]
+process_mode = 4
 position = Vector2(19, -28)
 scale = Vector2(2, 2)
 ghost_type = "azure"
@@ -1897,6 +1908,7 @@ scatter_targets = [NodePath("../../../MovementTargets/Azure/Scatter/Cyan1"), Nod
 at_home_targets = [NodePath("../../../MovementTargets/Azure/Home/Bottom"), NodePath("../../../MovementTargets/Azure/Home/Top")]
 
 [node name="Amber" parent="Ghosts" node_paths=PackedStringArray("tile_map", "chasing_target", "points_manager", "starting_position") instance=ExtResource("3_cxu34")]
+process_mode = 4
 position = Vector2(54, -28)
 scale = Vector2(2, 2)
 ghost_type = "amber"
