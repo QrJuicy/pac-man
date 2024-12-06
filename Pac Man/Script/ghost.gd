@@ -59,18 +59,20 @@ func _ready():
 	# Setup navigation and initial state
 	scatter_timer.wait_time = scatter_wait_time
 	at_home_timer.timeout.connect(scatter)
-	print("at_home_timer_end")
+	#print("at_home_timer_end")
 	navigation_agent_2d.path_desired_distance = 4.0
 	navigation_agent_2d.target_desired_distance = 4.0
 	navigation_agent_2d.target_reached.connect(on_position_reached)
 	current_scatter_index = 0
 	current_at_home_index = 0
-	
+	scatter()
 	call_deferred("setup")
 
 func _process(delta):
+	if current_state == GhostState.CHASE:
+		print("hell yeah")
 	# Handle blinking during "run away"
-	#print(current_state)
+	#print(current_state)                        
 	#print(at_home_timer.wait_time)
 	if !run_away_timer.is_stopped() and run_away_timer.time_left < run_away_timer.wait_time / 2 and !is_blinking:
 		start_blinking()
@@ -123,15 +125,15 @@ func setup():
 		scatter()
 
 func start_at_home():
-	print("start at home")
+	pass
+	#print("start at home")
 	# Handle the starting "home" state
-	current_state = GhostState.STARTING_AT_HOME
-	at_home_timer.start()
-	print("at_home_timer")
-	navigation_agent_2d.target_position = movement_targets.at_home_targets[current_at_home_index].position
+	#current_state = GhostState.STARTING_AT_HOME
+	#at_home_timer.start()
+	#print("at_home_timer")
+	#navigation_agent_2d.target_position = movement_targets.at_home_targets[current_at_home_index].position
 	
 func scatter():
-#	print("scatter")
 	# Start scatter mode
 	scatter_timer.start()
 	current_state = GhostState.SCATTER
@@ -175,11 +177,10 @@ func _on_scatter_timer_timeout():
 	start_chasing_pacman()
 
 func start_chasing_pacman():
-	print("start chasing pacman")
 	# Begin chasing Pac-Man
+	current_state = GhostState.CHASE
 	if chasing_target == null:
 		print("NO CHASING TARGET. CHASING WILL NOT WORK!!!")
-	current_state = GhostState.CHASE
 	update_chasing_target_position_timer.start()
 	navigation_agent_2d.target_position = chasing_target.position
 	calculate_path_to_target(chasing_target.position)
@@ -197,13 +198,13 @@ func start_chasing_pacman_after_being_eaten():
 	
 func run_away_from_pacman():
 	# Handle "run away" behavior
-	if run_away_timer.is_stopped():
-		body_sprite.run_away()
-		eyes_sprite.hide_eyes()
-		run_away_timer.start()
-	current_state = GhostState.RUN_AWAY
-	update_chasing_target_position_timer.stop()
-	scatter_timer.stop()
+	#if run_away_timer.is_stopped():
+	#	body_sprite.run_away()
+	#	eyes_sprite.hide_eyes()
+	#	run_away_timer.start()
+	#current_state = GhostState.RUN_AWAY
+	#update_chasing_target_position_timer.stop()
+	#scatter_timer.stop()
 	
 	var empty_cell_position = tile_map.get_random_empty_cell_position()
 	navigation_agent_2d.target_position = empty_cell_position
@@ -222,35 +223,37 @@ func _on_run_away_timer_timeout():
 	start_chasing_pacman()
 
 func get_eaten():
+	pass
 	# Handle ghost being eaten
-	body_sprite.hide()
-	eyes_sprite.show_eyes()
-	points_label.show()
-	points_label.text = "%d" % points_manager.points_for_ghost_eaten
-	await points_manager.pause_on_ghost_eaten()
-	points_label.hide()
-	run_away_timer.stop()
-	run_away_timeout.emit()
-	current_state = GhostState.EATEN
-	navigation_agent_2d.target_position = movement_targets.at_home_targets[0].position
+	#body_sprite.hide()
+	#eyes_sprite.show_eyes()
+	#points_label.show()
+	#points_label.text = "%d" % points_manager.points_for_ghost_eaten
+	#await points_manager.pause_on_ghost_eaten()
+	#points_label.hide()
+	#run_away_timer.stop()
+	#run_away_timeout.emit()
+	#current_state = GhostState.EATEN
+	#navigation_agent_2d.target_position = movement_targets.at_home_targets[0].position
 
 func _on_body_entered(body):
+	pass
 	# Handle collision with Pac-Man
-	var player = body as Player
-	if current_state == GhostState.RUN_AWAY:
-		get_eaten()
-	elif current_state == GhostState.CHASE or current_state == GhostState.SCATTER:
-		set_collision_mask_value(1, false)
-		update_chasing_target_position_timer.stop()
+	#var player = body as Player
+	#if current_state == GhostState.RUN_AWAY:
+	#	get_eaten()
+	#elif current_state == GhostState.CHASE or current_state == GhostState.SCATTER:
+	#	set_collision_mask_value(1, false)
+	#	update_chasing_target_position_timer.stop()
 		
 		#Player collision conditionals
-		if player.is_powered == false:
-			player.die() #<--- this still works as intended
-		else:
-			get_eaten() #<--- inconsistent, might need to fix RUN_AWAY state
+	#	if player.is_powered == false:
+	#		player.die() #<--- this still works as intended
+	#	else:
+	#		get_eaten() #<--- inconsistent, might need to fix RUN_AWAY state
 		
-		scatter_timer.wait_time = 600
-		scatter()
+	#	scatter_timer.wait_time = 600
+	#	scatter()
 		
 func calculate_path_to_target(target_position: Vector2):
 	# Pathfinding logic based on ghost type
