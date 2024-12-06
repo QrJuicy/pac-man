@@ -23,6 +23,7 @@ var is_powered = false
 @onready var direction_pointer = $DirectionPointer
 @onready var animation_player = $AnimationPlayer
 @onready var collision_shape_2d = $Detector/CollisionShape2D
+@onready var scarlet = $"../Ghosts/Scarlet"
 
 func _ready():
 	shape_query.shape = collision_shape_2d.shape
@@ -47,6 +48,9 @@ func _physics_process(delta):
 	
 	velocity = movement_direction * speed
 	move_and_slide()
+	
+	if scarlet.current_state == scarlet.GhostState.RUN_AWAY:
+		print("scarlet run away")
 	
 func get_input():
 	if Input.is_action_pressed("left"):
@@ -90,9 +94,10 @@ func _on_animation_player_animation_finished(anim_name):
 func powerup():#<--- powerup activator
 	powerup_timer.start()
 	is_powered = true
+	print(powerup_timer.wait_time)
 	
 func _on_powerup_timer_timeout():#<--- powerup deactivator
 	print("power off")
 	is_powered = false
-	
+	print(powerup_timer.wait_time)
 
